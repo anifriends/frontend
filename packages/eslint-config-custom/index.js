@@ -8,7 +8,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'plugin:react-hooks/recommended',
-    // 'plugin:react/recommended',
+    'plugin:react/recommended',
   ],
   plugins: [
     '@typescript-eslint',

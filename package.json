@@ -11,11 +11,14 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "lint:pack": "packlint sort -R",
-    "prepare": "husky install && packlint sort -R"
+    "prepare": "husky install && packlint sort -R",
+    "commit": "cz"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",
     "@commitlint/config-conventional": "^18.1.0",
+    "commitizen": "^4.3.0",
+    "cz-customizable": "^7.0.0",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "husky": "^8.0.0",
@@ -23,5 +26,13 @@
     "packlint": "^0.2.4",
     "prettier": "^2.5.1",
     "turbo": "latest"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "cz-config.js"
+    }
   }
 }
