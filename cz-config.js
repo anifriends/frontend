@@ -34,6 +34,7 @@ module.exports = {
       name: 'docs:\t문서를 추가하거나 수정하는 경우',
     },
   ],
+  scopes: [{ name: 'common' }, { name: 'ui' }, { name: 'volunteer' }, { name: 'shelter' }],
   allowCustomScopes: false,
   allowBreakingChanges: ['feat', 'fix'],
   skipQuestions: ['body'],
