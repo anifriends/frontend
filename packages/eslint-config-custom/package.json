@@ -17,5 +17,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^3.4.0"
   }
 }
