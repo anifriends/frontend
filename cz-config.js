@@ -3,7 +3,10 @@ module.exports = {
     { value: 'feat', name: 'feat:\tfeature를 추가하는 경우' },
     { value: 'fix', name: 'fix:\t코드를 수정하는 경우' },
     { value: 'docs', name: 'docs:\t문서를 추가하거나 수정하는 경우' },
-    { value: 'refactor', name: 'refactor:\t(버그나 기능 추가 X) 코드를 리팩토링하는 경우' },
+    {
+      value: 'refactor',
+      name: 'refactor:\t(버그나 기능 추가 X) 코드를 리팩토링하는 경우',
+    },
     { value: 'design', name: 'design:\tCSS 등 사용자 UI 디자인 변경' },
     {
       value: 'style',
@@ -29,12 +32,13 @@ module.exports = {
       value: 'remove',
       name: 'remove:\t파일을 삭제하는 작업만 수행하는 경우',
     },
-    {
-      value: 'docs',
-      name: 'docs:\t문서를 추가하거나 수정하는 경우',
-    },
   ],
-  scopes: [{ name: 'common' }, { name: 'ui' }, { name: 'volunteer' }, { name: 'shelter' }],
+  scopes: [
+    { name: 'common' },
+    { name: 'ui' },
+    { name: 'volunteer' },
+    { name: 'shelter' },
+  ],
   allowCustomScopes: false,
   allowBreakingChanges: ['feat', 'fix'],
   skipQuestions: ['body'],
