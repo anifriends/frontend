@@ -5,14 +5,22 @@
     "build": "turbo run build",
     "build:shelter": "turbo run build --filter=shelter",
     "build:volunteer": "turbo run build --filter=volunteer",
+    "commit": "cz",
     "dev": "turbo run dev",
     "dev:shelter": "turbo run dev --filter=shelter",
     "dev:volunteer": "turbo run dev --filter=volunteer",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "lint:pack": "packlint sort -R",
-    "prepare": "husky install && packlint sort -R",
-    "commit": "cz"
+    "prepare": "husky install && packlint sort -R"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "cz-config.js"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",
@@ -26,13 +34,5 @@
     "packlint": "^0.2.4",
     "prettier": "^2.5.1",
     "turbo": "latest"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    },
-    "cz-customizable": {
-      "config": "cz-config.js"
-    }
   }
 }

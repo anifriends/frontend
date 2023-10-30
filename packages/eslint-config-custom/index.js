@@ -66,5 +66,8 @@ module.exports = {
     'react/no-unescaped-entities': 'off', //특수문자 허용
     'react/react-in-jsx-scope': 'off', //import React 검사 끄기
     'react/prop-types': 'off',
+
+    //typescript
+    '@typescript-eslint/no-empty-function': 'off',
   },
 };
