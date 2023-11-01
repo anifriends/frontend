@@ -34,8 +34,12 @@
     "@vitejs/plugin-react-swc": "^3.4.0",
     "eslint": "^8.45.0",
     "eslint-config-custom": "workspace:*",
+    "msw": "^2.0.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
