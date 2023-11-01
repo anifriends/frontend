@@ -1,12 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { CustomButton, Header } from 'ui';
+import { RouterProvider } from 'react-router-dom';
+
+import { router } from '@/routes';
 
 export default function App() {
   return (
     <ChakraProvider>
-      <Header />
-      봉사자 어플리케이션
-      <CustomButton />
+      <RouterProvider router={router} />
     </ChakraProvider>
   );
 }
