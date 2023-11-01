@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
