@@ -9,7 +9,9 @@ export default function LabelText({ labelTitle, content }: LabelTextProps) {
   return (
     <HStack spacing="0.5rem">
       <Label labelTitle={labelTitle} />
-      <Text fontSize="sm">{content}</Text>
+      <Text fontSize="sm" lineHeight="4" textTransform="uppercase">
+        {content}
+      </Text>
     </HStack>
   );
 }
