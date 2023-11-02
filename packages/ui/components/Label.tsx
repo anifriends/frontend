@@ -7,12 +7,12 @@ const LABEL_BACKGROUND_COLOR = {
   RED: 'red.400',
 } as const;
 
-type LabelProps = {
-  title: string;
+export type LabelProps = {
+  labelTitle: string;
   type?: keyof typeof LABEL_BACKGROUND_COLOR;
 };
 
-export default function Label({ title, type = 'GREEN' }: LabelProps) {
+export default function Label({ labelTitle, type = 'GREEN' }: LabelProps) {
   return (
     <Badge
       variant="solid"
@@ -20,7 +20,7 @@ export default function Label({ title, type = 'GREEN' }: LabelProps) {
       bgColor={LABEL_BACKGROUND_COLOR[type]}
       fontSize="sm"
     >
-      {title}
+      {labelTitle}
     </Badge>
   );
 }
