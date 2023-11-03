@@ -17,7 +17,7 @@ export default function NavBarButton({
 
   return (
     <Box
-      color="gray.500"
+      color={selected ? 'gray.600' : 'gray.500'}
       fontSize="9px"
       alignItems="center"
       justifyContent="center"
