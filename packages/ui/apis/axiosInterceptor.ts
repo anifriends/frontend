@@ -7,11 +7,9 @@ export const onRequest = (config: InternalAxiosRequestConfig) => {
 export const onErrorRequest = (error: Error) => {
   return Promise.reject(error);
 };
-
-export const onResponse = (response: AxiosResponse): AxiosResponse => {
+export const onResponse = (response: AxiosResponse) => {
   return response;
 };
-
 export const onErrorResponse = (error: Error) => {
   return Promise.reject(error);
 };

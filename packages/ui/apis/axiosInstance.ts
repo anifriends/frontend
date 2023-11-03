@@ -1,4 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
+
+import { BASE_URL } from '@/constants/baseURL';
 
 import {
   onErrorRequest,
@@ -7,55 +14,69 @@ import {
   onResponse,
 } from './axiosInterceptor';
 
-const BASE_URL = '/example';
+type interceptors = {
+  onRequest: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
+  onErrorRequest: (error: Error) => void | Promise<never>;
+  onResponse: (response: AxiosResponse) => AxiosResponse;
+  onErrorResponse: (error: Error) => void | Promise<never>;
+};
 
 class AxiosService {
-  private static instance: AxiosInstance;
+  private static instance: AxiosService;
 
-  private constructor() {}
+  private constructor(private axiosInstance: AxiosInstance) {}
 
-  private static getInstance(): AxiosInstance {
+  public static getInstance({
+    onRequest,
+    onErrorRequest,
+    onResponse,
+    onErrorResponse,
+  }: interceptors): AxiosService {
     if (!AxiosService.instance) {
-      AxiosService.instance = axios.create({ baseURL: BASE_URL });
-      AxiosService.addInterceptors(AxiosService.instance);
+      const axiosInstance = axios.create({ baseURL: BASE_URL });
+      axiosInstance.interceptors.request.use(onRequest, onErrorRequest);
+      axiosInstance.interceptors.response.use(onResponse, onErrorResponse);
+      this.instance = new AxiosService(axiosInstance);
     }
-    return AxiosService.instance;
+    return this.instance;
   }
 
-  private static addInterceptors(instance: AxiosInstance) {
-    instance.interceptors.request.use(onRequest, onErrorRequest);
-    instance.interceptors.response.use(onResponse, onErrorResponse);
-  }
-
-  public static async get<T, U>(
+  public async get<Response, Request>(
     url: string,
-    config: AxiosRequestConfig<U>,
-  ): Promise<T> {
-    const instance = AxiosService.getInstance();
-    const response = await instance.get<T>(url, config);
+    config: AxiosRequestConfig<Request>,
+  ): Promise<Response> {
+    const response = await this.axiosInstance.get<Response>(url, config);
     return response.data;
   }
 
-  public static async post<T, U>(url: string, data: U): Promise<T> {
-    const instance = this.getInstance();
-    const response = await instance.post<T>(url, data);
-    return response.data;
-  }
-
-  public static async delete<T, U>(
+  public async post<Response, Request>(
     url: string,
-    config: AxiosRequestConfig<U>,
-  ): Promise<T> {
-    const instance = this.getInstance();
-    const response = await instance.delete<T>(url, config);
+    data: Request,
+  ): Promise<Response> {
+    const response = await this.axiosInstance.post<Response>(url, data);
     return response.data;
   }
 
-  public static async patch<T, U>(url: string, data: U): Promise<T> {
-    const instance = this.getInstance();
-    const response = await instance.patch<T>(url, data);
+  public async delete<Response, Request>(
+    url: string,
+    config: AxiosRequestConfig<Request>,
+  ): Promise<Response> {
+    const response = await this.axiosInstance.delete<Response>(url, config);
+    return response.data;
+  }
+
+  public async patch<Response, Request>(
+    url: string,
+    data: Request,
+  ): Promise<Response> {
+    const response = await this.axiosInstance.patch<Response>(url, data);
     return response.data;
   }
 }
 
-export default AxiosService;
+export default AxiosService.getInstance({
+  onRequest,
+  onErrorRequest,
+  onResponse,
+  onErrorResponse,
+});
