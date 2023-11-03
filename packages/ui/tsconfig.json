@@ -1,11 +1,15 @@
 {
   "extends": "tsconfig/base.json",
-  "include": ["."],
+  "include": [".", "svg.d.ts"],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "target": "es6"
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../packages/ui/*"]
+    }
   }
 }

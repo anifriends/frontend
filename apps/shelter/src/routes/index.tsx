@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from 'ui/layout';
 
+import Layout from '@/components/layout';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
@@ -34,55 +34,143 @@ export const router = createBrowserRouter([
       {
         path: PATH.VOLUNTEERS.INDEX,
         children: [
-          { index: true, element: <VolunteersPage /> },
-          { path: PATH.VOLUNTEERS.DETAIL, element: <VolunteersDetailPage /> },
-          { path: PATH.VOLUNTEERS.PROFILE, element: <VolunteersProfilePage /> },
-          { path: PATH.VOLUNTEERS.SEARCH, element: <VolunteersSearchPage /> },
-          { path: PATH.VOLUNTEERS.WRITE, element: <VolunteersWritePage /> },
-          { path: PATH.VOLUNTEERS.UPDATE, element: <VolunteersUpdatePage /> },
+          {
+            id: `SHELTER_APP:VOLUNTEERS`,
+            index: true,
+            element: <VolunteersPage />,
+          },
+          {
+            id: 'SHELTER_APP:VOLUNTEERS_DETAIL',
+            path: PATH.VOLUNTEERS.DETAIL,
+            element: <VolunteersDetailPage />,
+          },
+          {
+            id: 'SHELTER_APP:VOLUNTEERS_PROFILE',
+            path: PATH.VOLUNTEERS.PROFILE,
+            element: <VolunteersProfilePage />,
+          },
+          {
+            id: 'SHELTER_APP:VOLUNTEERS_SEARCH',
+            path: PATH.VOLUNTEERS.SEARCH,
+            element: <VolunteersSearchPage />,
+          },
+          {
+            id: 'SHELTER_APP:VOLUNTEERS_WRITE',
+            path: PATH.VOLUNTEERS.WRITE,
+            element: <VolunteersWritePage />,
+          },
+          {
+            id: 'SHELTER_APP:VOLUNTEERS_UPDATE',
+            path: PATH.VOLUNTEERS.UPDATE,
+            element: <VolunteersUpdatePage />,
+          },
         ],
       },
       {
         path: PATH.ANIMALS.INDEX,
         children: [
-          { index: true, element: <AnimalsPage /> },
-          { path: PATH.ANIMALS.DETAIL, element: <AnimalsDetailPage /> },
-          { path: PATH.ANIMALS.SEARCH, element: <AnimalsSearchPage /> },
-          { path: PATH.ANIMALS.WRITE, element: <AnimalsWritePage /> },
-          { path: PATH.ANIMALS.UPDATE, element: <AnimalsUpdatePage /> },
+          {
+            id: 'SHELTER_APP:ANIMALS',
+            index: true,
+            element: <AnimalsPage />,
+          },
+          {
+            id: 'SHELTER_APP:ANIMALS_DETAIL',
+            path: PATH.ANIMALS.DETAIL,
+            element: <AnimalsDetailPage />,
+          },
+          {
+            id: 'SHELTER_APP:ANIMALS_SEARCH',
+            path: PATH.ANIMALS.SEARCH,
+            element: <AnimalsSearchPage />,
+          },
+          {
+            id: 'SHELTER_APP:ANIMALS_WRITE',
+            path: PATH.ANIMALS.WRITE,
+            element: <AnimalsWritePage />,
+          },
+          {
+            id: 'SHELTER_APP:ANIMALS_UPDATE',
+            path: PATH.ANIMALS.UPDATE,
+            element: <AnimalsUpdatePage />,
+          },
         ],
       },
       {
         path: PATH.CHATTINGS.INDEX,
         children: [
-          { index: true, element: <ChattingsPage /> },
-          { path: PATH.CHATTINGS.ROOM, element: <ChattingsRoomPage /> },
+          {
+            id: 'SHELTER_APP:CHATTINGS',
+            index: true,
+            element: <ChattingsPage />,
+          },
+          {
+            id: 'SHELTER_APP:CHATTINGS_ROOM',
+            path: PATH.CHATTINGS.ROOM,
+            element: <ChattingsRoomPage />,
+          },
         ],
       },
       {
         path: PATH.MYPAGE.INDEX,
         children: [
-          { index: true, element: <MyPage /> },
-          { path: PATH.MYPAGE.REVIEWS, element: <MyReviewsPage /> },
+          {
+            id: 'SHELTER_APP:MYPAGE',
+            index: true,
+            element: <MyPage />,
+          },
+          {
+            id: 'SHELTER_APP:MYPAGE_REVIEWS',
+            path: PATH.MYPAGE.REVIEWS,
+            element: <MyReviewsPage />,
+          },
         ],
       },
       {
         path: PATH.SETTINGS.INDEX,
         children: [
-          { path: PATH.SETTINGS.ACCOUNT, element: <SettingsAccountPage /> },
-          { path: PATH.SETTINGS.PASSWORD, element: <SettingsPasswordPage /> },
+          {
+            id: 'SHELTER_APP:SETTINGS_ACCOUNT',
+            path: PATH.SETTINGS.ACCOUNT,
+            element: <SettingsAccountPage />,
+          },
+          {
+            id: 'SHELTER_APP:SETTINGS_PASSWORD',
+            path: PATH.SETTINGS.PASSWORD,
+            element: <SettingsPasswordPage />,
+          },
         ],
       },
       {
         path: PATH.MANAGE.INDEX,
         children: [
-          { path: PATH.MANAGE.ATTENDANCE, element: <ManageAttendancePage /> },
-          { path: PATH.MANAGE.APPLY, element: <ManageAttendancePage /> },
+          {
+            id: 'SHELTER_APP:MANAGE.ATTENDANCE',
+            path: PATH.MANAGE.ATTENDANCE,
+            element: <ManageAttendancePage />,
+          },
+          {
+            id: 'SHELTER_APP:MANAGE.APPLY',
+            path: PATH.MANAGE.APPLY,
+            element: <ManageAttendancePage />,
+          },
         ],
       },
-      { path: PATH.NOTIFICATIONS, element: <NotificationsPage /> },
-      { path: PATH.SIGNUP, element: <SignupPage /> },
-      { path: PATH.SIGNIN, element: <SigninPage /> },
+      {
+        id: 'SHELTER_APP:NOTIFICATIONS',
+        path: PATH.NOTIFICATIONS,
+        element: <NotificationsPage />,
+      },
+      {
+        id: 'SHELTER_APP:SIGNUP',
+        path: PATH.SIGNUP,
+        element: <SignupPage />,
+      },
+      {
+        id: 'SHELTER_APP:SIGNIN',
+        path: PATH.SIGNIN,
+        element: <SigninPage />,
+      },
     ],
   },
 ]);

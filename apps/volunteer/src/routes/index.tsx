@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from 'ui/layout';
 
+import Layout from '@/components/layout';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
@@ -29,53 +29,108 @@ export const router = createBrowserRouter([
       {
         path: PATH.VOLUNTEERS.INDEX,
         children: [
-          { index: true, element: <VolunteersPage /> },
-          { path: PATH.VOLUNTEERS.DETAIL, element: <VolunteersDetailPage /> },
-          { path: PATH.VOLUNTEERS.SEARCH, element: <VolunteersSearchPage /> },
+          {
+            id: 'VOLUNTEER_APP:VOLUNTEERS',
+            index: true,
+            element: <VolunteersPage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:VOLUNTEERS_DETAIL',
+            path: PATH.VOLUNTEERS.DETAIL,
+            element: <VolunteersDetailPage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:VOLUNTEERS_SEARCH',
+            path: PATH.VOLUNTEERS.SEARCH,
+            element: <VolunteersSearchPage />,
+          },
         ],
       },
       {
         path: PATH.ANIMALS.INDEX,
         children: [
-          { index: true, element: <AnimalsPage /> },
-          { path: PATH.ANIMALS.DETAIL, element: <AnimalsDetailPage /> },
+          {
+            id: 'VOLUNTEER_APP:ANIMALS',
+            index: true,
+            element: <AnimalsPage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:ANIMALS_DETAIL',
+            path: PATH.ANIMALS.DETAIL,
+            element: <AnimalsDetailPage />,
+          },
         ],
       },
       {
         path: PATH.CHATTINGS.INDEX,
         children: [
-          { index: true, element: <ChattingsPage /> },
-          { path: PATH.CHATTINGS.ROOM, element: <ChattingsRoomPage /> },
+          {
+            id: 'VOLUNTEER_APP:CHATTINGS',
+            index: true,
+            element: <ChattingsPage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:CHATTINGS_ROOM',
+            path: PATH.CHATTINGS.ROOM,
+            element: <ChattingsRoomPage />,
+          },
         ],
       },
       {
+        id: 'VOLUNTEER_APP:MYPAGE',
         path: PATH.MYPAGE.INDEX,
         element: <MyPage />,
       },
       {
         path: PATH.SETTINGS.INDEX,
         children: [
-          { path: PATH.SETTINGS.ACCOUNT, element: <SettingsAccountPage /> },
-          { path: PATH.SETTINGS.PASSWORD, element: <SettingsPasswordPage /> },
+          {
+            id: 'VOLUNTEER_APP:SETTINGS_ACCOUNT',
+            path: PATH.SETTINGS.ACCOUNT,
+            element: <SettingsAccountPage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:SETTINGS_PASSWORD',
+            path: PATH.SETTINGS.PASSWORD,
+            element: <SettingsPasswordPage />,
+          },
         ],
       },
       {
         path: PATH.SHELTERS.INDEX,
         children: [
-          { path: PATH.SHELTERS.PROFILE, element: <SheltersProfilePage /> },
           {
+            id: 'VOLUNTEER_APP:SHELTERS_PROFILE',
+            path: PATH.SHELTERS.PROFILE,
+            element: <SheltersProfilePage />,
+          },
+          {
+            id: 'VOLUNTEER_APP:SHELTERS_REVIEWS_WRITE',
             path: PATH.SHELTERS.REVIEWS_WRITE,
             element: <SheltersReviewsWritePage />,
           },
           {
+            id: 'VOLUNTEER_APP:SHELTERS_REVIEWS_UPDATE',
             path: PATH.SHELTERS.REVIEWS_UPDATE,
             element: <SheltersReviewsUpdatePage />,
           },
         ],
       },
-      { path: PATH.NOTIFICATIONS, element: <NotificationsPage /> },
-      { path: PATH.SIGNUP, element: <SignupPage /> },
-      { path: PATH.SIGNIN, element: <SigninPage /> },
+      {
+        id: 'VOLUNTEER_APP:NOTIFICATIONS',
+        path: PATH.NOTIFICATIONS,
+        element: <NotificationsPage />,
+      },
+      {
+        id: 'VOLUNTEER_APP:SIGNUP',
+        path: PATH.SIGNUP,
+        element: <SignupPage />,
+      },
+      {
+        id: 'VOLUNTEER_APP:SIGNIN',
+        path: PATH.SIGNIN,
+        element: <SigninPage />,
+      },
     ],
   },
 ]);
