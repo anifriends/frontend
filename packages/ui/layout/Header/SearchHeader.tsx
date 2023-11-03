@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 
 import { HeaderProps } from '../../types/header';
 
-export default function SearchHeader({ title, headerOption }: HeaderProps) {
+export default function SearchHeader({ title }: HeaderProps) {
   return (
     <Flex
       bgColor="white"

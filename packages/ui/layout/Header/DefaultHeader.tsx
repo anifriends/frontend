@@ -1,11 +1,10 @@
 import { ButtonGroup, Flex, Image } from '@chakra-ui/react';
-import { useState } from 'react';
-
-import { HeaderProps } from '@/types/header';
+import { useEffect, useState } from 'react';
 
 import NotificationsIcon from '../../assets/icon_notifications.svg';
 import SearchIcon from '../../assets/icon_search.svg';
 import SettingsIcon from '../../assets/icon_settings.svg';
+import { HeaderProps } from '../../types/header';
 
 export default function DefaultHeader({ title }: HeaderProps) {
   const [iconVisibility, setIconVisibility] = useState({
@@ -15,6 +14,14 @@ export default function DefaultHeader({ title }: HeaderProps) {
   });
 
   const { searchIcon, settingsIcon, notificationsIcon } = iconVisibility;
+
+  useEffect(() => {
+    setIconVisibility({
+      searchIcon: false,
+      settingsIcon: false,
+      notificationsIcon: true,
+    });
+  }, []);
 
   return (
     <Flex

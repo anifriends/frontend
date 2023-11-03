@@ -1,5 +1,4 @@
-import { HeaderProps } from '@/types/header';
-
+import { CommonHeaderProps, HeaderProps } from '../../types/header';
 import DefaultHeader from './DefaultHeader';
 import DetailHeader from './DetailHeader';
 import SearchHeader from './SearchHeader';
@@ -11,7 +10,7 @@ const Headers = {
   SEARCH: (props: HeaderProps) => <SearchHeader {...props} />,
 };
 
-export default function Header({ headerOption }: HeaderProps) {
+export default function Header({ headerOption }: CommonHeaderProps) {
   const { headerType, title } = useHeader();
 
   return Headers[headerType]({ title, headerOption });

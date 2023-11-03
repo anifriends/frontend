@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useMatches } from 'react-router-dom';
-import { AppType } from 'types/app';
-import { HeaderType } from 'types/header';
-import { PageType } from 'types/page';
 
+import { AppType } from '../../types/app';
+import { HeaderType } from '../../types/header';
+import { PageType } from '../../types/page';
 import { getHeaderTitle, getHeaderType } from './utils';
 
 export const useHeader = () => {

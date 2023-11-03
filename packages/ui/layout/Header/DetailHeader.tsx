@@ -1,15 +1,17 @@
 import { Flex, Image } from '@chakra-ui/react';
-import { useState } from 'react';
-
-import { HeaderProps } from '@/types/header';
+import { useEffect, useState } from 'react';
 
 import BackIcon from '../../assets/icon_back.svg';
 import MenuIcon from '../../assets/icon_menu.svg';
+import { HeaderProps } from '../../types/header';
 
-export default function DetailHeader({ title, headerOption }: HeaderProps) {
+export default function DetailHeader({ title }: HeaderProps) {
   const [iconVisibility, setIconVisibility] = useState({ menuIcon: false });
-
   const { menuIcon } = iconVisibility;
+
+  useEffect(() => {
+    setIconVisibility({ menuIcon: false });
+  }, []);
 
   return (
     <Flex
