@@ -1,6 +1,13 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const BASE_URL = '/';
+import {
+  onRequest,
+  onRequestError,
+  onResponse,
+  onResponseError,
+} from './axiosInterceptor';
+
+const BASE_URL = '/example';
 
 class AxiosService {
   private static instance: AxiosInstance;
@@ -10,8 +17,14 @@ class AxiosService {
   private static getInstance(): AxiosInstance {
     if (!AxiosService.instance) {
       AxiosService.instance = axios.create({ baseURL: BASE_URL });
+      AxiosService.addInterceptors(AxiosService.instance);
     }
     return AxiosService.instance;
+  }
+
+  private static addInterceptors(instance: AxiosInstance) {
+    instance.interceptors.request.use(onRequest, onRequestError);
+    instance.interceptors.response.use(onResponse, onResponseError);
   }
 
   public static async get<T, U>(
