@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMatches, useNavigate } from 'react-router-dom';
-import { PageType } from 'types/page';
+
+import { PageType } from '../../types/page';
 
 export const useBottomNavBar = () => {
   const [selected, setSelected] = useState<
