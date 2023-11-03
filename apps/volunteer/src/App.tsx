@@ -5,7 +5,7 @@ import { router } from '@/routes';
 
 export default function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider resetCSS>
       <RouterProvider router={router} />
     </ChakraProvider>
   );
