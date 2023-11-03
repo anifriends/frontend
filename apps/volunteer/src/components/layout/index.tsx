@@ -13,7 +13,13 @@ export default function Layout() {
   };
 
   return (
-    <Container maxW="container.sm" h="100vh" p={0} centerContent>
+    <Container
+      position="relative"
+      maxW="container.sm"
+      h="100vh"
+      p={0}
+      centerContent
+    >
       <Header headerOption={headerOption} />
       <Container height="100%" pb="50px" px="16px">
         <Outlet />
