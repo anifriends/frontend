@@ -1,7 +1,7 @@
 import type { ColorProps } from '@chakra-ui/react';
 import { Flex, Text } from '@chakra-ui/react';
 
-type InfoTextItemStyles = {
+type InfoTextItemStylesProps = {
   titleColor: ColorProps['color'];
   contentColor: ColorProps['color'];
 };
@@ -12,7 +12,8 @@ export type InfoTextItemPropsWithoutStyles = {
   isList?: boolean;
 };
 
-type InfoTextItemProps = InfoTextItemStyles & InfoTextItemPropsWithoutStyles;
+type InfoTextItemProps = InfoTextItemStylesProps &
+  InfoTextItemPropsWithoutStyles;
 
 export default function InfoTextItem({
   title,
