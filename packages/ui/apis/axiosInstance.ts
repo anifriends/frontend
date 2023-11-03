@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import {
+  onErrorRequest,
+  onErrorResponse,
   onRequest,
-  onRequestError,
   onResponse,
-  onResponseError,
 } from './axiosInterceptor';
 
 const BASE_URL = '/example';
@@ -23,8 +23,8 @@ class AxiosService {
   }
 
   private static addInterceptors(instance: AxiosInstance) {
-    instance.interceptors.request.use(onRequest, onRequestError);
-    instance.interceptors.response.use(onResponse, onResponseError);
+    instance.interceptors.request.use(onRequest, onErrorRequest);
+    instance.interceptors.response.use(onResponse, onErrorResponse);
   }
 
   public static async get<T, U>(

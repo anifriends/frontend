@@ -4,7 +4,7 @@ export const onRequest = (config: InternalAxiosRequestConfig) => {
   return config;
 };
 
-export const onRequestError = (error: Error) => {
+export const onErrorRequest = (error: Error) => {
   return Promise.reject(error);
 };
 
@@ -12,6 +12,6 @@ export const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response;
 };
 
-export const onResponseError = (error: Error) => {
+export const onErrorResponse = (error: Error) => {
   return Promise.reject(error);
 };
