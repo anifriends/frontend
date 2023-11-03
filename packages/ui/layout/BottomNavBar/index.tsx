@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import AnimalsSelectedIcon from '../../assets/bottomNavBar/icon_animals_selected.svg';
 import AnimalsUnselectedIcon from '../../assets/bottomNavBar/icon_animals_unselected.svg';
@@ -11,10 +12,20 @@ import VolunteersUnselectedIcon from '../../assets/bottomNavBar/icon_volunteers_
 import NavBarButton from './NavBarButton';
 
 export default function BottomNavBar() {
-  const goVounteers = () => {};
-  const goAnimals = () => {};
-  const goChattings = () => {};
-  const goMyPage = () => {};
+  const navigate = useNavigate();
+
+  const goVounteers = () => {
+    navigate('/volunteers');
+  };
+  const goAnimals = () => {
+    navigate('/animals');
+  };
+  const goChattings = () => {
+    navigate('/chattings');
+  };
+  const goMyPage = () => {
+    navigate('/mypage');
+  };
 
   return (
     <Flex
