@@ -1,44 +1,44 @@
-import type { ColorProps } from '@chakra-ui/react';
+import type { FlexProps, TextProps } from '@chakra-ui/react';
 import { Flex, Text } from '@chakra-ui/react';
 
 type InfoTextItemStylesProps = {
-  titleColor: ColorProps['color'];
-  contentColor: ColorProps['color'];
+  flexStyles: FlexProps;
+  titleTextStyles: TextProps;
+  contentTextStyles: TextProps;
 };
 
-export type InfoTextItemPropsWithoutStyles = {
+export type InfoTextItemWithoutStylesProps = {
   title: string;
   content: string;
-  isList?: boolean;
 };
 
-type InfoTextItemProps = InfoTextItemStylesProps &
-  InfoTextItemPropsWithoutStyles;
+type InfoTextItemProps = Partial<InfoTextItemStylesProps> &
+  InfoTextItemWithoutStylesProps;
 
 export default function InfoTextItem({
   title,
   content,
-  titleColor,
-  contentColor,
-  isList = false,
+  flexStyles,
+  titleTextStyles,
+  contentTextStyles,
 }: InfoTextItemProps) {
   return (
-    <Flex minH={5} gap={isList ? '5%' : 1}>
+    <Flex gap={1} {...flexStyles}>
       <Text
-        w={isList ? '25%' : undefined}
-        color={titleColor}
+        color="gray.400"
         size="md"
-        fontWeight={isList ? 'normal' : 'medium'}
-        fontSize={isList ? 'sm' : 'xs'}
+        fontWeight="medium"
+        fontSize="xs"
+        {...titleTextStyles}
       >
         {title}
       </Text>
       <Text
-        w={isList ? '70%' : undefined}
-        color={contentColor}
+        color="gray.500"
         size="md"
-        fontWeight={isList ? 'medium' : 'semibold'}
-        fontSize={isList ? 'sm' : 'xs'}
+        fontWeight="semibold"
+        fontSize="xs"
+        {...contentTextStyles}
       >
         {content}
       </Text>
