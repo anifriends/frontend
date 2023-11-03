@@ -22,7 +22,6 @@ export default function BottomNavBar() {
         w="100%"
         h="50px"
         px={4}
-        justify="center"
         justifyContent="space-between"
         borderTop="1px solid"
         borderColor="gray.200"
