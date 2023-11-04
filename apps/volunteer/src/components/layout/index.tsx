@@ -1,9 +1,8 @@
 import { Container } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
-
-import BottomNavBar from '../../../../../packages/shared/layout/BottomNavBar';
-import Header from '../../../../../packages/shared/layout/Header';
-import { HeaderOption } from '../../../../../packages/shared/types/header';
+import BottomNavBar from 'shared/layout/BottomNavBar';
+import Header from 'shared/layout/Header';
+import { HeaderOption } from 'shared/types/header';
 
 export default function Layout() {
   const headerOption: HeaderOption = {
