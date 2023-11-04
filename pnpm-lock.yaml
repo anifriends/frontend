@@ -86,9 +86,9 @@ importers:
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
-      ui:
+      shared:
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/shared
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -171,9 +171,9 @@ importers:
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
-      ui:
+      shared:
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/shared
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -246,13 +246,7 @@ importers:
         specifier: ^3.4.0
         version: 3.4.1(vite@4.5.0)
 
-  packages/tsconfig:
-    devDependencies:
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.4.0
-        version: 3.4.1(vite@4.5.0)
-
-  packages/ui:
+  packages/shared:
     dependencies:
       '@chakra-ui/react':
         specifier: ^2.8.1
@@ -284,7 +278,7 @@ importers:
         version: 18.2.14
       eslint:
         specifier: ^8.45.0
-        version: 8.52.0
+        version: 8.53.0
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom
@@ -294,6 +288,12 @@ importers:
       typescript:
         specifier: ^5.0.2
         version: 5.2.2
+
+  packages/tsconfig:
+    devDependencies:
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.4.0
+        version: 3.4.1(vite@4.5.0)
 
 packages:
 
