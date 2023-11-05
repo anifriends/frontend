@@ -1,4 +1,4 @@
-import axiosInstance from 'api/axiosInstance';
+import axiosInstance from 'apis/axiosInstance';
 
 type ReviewDetailResponse = {
   content: string;
