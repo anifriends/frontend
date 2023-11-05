@@ -41,9 +41,9 @@ class AxiosService {
     return this.instance;
   }
 
-  public get<Response, Request>(
+  public get<Response, Request = unknown>(
     url: string,
-    config: AxiosRequestConfig<Request>,
+    config?: AxiosRequestConfig<Request>,
   ) {
     return this.axiosInstance.get<Response>(url, config);
   }
@@ -52,14 +52,14 @@ class AxiosService {
     return this.axiosInstance.post<Response>(url, data);
   }
 
-  public delete<Response, Request>(
+  public delete<Response = unknown, Request = unknown>(
     url: string,
-    config: AxiosRequestConfig<Request>,
+    config?: AxiosRequestConfig<Request>,
   ) {
     return this.axiosInstance.delete<Response>(url, config);
   }
 
-  public patch<Response, Request>(url: string, data: Request) {
+  public patch<Request, Response = unknown>(url: string, data: Request) {
     return this.axiosInstance.patch<Response>(url, data);
   }
 }
