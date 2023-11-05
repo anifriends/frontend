@@ -8,18 +8,18 @@ type InfoTextListProps = {
 };
 
 const flexStyles: FlexProps = {
-  gap: '5%',
+  gap: '2rem',
 };
 
 const titleTextStyles: TextProps = {
-  w: '25%',
+  w: '6rem',
   color: 'gray.500',
   fontWeight: 'normal',
   fontSize: 'sm',
 };
 
 const contentTextStyles: TextProps = {
-  w: '70%',
+  w: 'calc(100% - 8rem)',
   color: 'black',
   fontWeight: 'medium',
   fontSize: 'sm',
