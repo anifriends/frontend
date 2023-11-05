@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
 
 import Layout from '@/components/layout';
 import PATH from '@/constants/path';
@@ -25,7 +25,7 @@ import VolunteersSearchPage from '@/pages/volunteers/search';
 import VolunteersUpdatePage from '@/pages/volunteers/update';
 import VolunteersWritePage from '@/pages/volunteers/write';
 
-export const router = createBrowserRouter([
+export const router: RouterProviderProps['router'] = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,

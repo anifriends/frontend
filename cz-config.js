@@ -35,7 +35,7 @@ module.exports = {
   ],
   scopes: [
     { name: 'common' },
-    { name: 'ui' },
+    { name: 'shared' },
     { name: 'volunteer' },
     { name: 'shelter' },
   ],
