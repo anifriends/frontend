@@ -14,7 +14,7 @@ export default function ApplicantStatus({
   denominator,
 }: ApplicantStatusProps) {
   return (
-    <Flex align="center" gap={1}>
+    <Flex display="inline-flex" align="center" gap={1}>
       <Image src={ApplicantIcon} width={size} height={size} />
       <Text color="black" fontSize="sm" fontWeight="normal">
         {`${numerator} / ${denominator}`}
