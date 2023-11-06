@@ -11,7 +11,8 @@ export default function SettingItem({ itemTitle, path }: SettingItemProps) {
   return (
     <Flex
       justify="space-between"
-      py={2.5}
+      py="18px"
+      pl="5px"
       borderBottom="1px solid"
       borderColor="gray.200"
     >

@@ -13,8 +13,8 @@ export default function SettingGroup({
   settingItems,
 }: SettingProps) {
   return (
-    <Box my={6}>
-      <Text py={4} color="gray.500">
+    <Box mb={6}>
+      <Text pb={6} color="gray.500">
         {groupTitle}
       </Text>
       {settingItems.map((item, index) => (
