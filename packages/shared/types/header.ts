@@ -8,10 +8,10 @@ export type HeaderOption = {
 };
 
 export type CommonHeaderProps = {
-  headerOption: HeaderOption;
+  headerOption?: HeaderOption;
 };
 
 export type HeaderProps = {
   title: string;
-  headerOption: HeaderOption;
+  headerOption?: HeaderOption;
 };
