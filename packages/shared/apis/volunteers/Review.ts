@@ -34,26 +34,26 @@ export const getReviewDetail = (reviewId: number) =>
 
 export const createNewReview = (newReviewParams: NewReviewParams) =>
   axiosInstance.post<NewReviewResponse, NewReviewParams>(
-    '/reviews',
+    '/volunteers/reviews',
     newReviewParams,
   );
 
 export const getShelterInfo = (recruitmentId: number) =>
   axiosInstance.get<ShelterInfoResponse>(
-    `/recruitments/${recruitmentId}/shelters`,
+    `/volunteers/recruitments/${recruitmentId}/shelters`,
   );
 
 export const updateReview = (
   reviewId: string,
   updatedReviewParams: UpdatedReviewParams,
 ) =>
-  axiosInstance.patch<UpdatedReviewParams, unknown>(
-    `/reviews/${reviewId}`,
+  axiosInstance.patch<unknown, UpdatedReviewParams>(
+    `/volunteers/reviews/${reviewId}`,
     updatedReviewParams,
   );
 
 export const deleteReview = (reviewId: string) =>
-  axiosInstance.delete(`/reviews/${reviewId}`);
+  axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 type ReviewOnShelterParams = {
   pageNumber: number;
@@ -85,7 +85,7 @@ export const getReviewsOnShelter = (
   pageSize: number,
 ) =>
   axiosInstance.get<ReviewOnShelterResponse, ReviewOnShelterParams>(
-    `/shelters/${shelterId}/reviews`,
+    `/volunteers/shelters/${shelterId}/reviews`,
     {
       params: {
         pageNumber,

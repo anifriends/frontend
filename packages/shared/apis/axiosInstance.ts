@@ -59,7 +59,7 @@ class AxiosService {
     return this.axiosInstance.delete<Response>(url, config);
   }
 
-  patch<Request, Response = unknown>(url: string, data: Request) {
+  patch<Response = unknown, Request = unknown>(url: string, data?: Request) {
     return this.axiosInstance.patch<Response>(url, data);
   }
 }

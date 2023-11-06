@@ -13,7 +13,8 @@ type MyInfoResponse = {
   imageUrl: string;
 };
 
-export const getMyInfo = () => axiosInstance.get<MyInfoResponse>('/me');
+export const getMyInfo = () =>
+  axiosInstance.get<MyInfoResponse>('/volunteers/me');
 
 type RecruitmentDetailResponse = {
   title: string;
@@ -37,7 +38,7 @@ type RecruitmentDetailResponse = {
 
 export const getRecruitmentDetail = (recruitmentId: number) =>
   axiosInstance.get<RecruitmentDetailResponse>(
-    `/recruitments/${recruitmentId}`,
+    `/volunteers/recruitments/${recruitmentId}`,
   );
 
 type PasswordUpdateParams = {
@@ -46,8 +47,8 @@ type PasswordUpdateParams = {
 };
 
 export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) => {
-  return axiosInstance.patch<PasswordUpdateParams>(
-    '/me/password',
+  return axiosInstance.patch<unknown, PasswordUpdateParams>(
+    '/volunteers/me/password',
     passwordUpdateParams,
   );
 };
@@ -61,7 +62,10 @@ type UpdateUserInfoParams = {
 };
 
 export const updateUserInfo = (updateUserInfoParams: UpdateUserInfoParams) =>
-  axiosInstance.patch<UpdateUserInfoParams>('/me', updateUserInfoParams);
+  axiosInstance.patch<unknown, UpdateUserInfoParams>(
+    '/volunteers/me',
+    updateUserInfoParams,
+  );
 
 type Applicant = {
   recruitmentId: number;
@@ -79,4 +83,4 @@ type ApplicantsResponse = {
 
 //봉사자가 신청한 봉사 리스트 조회
 export const getApplicants = () =>
-  axiosInstance.get<ApplicantsResponse>('/applicants');
+  axiosInstance.get<ApplicantsResponse>('/volunteers/applicants');

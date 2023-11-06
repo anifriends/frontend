@@ -10,4 +10,4 @@ export const getShelterProfile = (shelterId: number) =>
     addressDetail: string;
     phoneNumber: string;
     sparePhoneNumber: string;
-  }>(`/shelters/${shelterId}/profile`);
+  }>(`/volunteers/shelters/${shelterId}/profile`);

@@ -1,7 +1,7 @@
 import axiosInstance from 'apis/axiosInstance';
 
 export const ApplyRecruitments = (recruitmentId: string) =>
-  axiosInstance.post(`/recruitments/${recruitmentId}/apply`);
+  axiosInstance.post(`/volunteers/recruitments/${recruitmentId}/apply`);
 
 type PageInfo = {
   totalElements: number;
@@ -36,6 +36,6 @@ export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
       recruitments: Recruitment[];
     },
     RecruitSearchParams
-  >('/recruitments', {
+  >('/volunteers/recruitments', {
     params: recruitSearchParams,
   });

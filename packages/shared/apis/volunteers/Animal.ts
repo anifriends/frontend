@@ -29,7 +29,7 @@ export const searchAnimals = () =>
       pageNumber: number;
       pageSize: number;
     }
-  >('/animals');
+  >('/volunteers/animals');
 
 type Shelter = {
   shelterId: number;
@@ -51,5 +51,5 @@ export const getAnimalDetail = (animalId: number) => {
     information: string;
     animalImageUrls: string[];
     shelter: Shelter;
-  }>(`/animals/${animalId}`);
+  }>(`/volunteers/animals/${animalId}`);
 };
