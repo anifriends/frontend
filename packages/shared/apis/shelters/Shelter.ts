@@ -3,6 +3,12 @@ import axiosInstance from 'apis/axiosInstance';
 type SignUpParams = {
   email: string;
   password: string;
+  name: string;
+  address: string;
+  addressDetail: string;
+  phoneNumber: string;
+  sparePhoneNumber: string;
+  isOpenedAddress: boolean;
 };
 
 export const signUpShelter = (signUpParams: SignUpParams) => {

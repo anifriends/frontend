@@ -1,12 +1,24 @@
 import axiosInstance from 'apis/axiosInstance';
 
 //TODO 회원가입
-export const signUp = () => {};
+
+type SignUpParams = {
+  email: string;
+  password: string;
+  name: string;
+  birthDate: string;
+  phoneNumber: string;
+  gender: 'FEMALE' | 'MALE';
+};
+
+export const signUpVolunteer = (signUpParams: SignUpParams) => {
+  return axiosInstance.post<unknown, SignUpParams>('/volunteers', signUpParams);
+};
 
 type MyInfoResponse = {
   email: string;
   name: string;
-  birthDate: Date;
+  birthDate: string;
   phoneNumber: string;
   temperture: number;
   volunteerCount: number;
@@ -21,12 +33,12 @@ type RecruitmentDetailResponse = {
   applicantCount: number;
   capacity: number;
   content: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   isClosed: false;
-  deadline: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  deadline: string;
+  createdAt: string;
+  updatedAt: string;
   imageUrls: string[];
   shelterInfo: {
     shelterName: string;
@@ -71,7 +83,7 @@ type Applicant = {
   recruitmentId: number;
   applicantId: number;
   title: string;
-  volunteerDate: Date;
+  volunteerDate: string;
   shelterName: string;
   status: string;
   isWritedReview: boolean;
