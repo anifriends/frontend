@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
+import Layout from 'shared/layout';
 
-import Layout from '@/components/layout';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
