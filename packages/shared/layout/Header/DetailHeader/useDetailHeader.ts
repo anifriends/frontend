@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import APP_TYPE from '../../../constants/appType';
+import PAGE_TYPE from '../../../constants/pageType';
 import { usePageType } from '../../../hooks/usePageType';
 import { AppType } from '../../../types/app';
 import { getHeaderTitle } from '../utils';
@@ -19,10 +21,13 @@ export const useDetailHeader = (appType: AppType) => {
       setTitle(getHeaderTitle(pageType));
 
       if (
-        appType === 'SHELTER_APP' &&
-        (pageType === 'VOLUNTEERS_DETAIL' || pageType === 'ANIMALS_DETAIL')
+        appType === APP_TYPE.SHELTER_APP &&
+        (pageType === PAGE_TYPE.VOLUNTEERS_DETAIL ||
+          pageType === PAGE_TYPE.ANIMALS_DETAIL)
       ) {
         setIconVisibility({ menuIcon: true });
+      } else {
+        setIconVisibility({ menuIcon: false });
       }
     }
   }, [appType, pageType]);

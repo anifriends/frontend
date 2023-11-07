@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import PAGE_TYPE from '../../constants/pageType';
 import { PageType } from '../../types/page';
 
 export const useBottomNavBar = (pageType?: PageType) => {
@@ -7,10 +8,10 @@ export const useBottomNavBar = (pageType?: PageType) => {
 
   useEffect(() => {
     if (
-      pageType === 'VOLUNTEERS' ||
-      pageType === 'ANIMALS' ||
-      pageType === 'CHATTINGS' ||
-      pageType === 'MYPAGE'
+      pageType === PAGE_TYPE.VOLUNTEERS ||
+      pageType === PAGE_TYPE.ANIMALS ||
+      pageType === PAGE_TYPE.CHATTINGS ||
+      pageType === PAGE_TYPE.MYPAGE
     ) {
       return setIsBottomNavBarVisible(true);
     }
