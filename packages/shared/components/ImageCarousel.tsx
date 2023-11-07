@@ -69,10 +69,10 @@ export default function ImageCarousel({ imageUrls }: ImageCarouselProps) {
     <Box overflowX="hidden" h="318px" w="100%" position="relative">
       <AnimatePresence initial={false} custom={direction}>
         <MotionImage
-          height="inherit"
-          width="inherit"
+          h="inherit"
+          w="inherit"
           objectFit="contain"
-          position="absolute"
+          pos="absolute"
           key={page}
           src={imageUrls[imageUrlIndex]}
           custom={direction}
@@ -98,7 +98,7 @@ export default function ImageCarousel({ imageUrls }: ImageCarouselProps) {
         boxSize={7}
         borderRadius={50}
         bgColor="white"
-        position="absolute"
+        pos="absolute"
         overflow="hidden"
         top="calc(50% - 0.875rem)"
         left={2}
@@ -114,7 +114,7 @@ export default function ImageCarousel({ imageUrls }: ImageCarouselProps) {
         boxSize={7}
         borderRadius={50}
         bgColor="white"
-        position="absolute"
+        pos="absolute"
         overflow="hidden"
         top="calc(50% - 0.875rem)"
         right={2}
