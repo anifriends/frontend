@@ -1,18 +1,33 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Flex, Image, MenuItem, Text } from '@chakra-ui/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BackIcon from '../../../assets/icon_back.svg';
-import MenuIcon from '../../../assets/icon_menu.svg';
+import OptionMenu from '../../../components/OptionMenu';
+import useDetailHeaderStore from '../../../store/detailHeaderStore';
 import { HeaderProps } from '../index';
 import { useDetailHeader } from './useDetailHeader';
 
 export default function DetailHeader({ appType }: HeaderProps) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { title, iconVisibility } = useDetailHeader(appType);
+  const onDelete = useDetailHeaderStore((state) => state.onDelete);
 
   const { menuIcon } = iconVisibility;
 
   const goBack = () => navigate(-1);
+
+  const handleUpdate = () => {
+    const [, path, id] = pathname.split('/');
+
+    navigate(`${path}/write/${id}`);
+  };
+
+  const handleDelete = () => {
+    const [, , id] = pathname.split('/');
+
+    onDelete(Number(id));
+  };
 
   return (
     <Flex
@@ -35,9 +50,10 @@ export default function DetailHeader({ appType }: HeaderProps) {
         {title}
       </Text>
       {menuIcon && (
-        <Box as="button" pos="absolute" right="1rem">
-          <Image src={MenuIcon} alt="Menu Icon" />
-        </Box>
+        <OptionMenu pos="absolute" right="1rem">
+          <MenuItem onClick={handleUpdate}>수정하기</MenuItem>
+          <MenuItem onClick={handleDelete}>삭제하기</MenuItem>
+        </OptionMenu>
       )}
     </Flex>
   );
