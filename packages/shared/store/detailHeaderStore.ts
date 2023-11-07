@@ -1,17 +1,18 @@
 import { create } from 'zustand';
 
+type DeleteFunction = (id: number) => void;
 interface DetailHeaderState {
-  onDelete: (id: number) => void;
+  onDelete: DeleteFunction;
 }
 
 interface DetailHeaderActions {
-  setOnDelete: (onDelete: (id: number) => void) => void;
+  setOnDelete: (onDelete: DeleteFunction) => void;
 }
 
 const useDetailHeaderStore = create<DetailHeaderState & DetailHeaderActions>(
   (set) => ({
     onDelete: () => {},
-    setOnDelete: (onDelete: (id: number) => void) => set(() => ({ onDelete })),
+    setOnDelete: (onDelete: DeleteFunction) => set(() => ({ onDelete })),
   }),
 );
 
