@@ -96,6 +96,7 @@ export default function ImageCarousel({ imageUrls }: ImageCarouselProps) {
         justify="center"
         align="center"
         boxSize={7}
+        boxShadow="base"
         borderRadius={50}
         bgColor="white"
         pos="absolute"
@@ -112,6 +113,7 @@ export default function ImageCarousel({ imageUrls }: ImageCarouselProps) {
         justify="center"
         align="center"
         boxSize={7}
+        boxShadow="base"
         borderRadius={50}
         bgColor="white"
         pos="absolute"
