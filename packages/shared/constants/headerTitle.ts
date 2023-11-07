@@ -20,6 +20,7 @@ const headerTitle: HeaderTitle = {
   CHATTINGS_ROOM: '채팅방',
   MYPAGE: '마이페이지',
   MYPAGE_REVIEWS: '봉사 후기',
+  SETTINGS: '설정',
   SETTINGS_ACCOUNT: '계정 정보 수정',
   SETTINGS_PASSWORD: '비밀 번호 수정',
   MANAGE_ATTENDANCE: '봉사자 출석 관리',

@@ -85,6 +85,7 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         element: <MyPage />,
       },
       {
+        id: PAGE_TYPE.SETTINGS,
         path: PATH.SETTINGS.INDEX,
         element: <SettingsPage />,
         children: [
