@@ -20,7 +20,7 @@ export default function BottomNavBar() {
 
   const navigate = useNavigate();
 
-  const goVounteers = () => navigate('/volunteers');
+  const goVolunteers = () => navigate('/volunteers');
   const goAnimals = () => navigate('/animals');
   const goChattings = () => navigate('/chattings');
   const goMyPage = () => navigate('/mypage');
@@ -43,7 +43,7 @@ export default function BottomNavBar() {
       >
         <NavBarButton
           selected={pageType === PAGE_TYPE.VOLUNTEERS}
-          onClick={goVounteers}
+          onClick={goVolunteers}
           buttonImageSrc={[VolunteersUnselectedIcon, VolunteersSelectedIcon]}
           buttonText="봉사"
         />
