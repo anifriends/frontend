@@ -6,7 +6,7 @@ import Layout from 'shared/layout';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
-import AnimalsSearchPage from '@/pages/animals/searchPage';
+import AnimalsSearchPage from '@/pages/animals/search';
 import AnimalsUpdatePage from '@/pages/animals/update';
 import AnimalsWritePage from '@/pages/animals/write';
 import ChattingsPage from '@/pages/chattings';
