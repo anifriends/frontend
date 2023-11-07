@@ -1,13 +1,15 @@
 import { create } from 'zustand';
 
+type SearchFunction = (keyword: string) => void;
+
 interface SearchHeaderState {
   keyword: string;
-  onSearch: (keyword: string) => void;
+  onSearch: SearchFunction;
 }
 
 interface SearchHeaderActions {
   setKeyword: (keyword: string) => void;
-  setOnSearch: (onSearch: (keyword: string) => void) => void;
+  setOnSearch: (onSearch: SearchFunction) => void;
 }
 
 const useSearchHeaderStore = create<SearchHeaderState & SearchHeaderActions>(
@@ -15,8 +17,7 @@ const useSearchHeaderStore = create<SearchHeaderState & SearchHeaderActions>(
     keyword: '',
     onSearch: () => {},
     setKeyword: (keyword: string) => set(() => ({ keyword })),
-    setOnSearch: (onSearch: (keyword: string) => void) =>
-      set(() => ({ onSearch })),
+    setOnSearch: (onSearch: SearchFunction) => set(() => ({ onSearch })),
   }),
 );
 
