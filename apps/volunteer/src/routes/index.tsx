@@ -23,24 +23,24 @@ import VolunteersSearchPage from '@/pages/volunteers/search';
 export const router: RouterProviderProps['router'] = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <Layout appType="VOLUNTEER_APP" />,
     errorElement: <NotFoundPage />,
     children: [
       {
         path: PATH.VOLUNTEERS.INDEX,
         children: [
           {
-            id: 'VOLUNTEER_APP:VOLUNTEERS',
+            id: 'VOLUNTEERS',
             index: true,
             element: <VolunteersPage />,
           },
           {
-            id: 'VOLUNTEER_APP:VOLUNTEERS_DETAIL',
+            id: 'VOLUNTEERS_DETAIL',
             path: PATH.VOLUNTEERS.DETAIL,
             element: <VolunteersDetailPage />,
           },
           {
-            id: 'VOLUNTEER_APP:VOLUNTEERS_SEARCH',
+            id: 'VOLUNTEERS_SEARCH',
             path: PATH.VOLUNTEERS.SEARCH,
             element: <VolunteersSearchPage />,
           },
@@ -50,12 +50,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.ANIMALS.INDEX,
         children: [
           {
-            id: 'VOLUNTEER_APP:ANIMALS',
+            id: 'ANIMALS',
             index: true,
             element: <AnimalsPage />,
           },
           {
-            id: 'VOLUNTEER_APP:ANIMALS_DETAIL',
+            id: 'ANIMALS_DETAIL',
             path: PATH.ANIMALS.DETAIL,
             element: <AnimalsDetailPage />,
           },
@@ -65,19 +65,19 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.CHATTINGS.INDEX,
         children: [
           {
-            id: 'VOLUNTEER_APP:CHATTINGS',
+            id: 'CHATTINGS',
             index: true,
             element: <ChattingsPage />,
           },
           {
-            id: 'VOLUNTEER_APP:CHATTINGS_ROOM',
+            id: 'CHATTINGS_ROOM',
             path: PATH.CHATTINGS.ROOM,
             element: <ChattingsRoomPage />,
           },
         ],
       },
       {
-        id: 'VOLUNTEER_APP:MYPAGE',
+        id: 'MYPAGE',
         path: PATH.MYPAGE.INDEX,
         element: <MyPage />,
       },
@@ -85,12 +85,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.SETTINGS.INDEX,
         children: [
           {
-            id: 'VOLUNTEER_APP:SETTINGS_ACCOUNT',
+            id: 'SETTINGS_ACCOUNT',
             path: PATH.SETTINGS.ACCOUNT,
             element: <SettingsAccountPage />,
           },
           {
-            id: 'VOLUNTEER_APP:SETTINGS_PASSWORD',
+            id: 'SETTINGS_PASSWORD',
             path: PATH.SETTINGS.PASSWORD,
             element: <SettingsPasswordPage />,
           },
@@ -100,34 +100,34 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.SHELTERS.INDEX,
         children: [
           {
-            id: 'VOLUNTEER_APP:SHELTERS_PROFILE',
+            id: 'SHELTERS_PROFILE',
             path: PATH.SHELTERS.PROFILE,
             element: <SheltersProfilePage />,
           },
           {
-            id: 'VOLUNTEER_APP:SHELTERS_REVIEWS_WRITE',
+            id: 'SHELTERS_REVIEWS_WRITE',
             path: PATH.SHELTERS.REVIEWS_WRITE,
             element: <SheltersReviewsWritePage />,
           },
           {
-            id: 'VOLUNTEER_APP:SHELTERS_REVIEWS_UPDATE',
+            id: 'SHELTERS_REVIEWS_UPDATE',
             path: PATH.SHELTERS.REVIEWS_UPDATE,
             element: <SheltersReviewsUpdatePage />,
           },
         ],
       },
       {
-        id: 'VOLUNTEER_APP:NOTIFICATIONS',
+        id: 'NOTIFICATIONS',
         path: PATH.NOTIFICATIONS,
         element: <NotificationsPage />,
       },
       {
-        id: 'VOLUNTEER_APP:SIGNUP',
+        id: 'SIGNUP',
         path: PATH.SIGNUP,
         element: <SignupPage />,
       },
       {
-        id: 'VOLUNTEER_APP:SIGNIN',
+        id: 'SIGNIN',
         path: PATH.SIGNIN,
         element: <SigninPage />,
       },
