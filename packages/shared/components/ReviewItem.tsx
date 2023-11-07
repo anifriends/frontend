@@ -41,9 +41,7 @@ function CustomMenu({
         <Image src={MenuIcon} alt="menu icon" w="full" h="full" />
       </MenuButton>
       <MenuList minW="8rem">
-        <MenuItem textAlign="center" onClick={onUpdate}>
-          수정하기
-        </MenuItem>
+        <MenuItem onClick={onUpdate}>수정하기</MenuItem>
         <MenuItem onClick={onDelete}>삭제하기</MenuItem>
         <MenuItem> 닫기</MenuItem>
       </MenuList>
