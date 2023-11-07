@@ -7,13 +7,13 @@ type PageInfo = {
 
 type Recruitment = {
   recruitmentId: number;
-  title: string;
-  startTime: string;
-  endTime: string;
-  deadline: string;
-  isClosed: boolean;
-  applicantCount: number;
-  capacity: number;
+  recruitmentTitle: string;
+  recruitmentStartTime: string;
+  recruitmentEndTime: string;
+  recruitmentDeadline: string;
+  recruitmentIsClosed: boolean;
+  recruitmentApplicantCount: number;
+  recruitmentCapacity: number;
 };
 
 type RecruitSearchParams = {
@@ -27,24 +27,10 @@ type RecruitSearchParams = {
   pageNumber: number;
 };
 
-type RecruitmentDetailResponse = {
-  title: string;
-  applicantCount: number;
-  capacity: number;
-  content: string;
-  startTime: string;
-  endTime: string;
-  isClosed: boolean;
-  deadline: string;
-  createdAt: string;
-  updatedAt: string;
-  imageUrls: string[];
-};
-
 type PostRecruitmentParams = {
   title: string;
   startTime: string;
-  EndTime: string;
+  endTime: string;
   deadline: string;
   capacity: number;
   content: string;
@@ -70,14 +56,9 @@ export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
     params: recruitSearchParams,
   });
 
-export const getRecruitmentDetail = (recruitmentId: number) =>
-  axiosInstance.get<RecruitmentDetailResponse>(
-    `shelters/recruitments/${recruitmentId}`,
-  );
-
 export const createRecruitment = (recruitmentParams: PostRecruitmentParams) => {
   return axiosInstance.post<unknown, PostRecruitmentParams>(
-    `/recruitments`,
+    `/shelters/recruitments`,
     recruitmentParams,
   );
 };
@@ -87,20 +68,20 @@ export const updateRecruitment = (
   recruitmentParams: PostRecruitmentParams,
 ) => {
   return axiosInstance.patch<unknown, PostRecruitmentParams>(
-    `/recruitments/${recruitmentId}`,
+    `/shelters/recruitments/${recruitmentId}`,
     recruitmentParams,
   );
 };
 
 export const deleteRecruitment = (recruitmentId: number) => {
   return axiosInstance.delete<unknown, unknown>(
-    `/recruitments/${recruitmentId}`,
+    `/shelters/recruitments/${recruitmentId}`,
   );
 };
 
 export const closeRecruitment = (recruitmentId: number) => {
   return axiosInstance.patch<unknown, unknown>(
-    `/recruitments/${recruitmentId}/close`,
+    `/shelters/recruitments/${recruitmentId}/close`,
   );
 };
 
@@ -109,15 +90,15 @@ export const getRecruitmentApplicants = (recruitmentId: number) => {
     applicants: {
       applicantId: number;
       volunteerId: number;
-      name: string;
-      birthDate: string;
-      gender: Gender;
-      volunteerCount: number;
-      temperature: number;
-      status: ApplicantStatus;
+      volunteerName: string;
+      volunteerBirthDate: string;
+      volunteerGender: Gender;
+      completedVolunteerCount: number;
+      volunteerTemperature: number;
+      applicantStatus: ApplicantStatus;
     }[];
-    capacity: number;
-  }>(`/recruitments/${recruitmentId}/applicants`);
+    recruitmentCapacity: number;
+  }>(`/shelters/recruitments/${recruitmentId}/applicants`);
 };
 
 export const updateRecruitmentApplicant = (
@@ -129,7 +110,7 @@ export const updateRecruitmentApplicant = (
     {
       status: ApplicantStatus;
     }
-  >(`/recruitments/${recruitmentId}/applicants/${applicantId}`);
+  >(`/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`);
 };
 
 export const getApprovedRecruitmentApplicants = (recruitmentId: number) => {
@@ -137,13 +118,13 @@ export const getApprovedRecruitmentApplicants = (recruitmentId: number) => {
     applicants: {
       volunteerId: number;
       applicantId: number;
-      name: string;
-      birthDate: string;
-      gender: Gender;
-      phoneNumber: string;
-      attendance: boolean;
+      volunteerName: string;
+      volunteerBirthDate: string;
+      volunteerGender: Gender;
+      volunteerPhoneNumber: string;
+      volunteerAttendance: boolean;
     }[];
-  }>(`/recruitments/${recruitmentId}/approval`);
+  }>(`/shelters/recruitments/${recruitmentId}/approval`);
 };
 
 export const updateApplicantsApproval = (
@@ -155,7 +136,7 @@ export const updateApplicantsApproval = (
     {
       applicants: AttendanceStatus[];
     }
-  >(`/recruitments/${recruitmentId}/approval`, {
+  >(`/shelters/recruitments/${recruitmentId}/approval`, {
     applicants,
   });
 };

@@ -10,7 +10,7 @@ export const signInShelter = ({
   return axiosInstance.post<
     {
       accessToken: string;
-      userId: string;
+      userId: number;
       role: string;
     },
     {
@@ -33,7 +33,7 @@ export const signInVolunteer = ({
   return axiosInstance.post<
     {
       accessToken: string;
-      userId: string;
+      userId: number;
       role: string;
     },
     {

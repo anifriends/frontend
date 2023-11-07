@@ -11,9 +11,8 @@ type SignUpParams = {
   isOpenedAddress: boolean;
 };
 
-export const signUpShelter = (signUpParams: SignUpParams) => {
-  return axiosInstance.post<unknown, SignUpParams>('/shelters', signUpParams);
-};
+export const signUpShelter = (signUpParams: SignUpParams) =>
+  axiosInstance.post<unknown, SignUpParams>('/shelters', signUpParams);
 
 type ShelterInfo = {
   name: string;
@@ -25,22 +24,20 @@ type ShelterInfo = {
   isOpenedAddress: boolean;
 };
 
-export const updateShelterInfo = (shelterInfo: ShelterInfo) => {
-  return axiosInstance.patch<unknown, ShelterInfo>('/shelters/me', shelterInfo);
-};
+export const updateShelterInfo = (shelterInfo: ShelterInfo) =>
+  axiosInstance.patch<unknown, ShelterInfo>('/shelters/me', shelterInfo);
 
-export const getShelterInfo = () => {
-  return axiosInstance.get<{
+export const getShelterInfo = () =>
+  axiosInstance.get<{
     shelterId: number;
-    name: string;
-    imageUrl: string;
-    address: string;
-    addressDetail: string;
-    phoneNumber: string;
-    sparePhoneNumber: string;
-    isOpenedAddress: boolean;
+    shelterName: string;
+    shelterImageUrl: string;
+    shelterAddress: string;
+    shelterAddressDetail: string;
+    shelterPhoneNumber: string;
+    shelterSparePhoneNumber: string;
+    shelterIsOpenedAddress: boolean;
   }>('/shelters/me');
-};
 
 type PasswordUpdateParams = {
   newPassword: string;
