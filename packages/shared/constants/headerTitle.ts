@@ -1,4 +1,4 @@
-import { PageType } from 'types/page';
+import { PageType } from '../types/page';
 
 type HeaderTitle = {
   [key in PageType]: string;

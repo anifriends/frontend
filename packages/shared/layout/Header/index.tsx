@@ -1,6 +1,5 @@
-import { AppType } from 'types/app';
-
 import { usePageType } from '../../hooks/usePageType';
+import { AppType } from '../../types/app';
 import DefaultHeader from './DefaultHeader';
 import DetailHeader from './DetailHeader';
 import SearchHeader from './SearchHeader';

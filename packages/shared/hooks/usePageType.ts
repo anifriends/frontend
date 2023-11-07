@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMatches } from 'react-router-dom';
-import { PageType } from 'types/page';
+
+import { PageType } from '../types/page';
 
 export const usePageType = () => {
   const [pageType, setPageType] = useState<PageType>();

@@ -1,5 +1,5 @@
-import { DefaultHeaderIconVisibility } from 'layout/Header/DefaultHeader/useDefaultHeader';
-import { AppType } from 'types/app';
+import { AppType } from '../../../types/app';
+import { DefaultHeaderIconVisibility } from './useDefaultHeader';
 
 type DefaultHeaderIconState = {
   [key: string]: {
