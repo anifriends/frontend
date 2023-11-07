@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
+import APP_TYPE from 'shared/constants/appType';
+import PAGE_TYPE from 'shared/constants/pageType';
 import Layout from 'shared/layout';
 
 import PATH from '@/constants/path';
@@ -9,6 +11,7 @@ import ChattingsRoomPage from '@/pages/chattings/room';
 import MyPage from '@/pages/my';
 import NotFoundPage from '@/pages/notfound';
 import NotificationsPage from '@/pages/notifications';
+import SettingsPage from '@/pages/settings';
 import SettingsAccountPage from '@/pages/settings/account';
 import SettingsPasswordPage from '@/pages/settings/password';
 import SheltersProfilePage from '@/pages/shelters/profile';
@@ -23,24 +26,24 @@ import VolunteersSearchPage from '@/pages/volunteers/search';
 export const router: RouterProviderProps['router'] = createBrowserRouter([
   {
     path: '/',
-    element: <Layout appType="VOLUNTEER_APP" />,
+    element: <Layout appType={APP_TYPE.VOLUNTEER_APP} />,
     errorElement: <NotFoundPage />,
     children: [
       {
         path: PATH.VOLUNTEERS.INDEX,
         children: [
           {
-            id: 'VOLUNTEERS',
+            id: PAGE_TYPE.VOLUNTEERS,
             index: true,
             element: <VolunteersPage />,
           },
           {
-            id: 'VOLUNTEERS_DETAIL',
+            id: PAGE_TYPE.VOLUNTEERS_DETAIL,
             path: PATH.VOLUNTEERS.DETAIL,
             element: <VolunteersDetailPage />,
           },
           {
-            id: 'VOLUNTEERS_SEARCH',
+            id: PAGE_TYPE.VOLUNTEERS_SEARCH,
             path: PATH.VOLUNTEERS.SEARCH,
             element: <VolunteersSearchPage />,
           },
@@ -50,12 +53,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.ANIMALS.INDEX,
         children: [
           {
-            id: 'ANIMALS',
+            id: PAGE_TYPE.ANIMALS,
             index: true,
             element: <AnimalsPage />,
           },
           {
-            id: 'ANIMALS_DETAIL',
+            id: PAGE_TYPE.ANIMALS_DETAIL,
             path: PATH.ANIMALS.DETAIL,
             element: <AnimalsDetailPage />,
           },
@@ -65,32 +68,33 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.CHATTINGS.INDEX,
         children: [
           {
-            id: 'CHATTINGS',
+            id: PAGE_TYPE.CHATTINGS,
             index: true,
             element: <ChattingsPage />,
           },
           {
-            id: 'CHATTINGS_ROOM',
+            id: PAGE_TYPE.CHATTINGS_ROOM,
             path: PATH.CHATTINGS.ROOM,
             element: <ChattingsRoomPage />,
           },
         ],
       },
       {
-        id: 'MYPAGE',
+        id: PAGE_TYPE.MYPAGE,
         path: PATH.MYPAGE.INDEX,
         element: <MyPage />,
       },
       {
         path: PATH.SETTINGS.INDEX,
+        element: <SettingsPage />,
         children: [
           {
-            id: 'SETTINGS_ACCOUNT',
+            id: PAGE_TYPE.SETTINGS_ACCOUNT,
             path: PATH.SETTINGS.ACCOUNT,
             element: <SettingsAccountPage />,
           },
           {
-            id: 'SETTINGS_PASSWORD',
+            id: PAGE_TYPE.SETTINGS_PASSWORD,
             path: PATH.SETTINGS.PASSWORD,
             element: <SettingsPasswordPage />,
           },
@@ -100,34 +104,34 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.SHELTERS.INDEX,
         children: [
           {
-            id: 'SHELTERS_PROFILE',
+            id: PAGE_TYPE.SHELTERS_PROFILE,
             path: PATH.SHELTERS.PROFILE,
             element: <SheltersProfilePage />,
           },
           {
-            id: 'SHELTERS_REVIEWS_WRITE',
+            id: PAGE_TYPE.SHELTERS_REVIEWS_WRITE,
             path: PATH.SHELTERS.REVIEWS_WRITE,
             element: <SheltersReviewsWritePage />,
           },
           {
-            id: 'SHELTERS_REVIEWS_UPDATE',
+            id: PAGE_TYPE.SHELTERS_REVIEWS_UPDATE,
             path: PATH.SHELTERS.REVIEWS_UPDATE,
             element: <SheltersReviewsUpdatePage />,
           },
         ],
       },
       {
-        id: 'NOTIFICATIONS',
+        id: PAGE_TYPE.NOTIFICATIONS,
         path: PATH.NOTIFICATIONS,
         element: <NotificationsPage />,
       },
       {
-        id: 'SIGNUP',
+        id: PAGE_TYPE.SIGNUP,
         path: PATH.SIGNUP,
         element: <SignupPage />,
       },
       {
-        id: 'SIGNIN',
+        id: PAGE_TYPE.SIGNIN,
         path: PATH.SIGNIN,
         element: <SigninPage />,
       },
