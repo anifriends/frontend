@@ -3,11 +3,11 @@ import { ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BackIcon from '../../../assets/icon_back.svg';
-import useSearchHeader from '../../../store/searchHeader';
+import useSearchHeaderStore from '../../../store/searchHeaderStore';
 
 export default function SearchHeader() {
   const navigate = useNavigate();
-  const [keyword, setKeyword, onSearch] = useSearchHeader((state) => [
+  const [keyword, setKeyword, onSearch] = useSearchHeaderStore((state) => [
     state.keyword,
     state.setKeyword,
     state.onSearch,

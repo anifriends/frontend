@@ -10,7 +10,7 @@ interface SearchHeaderActions {
   setOnSearch: (onSearch: (keyword: string) => void) => void;
 }
 
-const useSearchHeader = create<SearchHeaderState & SearchHeaderActions>(
+const useSearchHeaderStore = create<SearchHeaderState & SearchHeaderActions>(
   (set) => ({
     keyword: '',
     onSearch: () => {},
@@ -20,4 +20,4 @@ const useSearchHeader = create<SearchHeaderState & SearchHeaderActions>(
   }),
 );
 
-export default useSearchHeader;
+export default useSearchHeaderStore;
