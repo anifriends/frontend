@@ -1,25 +1,33 @@
-import { Button, Card, HStack, Image, Text } from '@chakra-ui/react';
+import {
+  Card,
+  HStack,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
 
-import SettingIcon from '../assets/icon_menu.svg';
+import MenuIcon from '../assets/icon_menu.svg';
 
 type ReviewItemProps = {
   children: React.ReactNode;
   content: string;
   images: string[];
-  onClick: VoidFunction;
+  showMenuButton?: boolean;
+  onUpdate?: VoidFunction;
+  onDelete?: VoidFunction;
 };
 
-export default function ReviewItem({
-  children,
-  content,
-  images,
-  onClick,
-}: ReviewItemProps) {
+function CustomMenu({
+  onUpdate,
+  onDelete,
+}: Pick<ReviewItemProps, 'onUpdate' | 'onDelete'>) {
   return (
-    <Card p={4} w="342px" h="273px" gap={3.5}>
-      {children}
-      <Button
+    <Menu placement="bottom-end" autoSelect={false}>
+      <MenuButton
         minW={5}
         w={5}
         h={5}
@@ -29,10 +37,32 @@ export default function ReviewItem({
         pos="absolute"
         top={4}
         right={4}
-        onClick={onClick}
       >
-        <Image src={SettingIcon} alt="setting icon" w="full" h="full" />
-      </Button>
+        <Image src={MenuIcon} alt="menu icon" w="full" h="full" />
+      </MenuButton>
+      <MenuList minW="8rem">
+        <MenuItem textAlign="center" onClick={onUpdate}>
+          수정하기
+        </MenuItem>
+        <MenuItem onClick={onDelete}>삭제하기</MenuItem>
+        <MenuItem> 닫기</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+}
+
+export default function ReviewItem({
+  children,
+  content,
+  images,
+  showMenuButton = true,
+  onUpdate,
+  onDelete,
+}: ReviewItemProps) {
+  return (
+    <Card p={4} gap={3.5} width="342px">
+      {children}
+      {showMenuButton && <CustomMenu onUpdate={onUpdate} onDelete={onDelete} />}
       <Text fontSize="xs" lineHeight={4}>
         {content}
       </Text>
