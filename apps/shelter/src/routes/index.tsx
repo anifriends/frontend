@@ -93,7 +93,7 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
             element: <AnimalsWritePage />,
           },
           {
-            id: PAGE_TYPE.ANIMALS_WRITE,
+            id: PAGE_TYPE.ANIMALS_UPDATE,
             path: PATH.ANIMALS.UPDATE,
             element: <AnimalsUpdatePage />,
           },
