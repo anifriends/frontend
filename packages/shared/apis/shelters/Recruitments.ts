@@ -43,7 +43,7 @@ type AttendanceStatus = {
 };
 
 type Gender = 'MALE' | 'FEMALE';
-type ApplicantStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
+type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 
 export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
   axiosInstance.get<
@@ -95,7 +95,7 @@ export const getRecruitmentApplicants = (recruitmentId: number) => {
       volunteerGender: Gender;
       completedVolunteerCount: number;
       volunteerTemperature: number;
-      applicantStatus: ApplicantStatus;
+      applicantStatus: RecruitementStatus;
     }[];
     recruitmentCapacity: number;
   }>(`/shelters/recruitments/${recruitmentId}/applicants`);
@@ -108,7 +108,7 @@ export const updateRecruitmentApplicant = (
   return axiosInstance.patch<
     unknown,
     {
-      status: ApplicantStatus;
+      status: RecruitementStatus;
     }
   >(`/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`);
 };
