@@ -15,7 +15,7 @@ import MenuIcon from '../assets/icon_menu.svg';
 type ReviewItemProps = {
   children: React.ReactNode;
   content: string;
-  images: string[];
+  images?: string[];
   showMenuButton?: boolean;
   onUpdate?: VoidFunction;
   onDelete?: VoidFunction;
@@ -73,7 +73,7 @@ export default function ReviewItem({
           },
         }}
       >
-        {images.map((src, index) => (
+        {images?.map((src, index) => (
           <Image
             w="8.75rem"
             h="8.75rem"
