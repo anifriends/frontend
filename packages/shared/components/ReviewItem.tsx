@@ -3,15 +3,17 @@ import React from 'react';
 
 import SettingIcon from '../assets/icon_menu.svg';
 
+type ReviewItemProps = {
+  children: React.ReactNode;
+  content: string;
+  images: string[];
+};
+
 export default function ReviewItem({
   children,
   content,
   images,
-}: {
-  children: React.ReactNode;
-  content: string;
-  images: string[];
-}) {
+}: ReviewItemProps) {
   return (
     <Card p={4} w="342px" h="273px" gap={3.5}>
       {children}
