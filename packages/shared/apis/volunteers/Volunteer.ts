@@ -1,7 +1,5 @@
 import axiosInstance from 'apis/axiosInstance';
 
-//TODO 회원가입
-
 type SignUpParams = {
   email: string;
   password: string;
@@ -11,47 +9,23 @@ type SignUpParams = {
   gender: 'FEMALE' | 'MALE';
 };
 
-export const signUpVolunteer = (signUpParams: SignUpParams) => {
-  return axiosInstance.post<unknown, SignUpParams>('/volunteers', signUpParams);
-};
+export const signUpVolunteer = (signUpParams: SignUpParams) =>
+  axiosInstance.post<unknown, SignUpParams>('/volunteers', signUpParams);
 
 type MyInfoResponse = {
-  email: string;
-  name: string;
-  birthDate: string;
-  phoneNumber: string;
-  temperture: number;
+  volunteerId: string;
+  volunteerEmail: string;
+  volunteerName: string;
+  volunteerBirthDate: string;
+  volunteerPhoneNumber: string;
+  volunteerTemperture: number;
   volunteerCount: number;
-  imageUrl: string;
+  volunteerImageUrl: string;
+  volunteerGender: 'FEMAIL' | 'MALE';
 };
 
 export const getMyInfo = () =>
   axiosInstance.get<MyInfoResponse>('/volunteers/me');
-
-type RecruitmentDetailResponse = {
-  title: string;
-  applicantCount: number;
-  capacity: number;
-  content: string;
-  startTime: string;
-  endTime: string;
-  isClosed: false;
-  deadline: string;
-  createdAt: string;
-  updatedAt: string;
-  imageUrls: string[];
-  shelterInfo: {
-    shelterName: string;
-    imageUrl: string;
-    email: string;
-    address: string;
-  };
-};
-
-export const getRecruitmentDetail = (recruitmentId: number) =>
-  axiosInstance.get<RecruitmentDetailResponse>(
-    `/volunteers/recruitments/${recruitmentId}`,
-  );
 
 type PasswordUpdateParams = {
   newPassword: string;
@@ -81,16 +55,16 @@ export const updateUserInfo = (updateUserInfoParams: UpdateUserInfoParams) =>
 
 type Applicant = {
   recruitmentId: number;
-  applicantId: number;
-  title: string;
-  volunteerDate: string;
+  recruitmentTitle: string;
+  recruitmentStartTime: string;
   shelterName: string;
-  status: string;
-  isWritedReview: boolean;
+  applicantId: number;
+  applicantStatus: string;
+  applicantIsWritedReview: boolean;
 };
 
 type ApplicantsResponse = {
-  findApplyingVolunteerResponses: Applicant[];
+  applicants: Applicant[];
 };
 
 //봉사자가 신청한 봉사 리스트 조회

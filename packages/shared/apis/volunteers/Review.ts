@@ -1,27 +1,9 @@
 import axiosInstance from 'apis/axiosInstance';
 
-type ReviewDetailResponse = {
-  content: string;
-  shelterName: string;
-  shelterImageUrl: string;
-  imageUrls: string[];
-};
-
 type NewReviewParams = {
   applicantId: number;
   content: string;
   imageUrls: string[];
-};
-
-type NewReviewResponse = {
-  reviewID: string;
-};
-
-type ShelterInfoResponse = {
-  name: string;
-  imageUrl: string;
-  address: string;
-  email: string;
 };
 
 type UpdatedReviewParams = {
@@ -30,17 +12,16 @@ type UpdatedReviewParams = {
 };
 
 export const getReviewDetail = (reviewId: number) =>
-  axiosInstance.get<ReviewDetailResponse>(`/reviews/${reviewId}`);
+  axiosInstance.get<{
+    reviewId: number;
+    content: string;
+    imageUrls: string[];
+  }>(`/reviews/${reviewId}`);
 
 export const createNewReview = (newReviewParams: NewReviewParams) =>
-  axiosInstance.post<NewReviewResponse, NewReviewParams>(
+  axiosInstance.post<unknown, NewReviewParams>(
     '/volunteers/reviews',
     newReviewParams,
-  );
-
-export const getShelterInfo = (recruitmentId: number) =>
-  axiosInstance.get<ShelterInfoResponse>(
-    `/volunteers/recruitments/${recruitmentId}/shelters`,
   );
 
 export const updateReview = (
@@ -62,11 +43,11 @@ type ReviewOnShelterParams = {
 
 type Review = {
   reviewId: number;
-  email: string;
-  temperature: number;
-  createdAt: Date;
-  comtent: string;
-  imageUrls: string[];
+  volunteerEmail: string;
+  volunteerTemperature: number;
+  reviewCreatedAt: string;
+  reviewComtent: string;
+  reviewImageUrls: string[];
 };
 
 type PageInfo = {

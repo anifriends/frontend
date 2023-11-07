@@ -10,12 +10,12 @@ type PageInfo = {
 
 type Recruitment = {
   recruitmentId: number;
-  title: string;
-  startTime: string;
-  endTime: string;
-  isClosed: boolean;
-  applicantCount: number;
-  capacity: number;
+  recruitmentTitle: string;
+  recruitmentStartTime: string;
+  recruitmentEndTime: string;
+  recruitmentIsClosed: boolean;
+  recruitmentApplicantCount: number;
+  recruitmentCapacity: number;
   shelterName: string;
   shelterImageUrl: string;
 };
@@ -27,6 +27,9 @@ type RecruitSearchParams = {
   isClosed: boolean;
   content: boolean;
   title: boolean;
+  shelterName: boolean;
+  pageNumber: number;
+  pageSize: number;
 };
 
 export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
