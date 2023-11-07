@@ -16,8 +16,8 @@ export default function SearchHeader() {
   const goBack = () => navigate(-1);
 
   const handleChangeKeyword = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    setKeyword(target.value);
+    const { value } = event.target;
+    setKeyword(value);
   };
 
   const handleSubmit = (event: FormEvent<HTMLDivElement>) => {
