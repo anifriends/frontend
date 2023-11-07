@@ -7,12 +7,14 @@ type ReviewItemProps = {
   children: React.ReactNode;
   content: string;
   images: string[];
+  onClick: VoidFunction;
 };
 
 export default function ReviewItem({
   children,
   content,
   images,
+  onClick,
 }: ReviewItemProps) {
   return (
     <Card p={4} w="342px" h="273px" gap={3.5}>
@@ -27,6 +29,7 @@ export default function ReviewItem({
         pos="absolute"
         top={4}
         right={4}
+        onClick={onClick}
       >
         <Image src={SettingIcon} alt="setting icon" w="full" h="full" />
       </Button>
@@ -43,7 +46,14 @@ export default function ReviewItem({
         }}
       >
         {images.map((src, index) => (
-          <Image w="8.75rem" h="8.75rem" src={src} key={index} flexShrink={0} />
+          <Image
+            w="8.75rem"
+            h="8.75rem"
+            src={src}
+            key={index}
+            flexShrink={0}
+            borderRadius="0.625rem"
+          />
         ))}
       </HStack>
     </Card>
