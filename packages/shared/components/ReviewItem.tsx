@@ -20,9 +20,9 @@ export default function ReviewItem({
     <Card p={4} w="342px" h="273px" gap={3.5}>
       {children}
       <Button
-        minW="1.25rem"
-        w="1.25rem"
-        h="1.25rem"
+        minW={5}
+        w={5}
+        h={5}
         p={0}
         bgColor="transparent"
         color="gray.500"
@@ -33,11 +33,11 @@ export default function ReviewItem({
       >
         <Image src={SettingIcon} alt="setting icon" w="full" h="full" />
       </Button>
-      <Text fontSize="xs" lineHeight="4">
+      <Text fontSize="xs" lineHeight={4}>
         {content}
       </Text>
       <HStack
-        spacing="0.375rem"
+        spacing={1.5}
         overflowX="scroll"
         sx={{
           '::-webkit-scrollbar': {
@@ -52,7 +52,7 @@ export default function ReviewItem({
             src={src}
             key={index}
             flexShrink={0}
-            borderRadius="0.625rem"
+            borderRadius={2.5}
           />
         ))}
       </HStack>
