@@ -14,9 +14,9 @@ export default function ProfileInfo({
   children,
 }: ProfileInfoProps) {
   return (
-    <HStack spacing={5} py={3.5} align="flex-start">
+    <HStack spacing={5} py={3.5} px={4} align="flex-start">
       <Avatar src={infoImage} boxSize="71px" />
-      <VStack align="left" gap={0}>
+      <VStack align="left" gap={0} flexGrow={1}>
         <HStack align="center" spacing={3}>
           <Text fontSize="md" fontWeight="semibold">
             {infoTitle}
