@@ -1,11 +1,11 @@
-import { Box, FlexProps, TextProps } from '@chakra-ui/react';
+import { BoxProps, Flex, FlexProps, TextProps } from '@chakra-ui/react';
 
 import type { InfoTextItemWithoutStylesProps } from './InfoTextItem';
 import InfoTextItem from './InfoTextItem';
 
 type InfoTextListProps = {
   infoTextItems: InfoTextItemWithoutStylesProps[];
-};
+} & BoxProps;
 
 const flexStyles: FlexProps = {
   gap: '2rem',
@@ -25,9 +25,20 @@ const contentTextStyles: TextProps = {
   fontSize: 'sm',
 };
 
-export default function InfoTextList({ infoTextItems }: InfoTextListProps) {
+export default function InfoTextList({
+  infoTextItems,
+  ...props
+}: InfoTextListProps) {
   return (
-    <Box py={6} borderBottom="1px solid" borderColor="gray.200">
+    <Flex
+      py={6}
+      px={4}
+      flexDir="column"
+      gap="2px"
+      borderBottom="1px solid"
+      borderColor="gray.200"
+      {...props}
+    >
       {infoTextItems.map((infoTextItem, index) => (
         <InfoTextItem
           key={index}
@@ -37,6 +48,6 @@ export default function InfoTextList({ infoTextItems }: InfoTextListProps) {
           {...infoTextItem}
         />
       ))}
-    </Box>
+    </Flex>
   );
 }
