@@ -3,30 +3,27 @@ import { Text } from '@chakra-ui/react';
 
 import InfoItem, { InfoItemStylesProps } from './InfoItem';
 
-type InfoTextItemStylesProps = {
-  contentTextStyles: TextProps;
+export type InfoTextItemStylesProps = {
+  contentTextStyles?: TextProps;
 } & InfoItemStylesProps;
 
-export type InfoTextItemWithoutStylesProps = {
+export type InfoTextItemProps = {
   title: string;
   content: string;
 };
-
-type InfoTextItemProps = Partial<InfoTextItemStylesProps> &
-  InfoTextItemWithoutStylesProps;
 
 export default function InfoTextItem({
   content,
   contentTextStyles,
   ...props
-}: InfoTextItemProps) {
+}: InfoTextItemProps & InfoTextItemStylesProps) {
   return (
     <InfoItem {...props}>
       <Text
-        color="gray.500"
-        size="md"
-        fontWeight="semibold"
-        fontSize="xs"
+        w="calc(100% - 8rem)"
+        color="black"
+        fontSize="sm"
+        fontWeight="medium"
         {...contentTextStyles}
       >
         {content}
