@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
 
-export default function InfoItemList({ children, ...props }: FlexProps) {
+export default function InfoList({ children, ...props }: FlexProps) {
   return (
     <Flex
       py={6}

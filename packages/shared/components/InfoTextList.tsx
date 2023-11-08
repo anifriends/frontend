@@ -1,5 +1,5 @@
 import { FlexProps } from '@chakra-ui/react';
-import InfoItemList from 'components/InfoItemList';
+import InfoList from 'components/InfoList';
 
 import type { InfoTextItemProps } from './InfoTextItem';
 import InfoTextItem from './InfoTextItem';
@@ -8,15 +8,15 @@ type InfoTextListProps = {
   infoTextItems: InfoTextItemProps[];
 } & Omit<FlexProps, 'children'>;
 
-export default function InfoTextItemList({
+export default function InfoTextList({
   infoTextItems,
   ...props
 }: InfoTextListProps) {
   return (
-    <InfoItemList {...props}>
+    <InfoList {...props}>
       {infoTextItems.map((infoTextItemProps, index) => (
         <InfoTextItem key={index} {...infoTextItemProps} />
       ))}
-    </InfoItemList>
+    </InfoList>
   );
 }
