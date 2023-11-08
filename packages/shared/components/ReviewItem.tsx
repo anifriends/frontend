@@ -53,12 +53,20 @@ export default function ReviewItem({
   children,
   content,
   images,
-  showMenuButton = true,
+  showMenuButton = false,
   onUpdate,
   onDelete,
 }: ReviewItemProps) {
   return (
-    <Card p={4} gap={3.5} width="342px">
+    <Card
+      p={4}
+      gap={4}
+      width="342px"
+      border="1px"
+      borderColor="gray.200"
+      borderRadius={8}
+      boxShadow="none"
+    >
       {children}
       {showMenuButton && <CustomMenu onUpdate={onUpdate} onDelete={onDelete} />}
       <Text fontSize="xs" lineHeight={4}>
@@ -80,7 +88,7 @@ export default function ReviewItem({
             src={src}
             key={index}
             flexShrink={0}
-            borderRadius={2.5}
+            borderRadius="0.625rem"
           />
         ))}
       </HStack>
