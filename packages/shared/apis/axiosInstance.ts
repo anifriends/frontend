@@ -41,25 +41,25 @@ class AxiosService {
     return this.instance;
   }
 
-  public get<Response, Request>(
+  get<Response, Request = unknown>(
     url: string,
-    config: AxiosRequestConfig<Request>,
+    config?: AxiosRequestConfig<Request>,
   ) {
     return this.axiosInstance.get<Response>(url, config);
   }
 
-  public post<Response, Request>(url: string, data: Request) {
+  post<Response = unknown, Request = unknown>(url: string, data?: Request) {
     return this.axiosInstance.post<Response>(url, data);
   }
 
-  public delete<Response, Request>(
+  delete<Response = unknown, Request = unknown>(
     url: string,
-    config: AxiosRequestConfig<Request>,
+    config?: AxiosRequestConfig<Request>,
   ) {
     return this.axiosInstance.delete<Response>(url, config);
   }
 
-  public patch<Response, Request>(url: string, data: Request) {
+  patch<Response = unknown, Request = unknown>(url: string, data?: Request) {
     return this.axiosInstance.patch<Response>(url, data);
   }
 }
