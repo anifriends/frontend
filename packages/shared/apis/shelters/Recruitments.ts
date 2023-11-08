@@ -56,37 +56,33 @@ export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
     params: recruitSearchParams,
   });
 
-export const createRecruitment = (recruitmentParams: PostRecruitmentParams) => {
-  return axiosInstance.post<unknown, PostRecruitmentParams>(
+export const createRecruitment = (recruitmentParams: PostRecruitmentParams) =>
+  axiosInstance.post<unknown, PostRecruitmentParams>(
     `/shelters/recruitments`,
     recruitmentParams,
   );
-};
 
 export const updateRecruitment = (
   recruitmentId: number,
   recruitmentParams: PostRecruitmentParams,
-) => {
-  return axiosInstance.patch<unknown, PostRecruitmentParams>(
+) =>
+  axiosInstance.patch<unknown, PostRecruitmentParams>(
     `/shelters/recruitments/${recruitmentId}`,
     recruitmentParams,
   );
-};
 
-export const deleteRecruitment = (recruitmentId: number) => {
-  return axiosInstance.delete<unknown, unknown>(
+export const deleteRecruitment = (recruitmentId: number) =>
+  axiosInstance.delete<unknown, unknown>(
     `/shelters/recruitments/${recruitmentId}`,
   );
-};
 
-export const closeRecruitment = (recruitmentId: number) => {
-  return axiosInstance.patch<unknown, unknown>(
+export const closeRecruitment = (recruitmentId: number) =>
+  axiosInstance.patch<unknown, unknown>(
     `/shelters/recruitments/${recruitmentId}/close`,
   );
-};
 
-export const getRecruitmentApplicants = (recruitmentId: number) => {
-  return axiosInstance.get<{
+export const getRecruitmentApplicants = (recruitmentId: number) =>
+  axiosInstance.get<{
     applicants: {
       applicantId: number;
       volunteerId: number;
@@ -99,22 +95,20 @@ export const getRecruitmentApplicants = (recruitmentId: number) => {
     }[];
     recruitmentCapacity: number;
   }>(`/shelters/recruitments/${recruitmentId}/applicants`);
-};
 
 export const updateRecruitmentApplicant = (
   recruitmentId: number,
   applicantId: number,
-) => {
-  return axiosInstance.patch<
+) =>
+  axiosInstance.patch<
     unknown,
     {
       status: RecruitementStatus;
     }
   >(`/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`);
-};
 
-export const getApprovedRecruitmentApplicants = (recruitmentId: number) => {
-  return axiosInstance.get<{
+export const getApprovedRecruitmentApplicants = (recruitmentId: number) =>
+  axiosInstance.get<{
     applicants: {
       volunteerId: number;
       applicantId: number;
@@ -125,13 +119,12 @@ export const getApprovedRecruitmentApplicants = (recruitmentId: number) => {
       volunteerAttendance: boolean;
     }[];
   }>(`/shelters/recruitments/${recruitmentId}/approval`);
-};
 
 export const updateApplicantsApproval = (
   recruitmentId: number,
   applicants: AttendanceStatus[],
-) => {
-  return axiosInstance.patch<
+) =>
+  axiosInstance.patch<
     unknown,
     {
       applicants: AttendanceStatus[];
@@ -139,4 +132,3 @@ export const updateApplicantsApproval = (
   >(`/shelters/recruitments/${recruitmentId}/approval`, {
     applicants,
   });
-};

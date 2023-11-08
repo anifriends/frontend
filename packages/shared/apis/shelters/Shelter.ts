@@ -44,27 +44,24 @@ type PasswordUpdateParams = {
   oldPassword: string;
 };
 
-export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) => {
-  return axiosInstance.patch<unknown, PasswordUpdateParams>(
+export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) =>
+  axiosInstance.patch<unknown, PasswordUpdateParams>(
     '/shelters/me/password',
     passwordUpdateParams,
   );
-};
 
-export const updateAddressStatus = (isOpenedAddress: boolean) => {
-  return axiosInstance.patch<
+export const updateAddressStatus = (isOpenedAddress: boolean) =>
+  axiosInstance.patch<
     unknown,
     {
       isOpenedAddress: boolean;
     }
   >('/shelters/me/address/status', { isOpenedAddress });
-};
 
-export const checkDuplicatedShelterEmail = (email: string) => {
-  return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
+export const checkDuplicatedShelterEmail = (email: string) =>
+  axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
     '/shelters/emails',
     {
       email,
     },
   );
-};

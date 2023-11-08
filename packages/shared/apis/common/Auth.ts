@@ -6,8 +6,8 @@ export const signInShelter = ({
 }: {
   email: string;
   password: string;
-}) => {
-  return axiosInstance.post<
+}) =>
+  axiosInstance.post<
     {
       accessToken: string;
       userId: number;
@@ -21,7 +21,6 @@ export const signInShelter = ({
     email,
     password,
   });
-};
 
 export const signInVolunteer = ({
   email,
@@ -29,8 +28,8 @@ export const signInVolunteer = ({
 }: {
   email: string;
   password: string;
-}) => {
-  return axiosInstance.post<
+}) =>
+  axiosInstance.post<
     {
       accessToken: string;
       userId: number;
@@ -44,4 +43,3 @@ export const signInVolunteer = ({
     email,
     password,
   });
-};
