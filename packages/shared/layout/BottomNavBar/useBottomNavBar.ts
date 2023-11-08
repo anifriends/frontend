@@ -1,49 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useMatches, useNavigate } from 'react-router-dom';
 
+import PAGE_TYPE from '../../constants/pageType';
 import { PageType } from '../../types/page';
 
-export const useBottomNavBar = () => {
-  const [selected, setSelected] = useState<
-    'volunteers' | 'animals' | 'chattings' | 'mypage'
-  >();
-  const [pageType, setPageType] = useState<PageType>();
-
-  const match = useMatches().at(-1);
-  const navigate = useNavigate();
+export const useBottomNavBar = (pageType?: PageType) => {
+  const [isBottomNavBarVisible, setIsBottomNavBarVisible] = useState(false);
 
   useEffect(() => {
-    const [, page] = match?.id?.split(':') ?? [undefined, undefined];
+    if (
+      pageType === PAGE_TYPE.VOLUNTEERS ||
+      pageType === PAGE_TYPE.ANIMALS ||
+      pageType === PAGE_TYPE.CHATTINGS ||
+      pageType === PAGE_TYPE.MYPAGE
+    ) {
+      return setIsBottomNavBarVisible(true);
+    }
 
-    setPageType(page as PageType);
-  }, [match]);
-
-  useEffect(() => {
-    if (pageType === 'VOLUNTEERS') {
-      return setSelected('volunteers');
-    }
-    if (pageType === 'ANIMALS') {
-      return setSelected('animals');
-    }
-    if (pageType === 'CHATTINGS') {
-      return setSelected('chattings');
-    }
-    if (pageType === 'MYPAGE') {
-      return setSelected('mypage');
-    }
-    return setSelected(undefined);
+    return setIsBottomNavBarVisible(false);
   }, [pageType]);
 
-  const goVounteers = () => navigate('/volunteers');
-  const goAnimals = () => navigate('/animals');
-  const goChattings = () => navigate('/chattings');
-  const goMyPage = () => navigate('/mypage');
-
-  return {
-    selected,
-    goVounteers,
-    goAnimals,
-    goChattings,
-    goMyPage,
-  };
+  return { isBottomNavBarVisible };
 };

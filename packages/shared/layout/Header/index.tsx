@@ -1,4 +1,5 @@
-import { CommonHeaderProps, HeaderProps } from '../../types/header';
+import { usePageType } from '../../hooks/usePageType';
+import { AppType } from '../../types/app';
 import DefaultHeader from './DefaultHeader';
 import DetailHeader from './DetailHeader';
 import SearchHeader from './SearchHeader';
@@ -7,11 +8,20 @@ import { useHeader } from './useHeader';
 const Headers = {
   DEFAULT: (props: HeaderProps) => <DefaultHeader {...props} />,
   DETAIL: (props: HeaderProps) => <DetailHeader {...props} />,
-  SEARCH: (props: HeaderProps) => <SearchHeader {...props} />,
+  SEARCH: () => <SearchHeader />,
 };
 
-export default function Header({ headerOption }: CommonHeaderProps) {
-  const { headerType, title } = useHeader();
+export type HeaderProps = {
+  appType: AppType;
+};
 
-  return Headers[headerType]({ title, headerOption });
+export default function Header({ appType }: HeaderProps) {
+  const { pageType } = usePageType();
+  const { headerType } = useHeader();
+
+  if (!pageType) {
+    return null;
+  }
+
+  return Headers[headerType]({ appType });
 }

@@ -1,14 +1,17 @@
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
+import APP_TYPE from 'shared/constants/appType';
+import PAGE_TYPE from 'shared/constants/pageType';
 import Layout from 'shared/layout';
 
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
-import AnimalsSearchPage from '@/pages/animals/searchPage';
+import AnimalsSearchPage from '@/pages/animals/search';
 import AnimalsUpdatePage from '@/pages/animals/update';
 import AnimalsWritePage from '@/pages/animals/write';
 import ChattingsPage from '@/pages/chattings';
 import ChattingsRoomPage from '@/pages/chattings/room';
+import ManageApplyPage from '@/pages/manage/apply';
 import ManageAttendancePage from '@/pages/manage/attendance';
 import MyPage from '@/pages/my';
 import MyReviewsPage from '@/pages/my/reviews';
@@ -28,39 +31,39 @@ import VolunteersWritePage from '@/pages/volunteers/write';
 export const router: RouterProviderProps['router'] = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <Layout appType={APP_TYPE.SHELTER_APP} />,
     errorElement: <NotFoundPage />,
     children: [
       {
         path: PATH.VOLUNTEERS.INDEX,
         children: [
           {
-            id: `SHELTER_APP:VOLUNTEERS`,
+            id: PAGE_TYPE.VOLUNTEERS,
             index: true,
             element: <VolunteersPage />,
           },
           {
-            id: 'SHELTER_APP:VOLUNTEERS_DETAIL',
+            id: PAGE_TYPE.VOLUNTEERS_DETAIL,
             path: PATH.VOLUNTEERS.DETAIL,
             element: <VolunteersDetailPage />,
           },
           {
-            id: 'SHELTER_APP:VOLUNTEERS_PROFILE',
+            id: PAGE_TYPE.VOLUNTEERS_PROFILE,
             path: PATH.VOLUNTEERS.PROFILE,
             element: <VolunteersProfilePage />,
           },
           {
-            id: 'SHELTER_APP:VOLUNTEERS_SEARCH',
+            id: PAGE_TYPE.VOLUNTEERS_SEARCH,
             path: PATH.VOLUNTEERS.SEARCH,
             element: <VolunteersSearchPage />,
           },
           {
-            id: 'SHELTER_APP:VOLUNTEERS_WRITE',
+            id: PAGE_TYPE.VOLUNTEERS_WRITE,
             path: PATH.VOLUNTEERS.WRITE,
             element: <VolunteersWritePage />,
           },
           {
-            id: 'SHELTER_APP:VOLUNTEERS_UPDATE',
+            id: PAGE_TYPE.VOLUNTEERS_UPDATE,
             path: PATH.VOLUNTEERS.UPDATE,
             element: <VolunteersUpdatePage />,
           },
@@ -70,27 +73,27 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.ANIMALS.INDEX,
         children: [
           {
-            id: 'SHELTER_APP:ANIMALS',
+            id: PAGE_TYPE.ANIMALS,
             index: true,
             element: <AnimalsPage />,
           },
           {
-            id: 'SHELTER_APP:ANIMALS_DETAIL',
+            id: PAGE_TYPE.ANIMALS_DETAIL,
             path: PATH.ANIMALS.DETAIL,
             element: <AnimalsDetailPage />,
           },
           {
-            id: 'SHELTER_APP:ANIMALS_SEARCH',
+            id: PAGE_TYPE.ANIMALS_SEARCH,
             path: PATH.ANIMALS.SEARCH,
             element: <AnimalsSearchPage />,
           },
           {
-            id: 'SHELTER_APP:ANIMALS_WRITE',
+            id: PAGE_TYPE.ANIMALS_WRITE,
             path: PATH.ANIMALS.WRITE,
             element: <AnimalsWritePage />,
           },
           {
-            id: 'SHELTER_APP:ANIMALS_UPDATE',
+            id: PAGE_TYPE.ANIMALS_UPDATE,
             path: PATH.ANIMALS.UPDATE,
             element: <AnimalsUpdatePage />,
           },
@@ -100,12 +103,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.CHATTINGS.INDEX,
         children: [
           {
-            id: 'SHELTER_APP:CHATTINGS',
+            id: PAGE_TYPE.CHATTINGS,
             index: true,
             element: <ChattingsPage />,
           },
           {
-            id: 'SHELTER_APP:CHATTINGS_ROOM',
+            id: PAGE_TYPE.CHATTINGS_ROOM,
             path: PATH.CHATTINGS.ROOM,
             element: <ChattingsRoomPage />,
           },
@@ -115,12 +118,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.MYPAGE.INDEX,
         children: [
           {
-            id: 'SHELTER_APP:MYPAGE',
+            id: PAGE_TYPE.MYPAGE,
             index: true,
             element: <MyPage />,
           },
           {
-            id: 'SHELTER_APP:MYPAGE_REVIEWS',
+            id: PAGE_TYPE.MYPAGE_REVIEWS,
             path: PATH.MYPAGE.REVIEWS,
             element: <MyReviewsPage />,
           },
@@ -130,12 +133,12 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.SETTINGS.INDEX,
         children: [
           {
-            id: 'SHELTER_APP:SETTINGS_ACCOUNT',
+            id: PAGE_TYPE.SETTINGS_ACCOUNT,
             path: PATH.SETTINGS.ACCOUNT,
             element: <SettingsAccountPage />,
           },
           {
-            id: 'SHELTER_APP:SETTINGS_PASSWORD',
+            id: PAGE_TYPE.SETTINGS_PASSWORD,
             path: PATH.SETTINGS.PASSWORD,
             element: <SettingsPasswordPage />,
           },
@@ -145,29 +148,29 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         path: PATH.MANAGE.INDEX,
         children: [
           {
-            id: 'SHELTER_APP:MANAGE.ATTENDANCE',
+            id: PAGE_TYPE.MANAGE_ATTENDANCE,
             path: PATH.MANAGE.ATTENDANCE,
             element: <ManageAttendancePage />,
           },
           {
-            id: 'SHELTER_APP:MANAGE.APPLY',
+            id: PAGE_TYPE.MANAGE_APPLY,
             path: PATH.MANAGE.APPLY,
-            element: <ManageAttendancePage />,
+            element: <ManageApplyPage />,
           },
         ],
       },
       {
-        id: 'SHELTER_APP:NOTIFICATIONS',
+        id: PAGE_TYPE.NOTIFICATIONS,
         path: PATH.NOTIFICATIONS,
         element: <NotificationsPage />,
       },
       {
-        id: 'SHELTER_APP:SIGNUP',
+        id: PAGE_TYPE.SIGNUP,
         path: PATH.SIGNUP,
         element: <SignupPage />,
       },
       {
-        id: 'SHELTER_APP:SIGNIN',
+        id: PAGE_TYPE.SIGNIN,
         path: PATH.SIGNIN,
         element: <SigninPage />,
       },

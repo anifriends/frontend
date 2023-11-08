@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
 const handleSearchkeyword = (keyword: string) => {
-  // TODO: VolunteerList 검색 API 호출
-  console.log('[Search Volunteer] keyword:', keyword);
+  // TODO: AnimalList 검색 API 호출
+  console.log('[Search Animal] - keyword:', keyword);
 };
 
-export default function VolunteersSearchPage() {
+export default function AnimalsSearchPage() {
   const setOnSearch = useSearchHeaderStore((state) => state.setOnSearch);
 
   useEffect(() => {
@@ -17,5 +17,5 @@ export default function VolunteersSearchPage() {
     };
   }, [setOnSearch]);
 
-  return <h1>VolunteersSearchPage</h1>;
+  return <h1>AnimalsSearchPage</h1>;
 }
