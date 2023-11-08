@@ -1,13 +1,12 @@
-import { Flex, Image, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
 
 import Next from '../assets/icon_next.svg';
 
 export type SettingItemProps = {
   itemTitle: string;
-  path: string;
+  onClick: VoidFunction;
 };
-export default function SettingItem({ itemTitle, path }: SettingItemProps) {
+export default function SettingItem({ itemTitle, onClick }: SettingItemProps) {
   return (
     <Flex
       justify="space-between"
@@ -15,11 +14,13 @@ export default function SettingItem({ itemTitle, path }: SettingItemProps) {
       px={4}
       borderBottom="1px solid"
       borderColor="gray.200"
+      onClick={onClick}
+      cursor="pointer"
     >
       <Text fontWeight="medium">{itemTitle}</Text>
-      <Link to={path}>
-        <Image src={Next} cursor="pointer" />
-      </Link>
+      <Box as="button">
+        <Image src={Next} />
+      </Box>
     </Flex>
   );
 }
