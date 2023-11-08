@@ -70,3 +70,12 @@ type ApplicantsResponse = {
 //봉사자가 신청한 봉사 리스트 조회
 export const getApplicants = () =>
   axiosInstance.get<ApplicantsResponse>('/volunteers/applicants');
+
+export const checkDuplicatedVolunteerEmail = (email: string) => {
+  return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
+    '/volunteers/emails',
+    {
+      email,
+    },
+  );
+};

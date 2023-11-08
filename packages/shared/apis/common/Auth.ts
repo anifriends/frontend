@@ -45,12 +45,3 @@ export const signInVolunteer = ({
     password,
   });
 };
-
-export const checkDuplicateEmail = (email: string) => {
-  return axiosInstance.post<{ isDuplicated: false }, { email: string }>(
-    '/auth/emails',
-    {
-      email,
-    },
-  );
-};

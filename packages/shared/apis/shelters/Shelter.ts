@@ -59,3 +59,12 @@ export const updateAddressStatus = (isOpenedAddress: boolean) => {
     }
   >('/shelters/me/address/status', { isOpenedAddress });
 };
+
+export const checkDuplicatedShelterEmail = (email: string) => {
+  return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
+    '/shelters/emails',
+    {
+      email,
+    },
+  );
+};
