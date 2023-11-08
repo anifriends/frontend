@@ -1,11 +1,11 @@
-import type { FlexProps, TextProps } from '@chakra-ui/react';
-import { Flex, Text } from '@chakra-ui/react';
+import type { TextProps } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
+
+import InfoItem, { InfoItemStylesProps } from './InfoItem';
 
 type InfoTextItemStylesProps = {
-  flexStyles: FlexProps;
-  titleTextStyles: TextProps;
   contentTextStyles: TextProps;
-};
+} & InfoItemStylesProps;
 
 export type InfoTextItemWithoutStylesProps = {
   title: string;
@@ -16,23 +16,12 @@ type InfoTextItemProps = Partial<InfoTextItemStylesProps> &
   InfoTextItemWithoutStylesProps;
 
 export default function InfoTextItem({
-  title,
   content,
-  flexStyles,
-  titleTextStyles,
   contentTextStyles,
+  ...props
 }: InfoTextItemProps) {
   return (
-    <Flex gap={1} {...flexStyles}>
-      <Text
-        color="gray.400"
-        size="md"
-        fontWeight="medium"
-        fontSize="xs"
-        {...titleTextStyles}
-      >
-        {title}
-      </Text>
+    <InfoItem {...props}>
       <Text
         color="gray.500"
         size="md"
@@ -42,6 +31,6 @@ export default function InfoTextItem({
       >
         {content}
       </Text>
-    </Flex>
+    </InfoItem>
   );
 }
