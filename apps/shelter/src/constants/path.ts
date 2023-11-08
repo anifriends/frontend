@@ -20,7 +20,7 @@ const PATH = {
   },
   MYPAGE: {
     INDEX: 'mypage',
-    REVIEWS: 'mypage/reviews',
+    REVIEWS: 'reviews',
   },
   SETTINGS: {
     INDEX: 'settings',
