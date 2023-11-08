@@ -22,7 +22,7 @@ export default function InfoItem({
   titleTextStyles,
 }: InfoItemProps) {
   return (
-    <Flex gap={1} {...flexStyles}>
+    <Flex gap={1} align="center" {...flexStyles}>
       <Text
         color="gray.400"
         size="md"

@@ -1,11 +1,11 @@
-import { BoxProps, Flex, FlexProps, TextProps } from '@chakra-ui/react';
+import { Flex, FlexProps, TextProps } from '@chakra-ui/react';
 
 import type { InfoTextItemWithoutStylesProps } from './InfoTextItem';
 import InfoTextItem from './InfoTextItem';
 
 type InfoTextListProps = {
   infoTextItems: InfoTextItemWithoutStylesProps[];
-} & BoxProps;
+} & FlexProps;
 
 const flexStyles: FlexProps = {
   gap: '2rem',
@@ -27,6 +27,7 @@ const contentTextStyles: TextProps = {
 
 export default function InfoTextList({
   infoTextItems,
+  children,
   ...props
 }: InfoTextListProps) {
   return (
@@ -48,6 +49,7 @@ export default function InfoTextList({
           {...infoTextItem}
         />
       ))}
+      {children}
     </Flex>
   );
 }
