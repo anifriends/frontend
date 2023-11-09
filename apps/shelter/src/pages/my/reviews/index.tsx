@@ -31,7 +31,7 @@ export default function MyReviewsPage() {
         fontSize="md"
         fontWeight="bold"
       >
-        봉사자들이 작성한 봉사후기
+        봉사자들이 작성한 봉사후기{` ${DUMMY_REVIEW_LIST.length}개`}
       </Heading>
 
       <VStack spacing={3}>
