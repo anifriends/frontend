@@ -8,19 +8,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  useBoolean,
   VStack,
 } from '@chakra-ui/react';
 import IoEyeOff from 'shared/assets/icon-IoEyeOff.svg';
 import IoEyeSharp from 'shared/assets/icon-IoEyeSharp.svg';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
+import useToggle from 'shared/hooks/useToggle';
 
 export default function SigninPage() {
-  const [isShow, setIsShow] = useBoolean(true);
-
-  const changeInputType = () => {
-    setIsShow.toggle();
-  };
+  const [isShow, toggleInputType] = useToggle(false);
 
   return (
     <Box px={4} pb="104px">
@@ -39,8 +35,8 @@ export default function SigninPage() {
               placeholder="비밀번호를 입력하세요"
               type={isShow ? 'text' : 'password'}
             />
-            <InputRightElement onClick={changeInputType}>
-              <Image src={isShow ? IoEyeSharp : IoEyeOff} />
+            <InputRightElement onClick={toggleInputType}>
+              <Image src={isShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
         </FormControl>
