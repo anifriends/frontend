@@ -1,6 +1,6 @@
 import { Avatar, Box, HStack, Image, Text } from '@chakra-ui/react';
 import NextIcon from 'shared/assets/icon_review_next.svg';
-import InfoTextItem from 'shared/components/InfoTextItem';
+import InfoSubtext from 'shared/components/InfoSubtext';
 import Label from 'shared/components/Label';
 
 type VolunteerProfileprops = {
@@ -29,14 +29,11 @@ export default function VolunteerProfile({
           <Box as="button" boxSize={6} minW={6}>
             <Image src={NextIcon} w="full" h="full" />
           </Box>
-          <InfoTextItem
-            title="리뷰"
-            content={volunteerReviewCount.toString()}
-          />
+          <InfoSubtext title="리뷰" content={volunteerReviewCount.toString()} />
         </HStack>
         <HStack spacing={2}>
           <Label labelTitle={`${volunteerTempature}°C`} />
-          <InfoTextItem title="작성일" content={reviewCreatedAt} />
+          <InfoSubtext title="작성일" content={reviewCreatedAt} />
         </HStack>
       </Box>
     </HStack>
