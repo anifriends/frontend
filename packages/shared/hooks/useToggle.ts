@@ -1,6 +1,6 @@
 import { useBoolean } from '@chakra-ui/react';
 
-const useToggle = (initialState: boolean): [boolean, () => void] => {
+const useToggle = (initialState = false): [boolean, () => void] => {
   const [isTrue, setIsTrue] = useBoolean(initialState);
 
   const toggle = () => {
