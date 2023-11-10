@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   Button,
   Flex,
@@ -15,18 +14,40 @@ import {
 } from '@chakra-ui/react';
 import MenuIcon from 'shared/assets/icon_menu.svg';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
-import InfoSubText from 'shared/components/InfoSubtext';
 import LabelText from 'shared/components/LabelText';
 
 import RecruitDateText from './RecruitDateText';
 
-const DUMMY_IMAGE = 'https://source.unsplash.com/random';
+type Recruitment = {
+  recruitmentId: number;
+  recruitmentTitle: string;
+  recruitmentStartTime: string;
+  recruitmentEndTime: string;
+  recruitmentDeadline: string;
+  recruitmentIsClosed: boolean;
+  recruitmentApplicantCount: number;
+  recruitmentCapacity: number;
+};
+
+type RecruitItemProps = {
+  showMenuButton?: boolean;
+  onUpdate?: VoidFunction;
+  onDelete?: VoidFunction;
+} & Recruitment;
 
 export default function RecruitItem({
   showMenuButton = true,
   onUpdate = () => {},
   onDelete = () => {},
-}) {
+  recruitmentId,
+  recruitmentTitle,
+  recruitmentStartTime,
+  recruitmentEndTime,
+  recruitmentDeadline,
+  recruitmentIsClosed,
+  recruitmentApplicantCount,
+  recruitmentCapacity,
+}: RecruitItemProps) {
   return (
     <Box
       py={3.5}
@@ -34,83 +55,109 @@ export default function RecruitItem({
       pos="relative"
       borderBottom="1px"
       borderColor="gray.200"
+      key={recruitmentId}
     >
       <VStack spacing="1.5rem" align="stretch">
         <VStack spacing={2} align="stretch">
-          <LabelText content="D-12" labelTitle="모집중" />
+          <LabelText
+            content={recruitmentDeadline}
+            labelTitle={recruitmentIsClosed ? '마감 완료' : '모집중'}
+          />
           <Text fontWeight="bold" lineHeight="base">
-            봉사자 모집합니다
+            {recruitmentTitle}
           </Text>
           <Box>
             <RecruitDateText
               title="봉사일"
-              date="2023.10.23"
-              time="14:00~16:00"
+              date={`${recruitmentStartTime}`}
+              time={`${recruitmentStartTime}~${recruitmentEndTime}`}
             />
             <Flex minWidth="max-content" alignItems="center">
-              <RecruitDateText title="마감일" date="2023.10.22" time="14:00" />
+              <RecruitDateText
+                title="마감일"
+                date={`${recruitmentDeadline}`}
+                time={`${recruitmentDeadline}`}
+              />
               <Spacer />
-              <ApplicantStatus numerator={2} denominator={6} />
+              <ApplicantStatus
+                numerator={recruitmentApplicantCount}
+                denominator={recruitmentCapacity}
+              />
             </Flex>
           </Box>
         </VStack>
-        <Button
-          border="1px"
-          borderRadius="0.625rem"
-          px={14}
-          py={1.5}
-          color="white"
-          bgColor="orange.400"
-          _hover={{
-            bg: undefined,
-          }}
-          _active={{
-            bg: undefined,
-          }}
-          fontSize="sm"
-          lineHeight={5}
-        >
-          출석 관리
-        </Button>
-        {/* <HStack align="stretch" justifyContent="space-between" spacing={5}>
-          <Button
-            border="1px"
-            borderRadius="0.625rem"
-            px={14}
-            py={1.5}
-            color="orange.400"
-            bgColor="transparent"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-            fontSize="sm"
-            lineHeight={5}
-          >
-            신청현황
-          </Button>
-          <Button
-            border="1px"
-            borderRadius="0.625rem"
-            color="white"
-            bgColor="orange.400"
-            px={14}
-            py={1.5}
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-          >
-            마감하기
-          </Button>
-        </HStack> */}
+        {recruitmentIsClosed ? (
+          <AttendanceManagementButton />
+        ) : (
+          <RecruitingButtons />
+        )}
       </VStack>
       {showMenuButton && <CustomMenu onUpdate={onUpdate} onDelete={onDelete} />}
     </Box>
+  );
+}
+
+function RecruitingButtons() {
+  return (
+    <HStack align="stretch" justifyContent="space-between" spacing={5}>
+      <Button
+        border="1px"
+        borderRadius="0.625rem"
+        px={14}
+        py={1.5}
+        color="orange.400"
+        bgColor="transparent"
+        _hover={{
+          bg: undefined,
+        }}
+        _active={{
+          bg: undefined,
+        }}
+        fontSize="sm"
+        lineHeight={5}
+      >
+        신청현황
+      </Button>
+      <Button
+        border="1px"
+        borderRadius="0.625rem"
+        color="white"
+        bgColor="orange.400"
+        px={14}
+        py={1.5}
+        _hover={{
+          bg: undefined,
+        }}
+        _active={{
+          bg: undefined,
+        }}
+      >
+        마감하기
+      </Button>
+    </HStack>
+  );
+}
+
+function AttendanceManagementButton() {
+  return (
+    <Button
+      border="1px"
+      borderRadius="0.625rem"
+      px={14}
+      py={1.5}
+      color="white"
+      bgColor="orange.400"
+      _hover={{
+        bg: undefined,
+      }}
+      _active={{
+        bg: undefined,
+      }}
+      fontSize="sm"
+      lineHeight={5}
+    >
+      출석 관리
+    </Button>
   );
 }
 
@@ -142,32 +189,5 @@ function CustomMenu({
         <MenuItem> 닫기</MenuItem>
       </MenuList>
     </Menu>
-  );
-}
-
-export function VolunteerRecruitItem() {
-  return (
-    <Box p={4} borderBottom="1px" borderColor="gray.200">
-      <HStack spacing={3} justifyContent="center">
-        <AspectRatio minW="110px" ratio={1}>
-          <Image src={DUMMY_IMAGE} borderRadius="0.625rem" />
-        </AspectRatio>
-        <VStack spacing={2.5} w="full">
-          <Box w="full">
-            <LabelText content="D-12" labelTitle="모집중" />
-            <Text fontWeight="bold" lineHeight="base">
-              봉사자 모집합니다!!
-            </Text>
-            <Text color="gray.400" fontSize="xs" lineHeight={4}>
-              양천구 보건소
-            </Text>
-            <InfoSubText title="봉사일" content="23.10.23" />
-          </Box>
-          <Box alignSelf="flex-end" lineHeight="none">
-            <ApplicantStatus numerator={2} denominator={6} />
-          </Box>
-        </VStack>
-      </HStack>
-    </Box>
   );
 }
