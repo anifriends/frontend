@@ -1,4 +1,4 @@
-import axiosInstance from 'apis/axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 type SignUpParams = {
   email: string;
@@ -73,7 +73,7 @@ export const getApplicants = () =>
 
 export const checkDuplicatedVolunteerEmail = (email: string) => {
   return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
-    '/volunteers/emails',
+    '/volunteers/email',
     {
       email,
     },

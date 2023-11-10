@@ -5,8 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { BASE_URL } from '@/constants/baseURL';
-
+import { BASE_URL } from '../constants/baseURL';
 import {
   onErrorRequest,
   onErrorResponse,
