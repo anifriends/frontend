@@ -17,7 +17,7 @@ import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
 
 export default function SigninPage() {
-  const [isShow, toggleInputType] = useToggle(false);
+  const [isShow, toggleInputType] = useToggle();
 
   return (
     <Box px={4} pb="104px">
