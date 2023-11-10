@@ -4,15 +4,16 @@ import {
   Center,
   FormControl,
   FormLabel,
+  Icon,
   Image,
   Input,
   InputGroup,
   InputRightElement,
   VStack,
 } from '@chakra-ui/react';
-import IoEyeOff from 'shared/assets/icon-IoEyeOff.svg';
-import IoEyeSharp from 'shared/assets/icon-IoEyeSharp.svg';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
+import IoEyeOff from 'shared/assets/IoEyeOff';
+import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
 
 export default function SigninPage() {
@@ -36,7 +37,7 @@ export default function SigninPage() {
               type={isShow ? 'text' : 'password'}
             />
             <InputRightElement onClick={toggleInputType}>
-              <Image src={isShow ? IoEyeOff : IoEyeSharp} />
+              <Icon as={isShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
         </FormControl>
