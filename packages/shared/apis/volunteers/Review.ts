@@ -1,4 +1,4 @@
-import axiosInstance from 'apis/axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 type NewReviewParams = {
   applicantId: number;

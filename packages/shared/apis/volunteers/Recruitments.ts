@@ -1,4 +1,4 @@
-import axiosInstance from 'apis/axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 export const ApplyRecruitments = (recruitmentId: string) =>
   axiosInstance.post(`/volunteers/recruitments/${recruitmentId}/apply`);
