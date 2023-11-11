@@ -19,6 +19,7 @@ export default function Label({ labelTitle, type = 'GREEN' }: LabelProps) {
       color="white"
       bgColor={LABEL_BACKGROUND_COLOR[type]}
       fontSize="sm"
+      fontWeight="normal"
       lineHeight={4}
       textTransform="uppercase"
     >
