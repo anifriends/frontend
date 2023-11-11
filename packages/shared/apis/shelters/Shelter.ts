@@ -1,4 +1,4 @@
-import axiosInstance from 'apis/axiosInstance';
+import axiosInstance from '../axiosInstance';
 
 type SignUpParams = {
   email: string;
@@ -62,7 +62,7 @@ export const updateAddressStatus = (isOpenedAddress: boolean) => {
 
 export const checkDuplicatedShelterEmail = (email: string) => {
   return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
-    '/shelters/emails',
+    '/shelters/email',
     {
       email,
     },

@@ -199,6 +199,9 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      msw:
+        specifier: ^2.0.1
+        version: 2.0.1(typescript@5.2.2)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
