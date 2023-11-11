@@ -83,8 +83,8 @@ export default function SignupPage() {
           <FormLabel>성별</FormLabel>
           <RadioGroup<GenderValue, GenderText>
             value={genderValue}
-            changeValue={changeGenderValue}
-            radioAttributes={[
+            onChange={changeGenderValue}
+            radios={[
               { value: 'MALE', text: '남성' },
               { value: 'FEMALE', text: '여성' },
             ]}

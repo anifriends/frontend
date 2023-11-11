@@ -9,46 +9,41 @@ import {
   RadioGroup as ChakraRadioGroup,
 } from '@chakra-ui/react';
 
-type RadioAttributes<RadioValue, RadioText> = {
-  value: RadioValue;
-  text: RadioText;
+type Radio<Value, Text> = {
+  value: Value;
+  text: Text;
 };
 
-type RadioGroupProps<RadioValue, RadioText> = {
-  value: RadioValue;
-  changeValue: (nextValue: RadioValue) => void;
-  radioAttributes: RadioAttributes<RadioValue, RadioText>[];
+type RadioGroupProps<Value, Text> = {
+  value: Value;
+  onChange: (nextValue: Value) => void;
+  radios: Radio<Value, Text>[];
   radioGroupProps?: ChakraRadioGroupProps;
   hStackProps?: StackProps;
   radioProps?: RadioProps;
 };
 
-export default function RadioGroup<
-  RadioValue extends string,
-  RadioText extends string,
->({
+export default function RadioGroup<Value extends string, Text extends string>({
   value,
-  changeValue,
-  radioAttributes,
+  onChange,
+  radios,
   radioGroupProps,
   hStackProps,
   radioProps,
-}: RadioGroupProps<RadioValue, RadioText>) {
+}: RadioGroupProps<Value, Text>) {
   return (
     <ChakraRadioGroup
       value={value}
-      onChange={changeValue}
+      onChange={onChange}
       colorScheme="orange"
       {...radioGroupProps}
     >
       <HStack spacing={16} {...hStackProps}>
-        {radioAttributes.map(
-          ({ value, text }: RadioAttributes<RadioValue, RadioText>) => (
-            <Radio key={value} value={value} {...radioProps}>
-              {text}
-            </Radio>
-          ),
-        )}
+        {radios.map(({ value, text }: Radio<Value, Text>) => (
+          <Radio key={value} value={value} {...radioProps}>
+            {text}
+          </Radio>
+        ))}
       </HStack>
     </ChakraRadioGroup>
   );
