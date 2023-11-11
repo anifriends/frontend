@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-const useRadioGroup = <RadioValue extends string>(
-  initialValue: RadioValue,
-): [RadioValue, (nextValue: RadioValue) => void] => {
-  const [value, setValue] = useState<RadioValue>(initialValue);
+const useRadioGroup = <Value extends string>(
+  initialValue: Value,
+): [Value, (nextValue: Value) => void] => {
+  const [value, setValue] = useState<Value>(initialValue);
 
-  const changeValue = (nextValue: RadioValue) => setValue(nextValue);
+  const changeValue = (nextValue: Value) => setValue(nextValue);
 
   return [value, changeValue];
 };
