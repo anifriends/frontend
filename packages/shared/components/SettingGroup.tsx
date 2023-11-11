@@ -14,7 +14,7 @@ export default function SettingGroup({
 }: SettingProps) {
   return (
     <Box>
-      <Text pb={2} color="gray.500">
+      <Text pb={2} pl={4} fontSize="sm" color="gray.500">
         {groupTitle}
       </Text>
       {settingItems.map((item, index) => (
