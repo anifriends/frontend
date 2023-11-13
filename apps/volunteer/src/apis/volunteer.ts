@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 type MyInfoResponse = {
   volunteerId: string;
@@ -12,7 +12,7 @@ type MyInfoResponse = {
   volunteerGender: 'FEMAIL' | 'MALE';
 };
 
-export const getMyInfo = () =>
+export const getMyVolunteerInfo = () =>
   axiosInstance.get<MyInfoResponse>('/volunteers/me');
 
 type PasswordUpdateParams = {
@@ -20,7 +20,9 @@ type PasswordUpdateParams = {
   oldPassword: string;
 };
 
-export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) => {
+export const updateVolunteerPassword = (
+  passwordUpdateParams: PasswordUpdateParams,
+) => {
   return axiosInstance.patch<unknown, PasswordUpdateParams>(
     '/volunteers/me/password',
     passwordUpdateParams,
@@ -35,7 +37,9 @@ type UpdateUserInfoParams = {
   imageUrl: string;
 };
 
-export const updateUserInfo = (updateUserInfoParams: UpdateUserInfoParams) =>
+export const updateVolunteerUserInfo = (
+  updateUserInfoParams: UpdateUserInfoParams,
+) =>
   axiosInstance.patch<unknown, UpdateUserInfoParams>(
     '/volunteers/me',
     updateUserInfoParams,
@@ -56,5 +60,7 @@ type ApplicantsResponse = {
 };
 
 //봉사자가 신청한 봉사 리스트 조회
-export const getApplicants = () =>
+export const getVolunteerApplicantList = () =>
   axiosInstance.get<ApplicantsResponse>('/volunteers/applicants');
+
+//TODO 봉사자가 작성한 후기 리스트 조회

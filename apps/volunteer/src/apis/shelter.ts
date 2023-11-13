@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 export const getSimpleShelterProfile = (shelterId: number) =>
   axiosInstance.get<{
@@ -6,7 +6,7 @@ export const getSimpleShelterProfile = (shelterId: number) =>
     shelterImageUrl: string;
     shelterAddress: string;
     shelterEmail: string;
-  }>(`/volunteers//shelters/${shelterId}/profile/simple`);
+  }>(`/shelters/${shelterId}/profile/simple`);
 
 export const getShelterProfileDetail = (shelterId: number) =>
   axiosInstance.get<{
@@ -18,4 +18,4 @@ export const getShelterProfileDetail = (shelterId: number) =>
     shelterAddressDetail: string;
     shelterPhoneNumber: string;
     shelterSparePhoneNumber: string;
-  }>(`/volunteers/shelters/${shelterId}/profile`);
+  }>(`/shelters/${shelterId}/profile`);

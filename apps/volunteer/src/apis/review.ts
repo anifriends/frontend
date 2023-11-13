@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 type NewReviewParams = {
   applicantId: number;
@@ -11,20 +11,20 @@ type UpdatedReviewParams = {
   imageUrls: string[];
 };
 
-export const getReviewDetail = (reviewId: number) =>
+export const getVolunteerReviewDetail = (reviewId: number) =>
   axiosInstance.get<{
     reviewId: number;
     content: string;
     imageUrls: string[];
   }>(`/reviews/${reviewId}`);
 
-export const createNewReview = (newReviewParams: NewReviewParams) =>
+export const createVolunteerNewReview = (newReviewParams: NewReviewParams) =>
   axiosInstance.post<unknown, NewReviewParams>(
     '/volunteers/reviews',
     newReviewParams,
   );
 
-export const updateReview = (
+export const updateVolunteerReview = (
   reviewId: string,
   updatedReviewParams: UpdatedReviewParams,
 ) =>
@@ -33,7 +33,7 @@ export const updateReview = (
     updatedReviewParams,
   );
 
-export const deleteReview = (reviewId: string) =>
+export const deleteVolunteerReview = (reviewId: string) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 type ReviewOnShelterParams = {
@@ -60,13 +60,13 @@ type ReviewOnShelterResponse = {
   reviews: Review[];
 };
 
-export const getReviewsOnShelter = (
+export const getVolunteerReviewsOnShelter = (
   shelterId: number,
   pageNumber: number,
   pageSize: number,
 ) =>
   axiosInstance.get<ReviewOnShelterResponse, ReviewOnShelterParams>(
-    `/volunteers/shelters/${shelterId}/reviews`,
+    `/shelters/${shelterId}/reviews`,
     {
       params: {
         pageNumber,
