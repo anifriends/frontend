@@ -2,50 +2,25 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
 import { useSearchFilter } from '@/pages/volunteers/search/_hooks/useSearchFilter';
-
-type Filter = Partial<{
-  keyword: string;
-  startDate: string;
-  endDate: string;
-  isClosed: string;
-  content: string;
-  title: string;
-}>;
-
-export const PERIOD = {
-  PREVIOUS_DAY: 'previousDay',
-  PREVIOUS_WEEK: 'previousWeek',
-  PREVIOUS_MONTH: 'previousMonth',
-  CUSTOM_PERIOD: 'customPeriod',
-} as const;
-
-export const RECRUITMENT_STATUS = {
-  IS_OPEN: 'isOpen',
-  IS_CLOSED: 'isClosed',
-} as const;
-
-type RecruitmentStatus =
-  (typeof RECRUITMENT_STATUS)[keyof typeof RECRUITMENT_STATUS];
-
-export const CATEGORY = {
-  TITLE: 'title',
-  CONTENT: 'content',
-} as const;
-
-type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
-
-type VolunteerSearchFilter = {
-  period: string;
-  recruitmentStatus: RecruitmentStatus;
-  category: Category;
-};
+import {
+  Category,
+  RecruitmentStatus,
+  SearchFilter,
+  VolunteerSearchFilter,
+} from '@/pages/volunteers/search/_types/filter';
+import {
+  createCategorySearchFilter,
+  createPeriodSearchFilter,
+  createRecruitmentStatusSearchFilter,
+  createVolunteerSearchFilter,
+} from '@/pages/volunteers/search/_utils/createFilter';
 
 export const useVolunteerSearch = () => {
-  const searchAPI = (filter: Filter) => {
+  const searchAPI = (filter: SearchFilter) => {
     console.log('filter', filter);
   };
 
-  const [filter, setFilterValue] = useSearchFilter<Filter>(searchAPI);
+  const [filter, setFilterValue] = useSearchFilter<SearchFilter>(searchAPI);
   const [volunteerSearchFilter, setVolunteerSearchFilter] =
     useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
 
@@ -60,35 +35,12 @@ export const useVolunteerSearch = () => {
   }, []);
 
   useEffect(() => {
-    const { startDate, endDate, isClosed, title, content } = filter;
+    const newVolunteerSearchFilter = createVolunteerSearchFilter(filter);
 
-    if (startDate || endDate) {
-      setVolunteerSearchFilter({
-        ...volunteerSearchFilter,
-        period: `${startDate}~${endDate}`,
-      });
-    }
-
-    if (isClosed) {
-      setVolunteerSearchFilter({
-        ...volunteerSearchFilter,
-        recruitmentStatus: isClosed === 'True' ? 'isClosed' : 'isOpen',
-      });
-    }
-
-    if (title) {
-      setVolunteerSearchFilter({
-        ...volunteerSearchFilter,
-        category: 'title',
-      });
-    }
-
-    if (content) {
-      setVolunteerSearchFilter({
-        ...volunteerSearchFilter,
-        category: 'content',
-      });
-    }
+    setVolunteerSearchFilter({
+      ...volunteerSearchFilter,
+      ...newVolunteerSearchFilter,
+    });
   }, [filter]);
 
   const setPeriod = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -99,40 +51,9 @@ export const useVolunteerSearch = () => {
       period: value,
     });
 
-    if (value === PERIOD.PREVIOUS_DAY) {
-      return setFilterValue({
-        ...filter,
-        startDate: '2023.03.11',
-        endDate: '2023.03.23',
-      });
-    }
+    const newFilter = createPeriodSearchFilter(value);
 
-    if (value === PERIOD.PREVIOUS_WEEK) {
-      return setFilterValue({
-        ...filter,
-        startDate: '2023.03.11',
-        endDate: '2023.03.23',
-      });
-    }
-
-    if (value === PERIOD.PREVIOUS_MONTH) {
-      return setFilterValue({
-        ...filter,
-        startDate: '2023.03.11',
-        endDate: '2023.03.23',
-      });
-    }
-
-    if (value === PERIOD.CUSTOM_PERIOD) {
-      // TODO: 기간 입력 받는 기능 추가
-      return;
-    }
-
-    setFilterValue({
-      ...filter,
-      startDate: undefined,
-      endDate: undefined,
-    });
+    setFilterValue({ ...filter, ...newFilter });
   };
 
   const setRecruitmentStatus = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -143,24 +64,9 @@ export const useVolunteerSearch = () => {
       recruitmentStatus: value as RecruitmentStatus,
     });
 
-    if (value === RECRUITMENT_STATUS.IS_CLOSED) {
-      return setFilterValue({
-        ...filter,
-        isClosed: String(true),
-      });
-    }
+    const newFilter = createRecruitmentStatusSearchFilter(value);
 
-    if (value === RECRUITMENT_STATUS.IS_OPEN) {
-      return setFilterValue({
-        ...filter,
-        isClosed: String(false),
-      });
-    }
-
-    setFilterValue({
-      ...filter,
-      isClosed: undefined,
-    });
+    setFilterValue({ ...filter, ...newFilter });
   };
 
   const setCategory = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -171,27 +77,9 @@ export const useVolunteerSearch = () => {
       category: value as Category,
     });
 
-    if (value === CATEGORY.TITLE) {
-      return setFilterValue({
-        ...filter,
-        title: String(true),
-        content: undefined,
-      });
-    }
+    const newFilter = createCategorySearchFilter(value);
 
-    if (value === CATEGORY.CONTENT) {
-      return setFilterValue({
-        ...filter,
-        title: undefined,
-        content: String(true),
-      });
-    }
-
-    setFilterValue({
-      ...filter,
-      title: undefined,
-      content: undefined,
-    });
+    setFilterValue({ ...filter, ...newFilter });
   };
 
   return {
