@@ -1,3 +1,4 @@
+import { MILISECONDS } from 'shared/constants/date';
 import { createFormattedTime } from 'shared/utils/date';
 
 import {
@@ -10,6 +11,36 @@ import {
   VolunteerSearchFilter,
 } from '@/pages/volunteers/search/_types/filter';
 
+const createPeriod = (startDate?: string, endDate?: string) => {
+  if (!startDate) {
+    return endDate;
+  }
+  if (!endDate) {
+    return startDate;
+  }
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const today = new Date();
+
+  const diff = (start.getTime() - today.getTime()) / 1000;
+
+  if (Math.floor(diff / MILISECONDS.DAY) === 0) {
+    const diff = (end.getTime() - start.getTime()) / 1000;
+    if (diff === MILISECONDS.DAY) {
+      return PERIOD.WITHIN_ONE_DAY;
+    }
+    if (diff === MILISECONDS.DAY * 7) {
+      return PERIOD.WITHIN_ONE_WEEK;
+    }
+    if (diff === MILISECONDS.MONTH) {
+      return PERIOD.WITHIN_ONE_MONTH;
+    }
+  }
+
+  return `${startDate}~${endDate}`;
+};
+
 export const createVolunteerSearchFilter = (
   filter: SearchFilter,
 ): VolunteerSearchFilter => {
@@ -18,7 +49,8 @@ export const createVolunteerSearchFilter = (
   const volunteerSearchFilter: VolunteerSearchFilter = {};
 
   if (startDate || endDate) {
-    volunteerSearchFilter.period = `${startDate}~${endDate}`;
+    const period = createPeriod(startDate, endDate);
+    volunteerSearchFilter.period = period;
   }
 
   if (isClosed) {
