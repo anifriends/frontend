@@ -12,23 +12,27 @@ export const createVolunteerSearchFilter = (
   filter: SearchFilter,
 ): VolunteerSearchFilter => {
   const { startDate, endDate, isClosed, title, content } = filter;
+
+  const volunteerSearchFilter: VolunteerSearchFilter = {};
+
   if (startDate || endDate) {
-    return { period: `${startDate}~${endDate}` };
+    volunteerSearchFilter.period = `${startDate}~${endDate}`;
   }
 
   if (isClosed) {
-    return { recruitmentStatus: isClosed === 'True' ? 'isClosed' : 'isOpen' };
+    volunteerSearchFilter.recruitmentStatus =
+      isClosed === 'True' ? 'isClosed' : 'isOpen';
   }
 
   if (title) {
-    return { category: 'title' };
+    volunteerSearchFilter.category = 'title';
   }
 
   if (content) {
-    return { category: 'content' };
+    volunteerSearchFilter.category = 'content';
   }
 
-  return {};
+  return volunteerSearchFilter;
 };
 
 export const createPeriodSearchFilter = (value: string): SearchFilter => {
