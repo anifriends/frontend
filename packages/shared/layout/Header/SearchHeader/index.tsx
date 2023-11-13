@@ -1,5 +1,5 @@
 import { Box, Flex, FormControl, Image, Input } from '@chakra-ui/react';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BackIcon from '../../../assets/icon_back.svg';
@@ -13,6 +13,14 @@ export default function SearchHeader() {
     state.onSearch,
   ]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const goBack = () => navigate(-1);
 
   const handleChangeKeyword = (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +30,15 @@ export default function SearchHeader() {
 
   const handleSubmit = (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
+    if (!keyword) {
+      return;
+    }
+
     onSearch(keyword);
+
+    if (inputRef.current) {
+      inputRef.current.blur();
+    }
   };
 
   return (
@@ -49,6 +65,8 @@ export default function SearchHeader() {
       </Box>
       <FormControl onSubmit={handleSubmit} as="form">
         <Input
+          ref={inputRef}
+          value={keyword}
           onChange={handleChangeKeyword}
           h="34px"
           bg="gray.100"
