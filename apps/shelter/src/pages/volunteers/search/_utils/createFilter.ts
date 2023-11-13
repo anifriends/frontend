@@ -55,7 +55,7 @@ export const createVolunteerSearchFilter = (
 
   if (isClosed) {
     volunteerSearchFilter.recruitmentStatus =
-      isClosed === 'True' ? 'isClosed' : 'isOpen';
+      isClosed === String(true) ? 'isClosed' : 'isOpen';
   }
 
   if (title) {
