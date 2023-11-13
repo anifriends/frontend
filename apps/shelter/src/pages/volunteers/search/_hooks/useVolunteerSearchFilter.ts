@@ -12,7 +12,7 @@ type Filter = Partial<{
   title: string;
 }>;
 
-const PERIOD = {
+export const PERIOD = {
   PREVIOUS_DAY: 'previousDay',
   PREVIOUS_WEEK: 'previousWeek',
   PREVIOUS_MONTH: 'previousMonth',
@@ -21,7 +21,7 @@ const PERIOD = {
 
 type Period = (typeof PERIOD)[keyof typeof PERIOD];
 
-const RECRUITMENT_STATUS = {
+export const RECRUITMENT_STATUS = {
   IS_OPEN: 'isOpen',
   IS_CLOSED: 'isClosed',
 } as const;
@@ -29,7 +29,7 @@ const RECRUITMENT_STATUS = {
 type RecruitmentStatus =
   (typeof RECRUITMENT_STATUS)[keyof typeof RECRUITMENT_STATUS];
 
-const CATEGORY = {
+export const CATEGORY = {
   TITLE: 'title',
   CONTENT: 'content',
 } as const;
