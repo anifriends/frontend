@@ -1,7 +1,7 @@
 export const PERIOD = {
-  PREVIOUS_DAY: 'previousDay',
-  PREVIOUS_WEEK: 'previousWeek',
-  PREVIOUS_MONTH: 'previousMonth',
+  WITHIN_ONE_DAY: 'previousDay',
+  WITHIN_ONE_WEEK: 'previousWeek',
+  WITHIN_ONE_MONTH: 'previousMonth',
   CUSTOM_PERIOD: 'customPeriod',
 } as const;
 

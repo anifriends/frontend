@@ -48,13 +48,13 @@ export default function VolunteersSearchPage() {
       <FilterGroup>
         <FilterSelect
           name="period"
-          placeholder="전체 기간"
+          placeholder="봉사일"
           value={period}
           onChange={setPeriod}
         >
-          <option value={PERIOD.PREVIOUS_DAY}>지난 1일</option>
-          <option value={PERIOD.PREVIOUS_WEEK}>지난 1주</option>
-          <option value={PERIOD.PREVIOUS_MONTH}>지난 1개월</option>
+          <option value={PERIOD.WITHIN_ONE_DAY}>1일 이내</option>
+          <option value={PERIOD.WITHIN_ONE_WEEK}>1주 이내</option>
+          <option value={PERIOD.WITHIN_ONE_MONTH}>1개월 이내</option>
           <option value={PERIOD.CUSTOM_PERIOD}>기간 설정...</option>
         </FilterSelect>
         <FilterSelect

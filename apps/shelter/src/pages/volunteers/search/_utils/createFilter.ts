@@ -1,3 +1,5 @@
+import { createFormattedTime } from 'shared/utils/date';
+
 import {
   CATEGORY,
   PERIOD,
@@ -36,16 +38,31 @@ export const createVolunteerSearchFilter = (
 };
 
 export const createPeriodSearchFilter = (value: string): SearchFilter => {
-  if (value === PERIOD.PREVIOUS_DAY) {
-    return { startDate: '2023.03.11', endDate: '2023.03.23' };
+  const startDate = new Date();
+  const endDate = new Date();
+
+  if (value === PERIOD.WITHIN_ONE_DAY) {
+    endDate.setDate(startDate.getDate() + 1);
+    return {
+      startDate: createFormattedTime(startDate, '-'),
+      endDate: createFormattedTime(endDate, '-'),
+    };
   }
 
-  if (value === PERIOD.PREVIOUS_WEEK) {
-    return { startDate: '2023.03.11', endDate: '2023.03.23' };
+  if (value === PERIOD.WITHIN_ONE_WEEK) {
+    endDate.setDate(startDate.getDate() + 7);
+    return {
+      startDate: createFormattedTime(startDate, '-'),
+      endDate: createFormattedTime(endDate, '-'),
+    };
   }
 
-  if (value === PERIOD.PREVIOUS_MONTH) {
-    return { startDate: '2023.03.11', endDate: '2023.03.23' };
+  if (value === PERIOD.WITHIN_ONE_MONTH) {
+    endDate.setMonth(startDate.getMonth() + 1);
+    return {
+      startDate: createFormattedTime(startDate, '-'),
+      endDate: createFormattedTime(endDate, '-'),
+    };
   }
 
   return { startDate: undefined, endDate: undefined };
