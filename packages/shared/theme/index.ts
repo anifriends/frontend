@@ -5,6 +5,13 @@ const theme = extendTheme({
     heading: `'Pretendard-Heading'`,
     body: `'Pretendard-Body'`,
   },
+  styles: {
+    global: {
+      body: {
+        'overscroll-behavior': 'none',
+      },
+    },
+  },
 });
 
 export default theme;

@@ -24,6 +24,7 @@ export default function DefaultHeader({ appType }: HeaderProps) {
       color="white"
       lineHeight={6}
       pos="sticky"
+      zIndex={10}
       w="100%"
       py={2.5}
       justify="center"
