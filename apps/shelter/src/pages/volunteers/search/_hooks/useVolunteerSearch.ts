@@ -24,12 +24,16 @@ export const useVolunteerSearch = () => {
   const [volunteerSearchFilter, setVolunteerSearchFilter] =
     useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
 
-  const setOnSearch = useSearchHeaderStore((state) => state.setOnSearch);
+  const [setOnSearch, setKeyword] = useSearchHeaderStore((state) => [
+    state.setOnSearch,
+    state.setKeyword,
+  ]);
 
   useEffect(() => {
     setOnSearch((keyword) => setFilterValue({ keyword }));
 
     return () => {
+      setKeyword('');
       setOnSearch(() => {});
     };
   }, []);
