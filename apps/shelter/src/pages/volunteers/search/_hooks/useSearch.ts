@@ -17,6 +17,10 @@ export const useSearch = <Filter>(onSearch: (filter: Filter) => void) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    if (Object.keys(Object(filter)).length === 0) {
+      return;
+    }
+
     onSearch(filter);
   }, [filter, onSearch]);
 
