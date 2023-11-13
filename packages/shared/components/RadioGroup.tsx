@@ -14,11 +14,11 @@ type Radio<Value, Text> = {
   text: Text;
 };
 
-type RadioGroupProps<Value, Text> = {
+type RadioGroupProps<Value, Text> = Omit<ChakraRadioGroupProps, 'children'> & {
   value: Value;
   onChange: (nextValue: Value) => void;
+  defaultValue?: Value;
   radios: Radio<Value, Text>[];
-  radioGroupProps?: ChakraRadioGroupProps;
   hStackProps?: StackProps;
   radioProps?: RadioProps;
 };
@@ -26,17 +26,19 @@ type RadioGroupProps<Value, Text> = {
 export default function RadioGroup<Value extends string, Text extends string>({
   value,
   onChange,
+  defaultValue,
   radios,
-  radioGroupProps,
   hStackProps,
   radioProps,
+  ...chakraRadioGropRestprops
 }: RadioGroupProps<Value, Text>) {
   return (
     <ChakraRadioGroup
+      colorScheme="orange"
       value={value}
       onChange={onChange}
-      colorScheme="orange"
-      {...radioGroupProps}
+      defaultValue={defaultValue}
+      {...chakraRadioGropRestprops}
     >
       <HStack spacing={16} {...hStackProps}>
         {radios.map(({ value, text }: Radio<Value, Text>) => (
