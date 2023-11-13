@@ -10,34 +10,17 @@ import {
 } from '@/pages/volunteers/search/_constants/filter';
 import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
 
-const DUMMY_RECRUITMENT = {
-  recruitmentId: 1,
-  recruitmentTitle: '봉사자를 모집합니다',
-  recruitmentStartTime: '2021-11-08T11:44:30.327959',
-  recruitmentEndTime: '2021-11-08T11:44:30.327959',
-  recruitmentDeadline: '2021-11-08T11:44:30.327959',
-  recruitmentIsClosed: false,
-  recruitmentApplicantCount: 15,
-  recruitmentCapacity: 15,
-};
-
-const DUMMY_RECRUITMENT_LIST = Array.from({ length: 10 }, (_, index) => {
-  return {
-    ...DUMMY_RECRUITMENT,
-    recruitmentId: index,
-  };
-});
-
 export default function VolunteersSearchPage() {
   const {
     isSearched,
+    recruitmentList,
     volunteerSearchFilter,
-    setPeriod,
-    setRecruitmentStatus,
-    setCategory,
+    setVolunteerSearchFilter,
   } = useVolunteerSearch();
 
   const { period, recruitmentStatus, category } = volunteerSearchFilter;
+  const { setPeriod, setRecruitmentStatus, setCategory } =
+    setVolunteerSearchFilter;
 
   if (!isSearched) {
     return null;
@@ -76,11 +59,9 @@ export default function VolunteersSearchPage() {
           <option value={CATEGORY.CONTENT}>글 내용</option>
         </FilterSelect>
       </FilterGroup>
-      <>
-        {DUMMY_RECRUITMENT_LIST.map((recruitment) => (
-          <RecruitItem key={recruitment.recruitmentId} {...recruitment} />
-        ))}
-      </>
+      {recruitmentList?.map((recruitmentItem: any) => (
+        <RecruitItem key={recruitmentItem.recruitmentId} {...recruitmentItem} />
+      ))}
     </Box>
   );
 }

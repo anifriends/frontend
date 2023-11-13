@@ -1,28 +1,36 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
-import { useSearchFilter } from '@/pages/volunteers/search/_hooks/useSearchFilter';
-import {
-  Category,
-  RecruitmentStatus,
-  SearchFilter,
-  VolunteerSearchFilter,
-} from '@/pages/volunteers/search/_types/filter';
-import {
-  createCategorySearchFilter,
-  createPeriodSearchFilter,
-  createRecruitmentStatusSearchFilter,
-  createVolunteerSearchFilter,
-} from '@/pages/volunteers/search/_utils/createFilter';
+import { useVolunteerSearchFilter } from '@/pages/volunteers/search/_hooks/useVolunteerSearchFilter';
+
+const DUMMY_RECRUITMENT = {
+  recruitmentId: 1,
+  recruitmentTitle: '봉사자를 모집합니다',
+  recruitmentStartTime: '2021-11-08T11:44:30.327959',
+  recruitmentEndTime: '2021-11-08T11:44:30.327959',
+  recruitmentDeadline: '2021-11-08T11:44:30.327959',
+  recruitmentIsClosed: false,
+  recruitmentApplicantCount: 15,
+  recruitmentCapacity: 15,
+};
 
 export const useVolunteerSearch = () => {
-  const searchAPI = (filter: SearchFilter) => {
-    console.log('filter', filter);
+  const [recruitmentList, setRecruitmentList] = useState<unknown[]>([]);
+
+  useEffect(() => {
+    setRecruitmentList(Array.from({ length: 10 }, () => DUMMY_RECRUITMENT));
+  }, []);
+
+  const searchAPI = async () => {
+    // TODO: API call
   };
 
-  const [filter, setFilterValue] = useSearchFilter<SearchFilter>(searchAPI);
-  const [volunteerSearchFilter, setVolunteerSearchFilter] =
-    useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
+  const {
+    isSearched,
+    setKeywordFilter,
+    volunteerSearchFilter,
+    setVolunteerSearchFilter,
+  } = useVolunteerSearchFilter(searchAPI);
 
   const [setOnSearch, setKeyword] = useSearchHeaderStore((state) => [
     state.setOnSearch,
@@ -30,7 +38,7 @@ export const useVolunteerSearch = () => {
   ]);
 
   useEffect(() => {
-    setOnSearch((keyword) => setFilterValue({ keyword }));
+    setOnSearch(setKeywordFilter);
 
     return () => {
       setKeyword('');
@@ -38,59 +46,10 @@ export const useVolunteerSearch = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const newVolunteerSearchFilter = createVolunteerSearchFilter(filter);
-
-    setVolunteerSearchFilter({
-      ...volunteerSearchFilter,
-      ...newVolunteerSearchFilter,
-    });
-  }, [filter]);
-
-  const setPeriod = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-
-    setVolunteerSearchFilter({
-      ...volunteerSearchFilter,
-      period: value,
-    });
-
-    const newFilter = createPeriodSearchFilter(value);
-
-    setFilterValue({ ...filter, ...newFilter });
-  };
-
-  const setRecruitmentStatus = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-
-    setVolunteerSearchFilter({
-      ...volunteerSearchFilter,
-      recruitmentStatus: value as RecruitmentStatus,
-    });
-
-    const newFilter = createRecruitmentStatusSearchFilter(value);
-
-    setFilterValue({ ...filter, ...newFilter });
-  };
-
-  const setCategory = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-
-    setVolunteerSearchFilter({
-      ...volunteerSearchFilter,
-      category: value as Category,
-    });
-
-    const newFilter = createCategorySearchFilter(value);
-
-    setFilterValue({ ...filter, ...newFilter });
-  };
-
   return {
-    isSearched: Boolean(filter.keyword),
+    isSearched,
+    recruitmentList,
     volunteerSearchFilter,
-    setPeriod,
-    setRecruitmentStatus,
-    setCategory,
+    setVolunteerSearchFilter,
   };
 };
