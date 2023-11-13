@@ -36,6 +36,7 @@ export default function DetailHeader({ appType }: HeaderProps) {
       borderBottom="1px solid"
       borderColor="gray.200"
       pos="sticky"
+      zIndex={10}
       w="100%"
       py={2.5}
       justify="center"

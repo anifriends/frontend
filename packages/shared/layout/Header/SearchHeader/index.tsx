@@ -34,6 +34,7 @@ export default function SearchHeader() {
       borderBottom="1px solid"
       borderColor="gray.200"
       pos="sticky"
+      zIndex={10}
       w="100%"
       h="44px"
       p="5px 16px"
