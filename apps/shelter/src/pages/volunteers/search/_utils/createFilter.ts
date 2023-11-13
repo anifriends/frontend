@@ -70,34 +70,29 @@ export const createVolunteerSearchFilter = (
 };
 
 export const createPeriodSearchFilter = (value: string): SearchFilter => {
+  if (Object.values(PERIOD).every((period) => period !== value)) {
+    return { startDate: undefined, endDate: undefined };
+  }
+
   const startDate = new Date();
   const endDate = new Date();
 
   if (value === PERIOD.WITHIN_ONE_DAY) {
     endDate.setDate(startDate.getDate() + 1);
-    return {
-      startDate: createFormattedTime(startDate, '-'),
-      endDate: createFormattedTime(endDate, '-'),
-    };
   }
 
   if (value === PERIOD.WITHIN_ONE_WEEK) {
     endDate.setDate(startDate.getDate() + 7);
-    return {
-      startDate: createFormattedTime(startDate, '-'),
-      endDate: createFormattedTime(endDate, '-'),
-    };
   }
 
   if (value === PERIOD.WITHIN_ONE_MONTH) {
     endDate.setMonth(startDate.getMonth() + 1);
-    return {
-      startDate: createFormattedTime(startDate, '-'),
-      endDate: createFormattedTime(endDate, '-'),
-    };
   }
 
-  return { startDate: undefined, endDate: undefined };
+  return {
+    startDate: createFormattedTime(startDate, '-'),
+    endDate: createFormattedTime(endDate, '-'),
+  };
 };
 
 export const createRecruitmentStatusSearchFilter = (
