@@ -19,8 +19,6 @@ export const PERIOD = {
   CUSTOM_PERIOD: 'customPeriod',
 } as const;
 
-type Period = (typeof PERIOD)[keyof typeof PERIOD];
-
 export const RECRUITMENT_STATUS = {
   IS_OPEN: 'isOpen',
   IS_CLOSED: 'isClosed',
@@ -37,7 +35,7 @@ export const CATEGORY = {
 type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
 
 type VolunteerSearchFilter = {
-  period: Period;
+  period: string;
   recruitmentStatus: RecruitmentStatus;
   category: Category;
 };
@@ -62,12 +60,44 @@ export const useVolunteerSearchFilter = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const { startDate, endDate, isClosed, title, content } = filter;
+
+    if (startDate || endDate) {
+      setVolunteerSearchFilter({
+        ...volunteerSearchFilter,
+        period: `${startDate}~${endDate}`,
+      });
+    }
+
+    if (isClosed) {
+      setVolunteerSearchFilter({
+        ...volunteerSearchFilter,
+        recruitmentStatus: isClosed === 'True' ? 'isClosed' : 'isOpen',
+      });
+    }
+
+    if (title) {
+      setVolunteerSearchFilter({
+        ...volunteerSearchFilter,
+        category: 'title',
+      });
+    }
+
+    if (content) {
+      setVolunteerSearchFilter({
+        ...volunteerSearchFilter,
+        category: 'content',
+      });
+    }
+  }, [filter]);
+
   const setPeriod = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
 
     setVolunteerSearchFilter({
       ...volunteerSearchFilter,
-      period: value as Period,
+      period: value,
     });
 
     if (value === PERIOD.PREVIOUS_DAY) {
