@@ -54,7 +54,7 @@ export const useSearchFilter = <SearchFilter extends object>(
   };
 
   const setFilterValue = (filter: SearchFilter) => {
-    setSearchParams(createSearchParams(filter));
+    setSearchParams(createSearchParams(filter), { replace: true });
     setFilter(filter);
   };
 
