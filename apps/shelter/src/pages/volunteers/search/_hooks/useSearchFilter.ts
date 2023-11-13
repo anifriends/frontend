@@ -12,7 +12,7 @@ const parseSearchParams = (searchParams: URLSearchParams) => {
 
 export const useSearchFilter = <SearchFilter extends object>(
   onSearch: (filter: SearchFilter) => void,
-) => {
+): [SearchFilter, (filter: SearchFilter) => void] => {
   const setKeyword = useSearchHeaderStore((state) => state.setKeyword);
 
   const [filter, setFilter] = useState<SearchFilter>({} as SearchFilter);
@@ -58,5 +58,5 @@ export const useSearchFilter = <SearchFilter extends object>(
     setFilter(filter);
   };
 
-  return { filter, setFilterValue };
+  return [filter, setFilterValue];
 };

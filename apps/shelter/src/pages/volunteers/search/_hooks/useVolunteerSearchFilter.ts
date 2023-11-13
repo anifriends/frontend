@@ -47,8 +47,7 @@ export const useVolunteerSearchFilter = () => {
     console.log('filter', filter);
   };
 
-  const { filter, setFilterValue } = useSearchFilter<Filter>(searchAPI);
-
+  const [filter, setFilterValue] = useSearchFilter<Filter>(searchAPI);
   const [volunteerSearchFilter, setVolunteerSearchFilter] =
     useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
 
