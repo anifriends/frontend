@@ -2,44 +2,49 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
+const parseSearchParams = (searchParams: URLSearchParams) => {
+  const params: Record<string, string> = {};
+  for (const [key, value] of searchParams) {
+    params[key] = value;
+  }
+  return params;
+};
+
 export const useSearch = <Filter>(onSearch: (filter: Filter) => void) => {
   const setKeyword = useSearchHeaderStore((state) => state.setKeyword);
 
   const [filter, setFilter] = useState<Filter>({} as Filter);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSearch = useCallback(() => {
-    // TODO: search API 호출
+  useEffect(() => {
     onSearch(filter);
-  }, [onSearch, filter]);
+  }, [filter, onSearch]);
+
+  useEffect(() => {
+    if (searchParams.size === 0) {
+      return;
+    }
+
+    const params = parseSearchParams(searchParams);
+
+    if (params.keyword) {
+      setKeyword(params.keyword);
+    }
+
+    setFilter((prevFilter) => {
+      return { ...prevFilter, ...params };
+    });
+  }, [searchParams, setKeyword]);
 
   const handleKeywordSubmit = useCallback(
     (keyword: string) => {
       setSearchParams({ keyword: keyword });
-      setFilter((filter) => {
-        return { ...filter, keyword };
+      setFilter((prevFilter) => {
+        return { ...prevFilter, keyword };
       });
-      handleSearch();
     },
-    [setSearchParams, handleSearch],
+    [setSearchParams],
   );
-
-  useEffect(() => {
-    for (const [key, value] of searchParams) {
-      if (value) {
-        if (key === 'keyword') {
-          setKeyword(value);
-        }
-        setFilter((filter) => {
-          return { ...filter, [key]: value };
-        });
-      }
-    }
-
-    if (searchParams.size > 0) {
-      handleSearch();
-    }
-  }, [searchParams]);
 
   return { filter, handleKeywordSubmit };
 };
