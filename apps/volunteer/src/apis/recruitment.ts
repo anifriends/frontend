@@ -1,7 +1,7 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 export const ApplyRecruitments = (recruitmentId: string) =>
-  axiosInstance.post(`/volunteers/recruitments/${recruitmentId}/apply`);
+  axiosInstance.post(`/recruitments/${recruitmentId}/apply`);
 
 type PageInfo = {
   totalElements: number;
@@ -32,13 +32,15 @@ type RecruitSearchParams = {
   pageSize: number;
 };
 
-export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
+export const getRecruitments = (
+  recruitSearchParams: Partial<RecruitSearchParams>,
+) =>
   axiosInstance.get<
     {
       pageInfo: PageInfo;
       recruitments: Recruitment[];
     },
     RecruitSearchParams
-  >('/volunteers/recruitments', {
+  >('/recruitments', {
     params: recruitSearchParams,
   });
