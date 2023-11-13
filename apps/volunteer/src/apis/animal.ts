@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 type PageInfo = {
   totalElements: number;
@@ -13,7 +13,7 @@ type Animal = {
   animalImage: string;
 };
 
-export const searchAnimals = () =>
+export const searchVolunteerAnimals = () =>
   axiosInstance.get<
     {
       pageInfo: PageInfo;
@@ -39,7 +39,7 @@ type Shelter = {
   address: string;
 };
 
-export const getAnimalDetail = (animalId: number) => {
+export const getVolunteerAnimalDetail = (animalId: number) => {
   return axiosInstance.get<{
     name: string;
     birthDate: string;

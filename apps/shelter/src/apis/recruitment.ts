@@ -46,7 +46,7 @@ type Gender = 'MALE' | 'FEMALE';
 type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 
 export const getShelterRecruitments = (
-  recruitSearchParams: RecruitSearchParams,
+  recruitSearchParams: Partial<RecruitSearchParams>,
 ) =>
   axiosInstance.get<
     {
