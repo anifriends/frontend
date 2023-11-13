@@ -1,4 +1,4 @@
-import axiosInstance from '../axiosInstance';
+import axiosInstance from 'shared/apis/axiosInstance';
 
 type PageInfo = {
   totalElements: number;
@@ -45,7 +45,9 @@ type AttendanceStatus = {
 type Gender = 'MALE' | 'FEMALE';
 type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 
-export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
+export const getShelterRecruitments = (
+  recruitSearchParams: RecruitSearchParams,
+) =>
   axiosInstance.get<
     {
       pageInfo: PageInfo;
@@ -56,13 +58,15 @@ export const getRecruitments = (recruitSearchParams: RecruitSearchParams) =>
     params: recruitSearchParams,
   });
 
-export const createRecruitment = (recruitmentParams: PostRecruitmentParams) =>
+export const createShelterRecruitment = (
+  recruitmentParams: PostRecruitmentParams,
+) =>
   axiosInstance.post<unknown, PostRecruitmentParams>(
     `/shelters/recruitments`,
     recruitmentParams,
   );
 
-export const updateRecruitment = (
+export const updateShelterRecruitment = (
   recruitmentId: number,
   recruitmentParams: PostRecruitmentParams,
 ) =>
@@ -71,17 +75,17 @@ export const updateRecruitment = (
     recruitmentParams,
   );
 
-export const deleteRecruitment = (recruitmentId: number) =>
+export const deleteShelterRecruitment = (recruitmentId: number) =>
   axiosInstance.delete<unknown, unknown>(
     `/shelters/recruitments/${recruitmentId}`,
   );
 
-export const closeRecruitment = (recruitmentId: number) =>
+export const closeShelterRecruitment = (recruitmentId: number) =>
   axiosInstance.patch<unknown, unknown>(
     `/shelters/recruitments/${recruitmentId}/close`,
   );
 
-export const getRecruitmentApplicants = (recruitmentId: number) =>
+export const getShelterRecruitmentApplicants = (recruitmentId: number) =>
   axiosInstance.get<{
     applicants: {
       applicantId: number;
@@ -96,7 +100,7 @@ export const getRecruitmentApplicants = (recruitmentId: number) =>
     recruitmentCapacity: number;
   }>(`/shelters/recruitments/${recruitmentId}/applicants`);
 
-export const updateRecruitmentApplicant = (
+export const updateShelterRecruitmentApplicant = (
   recruitmentId: number,
   applicantId: number,
 ) =>
@@ -107,7 +111,9 @@ export const updateRecruitmentApplicant = (
     }
   >(`/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`);
 
-export const getApprovedRecruitmentApplicants = (recruitmentId: number) =>
+export const getShelterApprovedRecruitmentApplicants = (
+  recruitmentId: number,
+) =>
   axiosInstance.get<{
     applicants: {
       volunteerId: number;
@@ -120,7 +126,7 @@ export const getApprovedRecruitmentApplicants = (recruitmentId: number) =>
     }[];
   }>(`/shelters/recruitments/${recruitmentId}/approval`);
 
-export const updateApplicantsApproval = (
+export const updatShelterApplicantsApproval = (
   recruitmentId: number,
   applicants: AttendanceStatus[],
 ) =>
