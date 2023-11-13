@@ -13,7 +13,7 @@ export const useSearch = <Filter>(onSearch: (filter: Filter) => void) => {
     onSearch(filter);
   }, [onSearch, filter]);
 
-  const handlekeywordSubmit = useCallback(
+  const handleKeywordSubmit = useCallback(
     (keyword: string) => {
       setSearchParams({ keyword: keyword });
       setFilter((filter) => {
@@ -41,5 +41,5 @@ export const useSearch = <Filter>(onSearch: (filter: Filter) => void) => {
     }
   }, [searchParams]);
 
-  return { filter, handlekeywordSubmit };
+  return { filter, handleKeywordSubmit };
 };
