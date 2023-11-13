@@ -40,9 +40,7 @@ type VolunteerSearchFilter = {
   category: Category;
 };
 
-export const useVolunteerSearchFilter = () => {
-  const setOnSearch = useSearchHeaderStore((state) => state.setOnSearch);
-
+export const useVolunteerSearch = () => {
   const searchAPI = (filter: Filter) => {
     console.log('filter', filter);
   };
@@ -50,6 +48,8 @@ export const useVolunteerSearchFilter = () => {
   const [filter, setFilterValue] = useSearchFilter<Filter>(searchAPI);
   const [volunteerSearchFilter, setVolunteerSearchFilter] =
     useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
+
+  const setOnSearch = useSearchHeaderStore((state) => state.setOnSearch);
 
   useEffect(() => {
     setOnSearch((keyword) => setFilterValue({ keyword }));

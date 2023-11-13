@@ -7,8 +7,8 @@ import {
   CATEGORY,
   PERIOD,
   RECRUITMENT_STATUS,
-  useVolunteerSearchFilter,
-} from '@/pages/volunteers/search/_hooks/useVolunteerSearchFilter';
+  useVolunteerSearch,
+} from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
 
 const DUMMY_RECRUITMENT = {
   recruitmentId: 1,
@@ -35,7 +35,7 @@ export default function VolunteersSearchPage() {
     setPeriod,
     setRecruitmentStatus,
     setCategory,
-  } = useVolunteerSearchFilter();
+  } = useVolunteerSearch();
 
   const { period, recruitmentStatus, category } = volunteerSearchFilter;
 
