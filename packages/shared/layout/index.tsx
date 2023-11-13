@@ -13,7 +13,7 @@ export default function Layout({ appType }: LayoutProps) {
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
       <Header appType={appType} />
-      <Box overflowY="scroll" width="100%" height="100%" mb="50px" as="main">
+      <Box overflowY="scroll" width="100%" height="100%" as="main">
         <Outlet />
       </Box>
       <BottomNavBar />
