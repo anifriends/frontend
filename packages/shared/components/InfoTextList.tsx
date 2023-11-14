@@ -1,6 +1,6 @@
 import { FlexProps } from '@chakra-ui/react';
-import InfoList from 'components/InfoList';
 
+import InfoList from './InfoList';
 import type { InfoTextItemProps } from './InfoTextItem';
 import InfoTextItem from './InfoTextItem';
 
