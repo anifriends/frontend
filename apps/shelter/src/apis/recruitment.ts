@@ -1,11 +1,11 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type PageInfo = {
+export type PageInfo = {
   totalElements: number;
   hasNext: boolean;
 };
 
-type Recruitment = {
+export type Recruitment = {
   recruitmentId: number;
   recruitmentTitle: string;
   recruitmentStartTime: string;
@@ -25,6 +25,12 @@ type RecruitSearchParams = {
   title: boolean;
   pageSize: number;
   pageNumber: number;
+};
+
+export type RecruitmentSearchResponse = {
+  pageInfo: PageInfo;
+  recruitments: Recruitment[];
+  offset?: number;
 };
 
 type PostRecruitmentParams = {
@@ -48,20 +54,12 @@ type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 export const getShelterRecruitments = async (
   recruitSearchParams: Partial<RecruitSearchParams>,
 ) => {
-  console.log(recruitSearchParams);
-  const data = await axiosInstance.get<
-    {
-      pageInfo: PageInfo;
-      recruitments: Recruitment[];
-    },
+  const { data } = await axiosInstance.get<
+    RecruitmentSearchResponse,
     RecruitSearchParams
-  >('/shelters/recruitments', {
-    params: recruitSearchParams,
-  });
-  return {
-    ...data,
-    offset: recruitSearchParams.pageNumber,
-  };
+  >('/shelters/recruitments', { params: recruitSearchParams });
+
+  return { ...data, offset: recruitSearchParams.pageNumber };
 };
 
 export const createShelterRecruitment = (
