@@ -44,25 +44,22 @@ class AxiosService {
     url: string,
     config?: AxiosRequestConfig<Request>,
   ) {
-    return this.axiosInstance.get<Response>(url, config) as Promise<Response>;
+    return this.axiosInstance.get<Response>(url, config);
   }
 
   post<Response = unknown, Request = unknown>(url: string, data?: Request) {
-    return this.axiosInstance.post<Response>(url, data) as Promise<Response>;
+    return this.axiosInstance.post<Response>(url, data);
   }
 
   delete<Response = unknown, Request = unknown>(
     url: string,
     config?: AxiosRequestConfig<Request>,
   ) {
-    return this.axiosInstance.delete<Response>(
-      url,
-      config,
-    ) as Promise<Response>;
+    return this.axiosInstance.delete<Response>(url, config);
   }
 
   patch<Response = unknown, Request = unknown>(url: string, data?: Request) {
-    return this.axiosInstance.patch<Response>(url, data) as Promise<Response>;
+    return this.axiosInstance.patch<Response>(url, data);
   }
 }
 
