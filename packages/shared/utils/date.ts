@@ -1,3 +1,5 @@
+import { MILISECONDS } from '../constants/date';
+
 export const createFormattedTime = (
   date: Date,
   format = 'YYYY.MM.DD',
@@ -16,4 +18,10 @@ export const createFormattedTime = (
   );
 
   return formattedTime;
+};
+
+export const isSameDay = (a: Date, b: Date): boolean => {
+  const diff = (a.getTime() - b.getTime()) / 1000;
+
+  return Math.trunc(diff / MILISECONDS.DAY) === 0;
 };

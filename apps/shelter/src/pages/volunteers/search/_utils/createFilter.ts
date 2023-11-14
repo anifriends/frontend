@@ -1,5 +1,5 @@
 import { MILISECONDS } from 'shared/constants/date';
-import { createFormattedTime } from 'shared/utils/date';
+import { createFormattedTime, isSameDay } from 'shared/utils/date';
 
 import {
   CATEGORY,
@@ -23,10 +23,9 @@ const createPeriod = (startDate?: string, endDate?: string) => {
   const end = new Date(endDate);
   const today = new Date();
 
-  const diff = (start.getTime() - today.getTime()) / 1000;
-
-  if (Math.floor(diff / MILISECONDS.DAY) === 0) {
+  if (isSameDay(start, today)) {
     const diff = (end.getTime() - start.getTime()) / 1000;
+
     if (diff === MILISECONDS.DAY) {
       return PERIOD.WITHIN_ONE_DAY;
     }
