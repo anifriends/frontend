@@ -3,6 +3,8 @@ import {
   Button,
   Center,
   FormControl,
+  FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Icon,
   Image,
@@ -12,41 +14,105 @@ import {
   InputRightElement,
   VStack,
 } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import RadioGroup from 'shared/components/RadioGroup';
-import useRadioGroup from 'shared/hooks/useRadioGroup';
 import useToggle from 'shared/hooks/useToggle';
+import * as z from 'zod';
 
-type GenderValue = 'FEMALE' | 'MALE';
+import { PersonGenderEng, PersonGenderKor } from '@/types/gender';
 
-type GenderText = '여성' | '남성';
+type Schema = z.infer<typeof schema>;
+
+const schema = z
+  .object({
+    email: z
+      .string()
+      .min(1, '이메일은 필수 정보입니다')
+      .email('유효하지 않은 이메일입니다'),
+    password: z
+      .string()
+      .regex(
+        /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+        '비밀번호는 필수 정보입니다(8자 이상)',
+      ),
+    passwordConfirm: z.string().min(1, '비밀번호 확인 정보는 필수입니다'),
+    name: z.string().min(1, '이름 정보는 필수입니다'),
+    date: z
+      .string()
+      .min(1, '생년월일 정보는 필수입니다')
+      .refine(
+        (val) => new Date(val) < new Date(),
+        `${new Date()
+          .toLocaleDateString('ko-KR')
+          .split('')
+          .filter((v) => v !== ' ')
+          .join('')} 이전으로 선택해주세요`,
+      ),
+    phoneNumber: z
+      .string()
+      .min(1, '전화번호 정보는 필수입니다')
+      .refine(
+        (val) => !Number.isNaN(Number(val)),
+        '전화번호 형식은 숫자입니다',
+      ),
+    gender: z.enum(['FEMALE', 'MALE']),
+  })
+  .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
+    message: '비밀번호가 일치하지 않습니다',
+    path: ['passwordConfirm'],
+  });
 
 export default function SignupPage() {
   const [isPasswordShow, togglePasswordShow] = useToggle();
   const [isPasswordConfirmShow, togglePasswordConfirmShow] = useToggle();
-  const [genderValue, changeGenderValue] = useRadioGroup<GenderValue>('MALE');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: Schema) => {
+    console.log(data);
+  };
 
   return (
     <Box px={4} pb="152px">
       <Center w="100%" py={10}>
         <Image boxSize={160} borderRadius={100} src={AnimalfriendsLogo} />
       </Center>
-      <form>
-        <FormControl mb={2} isRequired>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl mb={2} isRequired isInvalid={errors.email ? true : false}>
           <FormLabel>이메일</FormLabel>
           <InputGroup>
-            <Input placeholder="이메일을 입력하세요" type="email" />
+            <Input
+              {...register('email')}
+              placeholder="이메일을 입력하세요"
+              type="email"
+            />
             <InputRightAddon as="button" bgColor="orange.400" color="white">
               확인
             </InputRightAddon>
           </InputGroup>
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.password ? true : false}
+        >
           <FormLabel>비밀번호</FormLabel>
           <InputGroup>
             <Input
+              {...register('password')}
               placeholder="비밀번호를 입력하세요"
               type={isPasswordShow ? 'text' : 'password'}
             />
@@ -54,11 +120,24 @@ export default function SignupPage() {
               <Icon as={isPasswordShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
+          <FormHelperText>
+            영대문자, 영소문자, 숫자, 특수문자 조합 8자리 이상
+            <br />
+            특수문자: {`!@#$%^&*()-_=+[\\]{};:'",<.>/?`}
+          </FormHelperText>
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
-          <FormLabel>비밀번호</FormLabel>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.passwordConfirm ? true : false}
+        >
+          <FormLabel>비밀번호 확인</FormLabel>
           <InputGroup>
             <Input
+              {...register('passwordConfirm')}
               placeholder="비밀번호를 다시 입력하세요"
               type={isPasswordConfirmShow ? 'text' : 'password'}
             />
@@ -66,28 +145,59 @@ export default function SignupPage() {
               <Icon as={isPasswordConfirmShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
+          <FormErrorMessage>
+            {errors.passwordConfirm && errors.passwordConfirm.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl mb={2} isRequired isInvalid={errors.name ? true : false}>
           <FormLabel>이름</FormLabel>
-          <Input placeholder="이름을 입력하세요" type="text" />
+          <Input
+            {...register('name')}
+            placeholder="이름을 입력하세요"
+            type="text"
+          />
+          <FormErrorMessage>
+            {errors.name && errors.name.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl mb={2} isRequired isInvalid={errors.date ? true : false}>
           <FormLabel>생년월일</FormLabel>
-          <Input type="date" />
+          <Input {...register('date')} type="date" />
+          <FormErrorMessage>
+            {errors.date && errors.date.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.phoneNumber ? true : false}
+        >
           <FormLabel>전화번호</FormLabel>
-          <Input placeholder="보호소 전화번호를 입력하세요" type="tel" />
+          <Input
+            {...register('phoneNumber')}
+            placeholder="전화번호를 입력하세요"
+            type="tel"
+          />
+          <FormHelperText>형식: 01012345678</FormHelperText>
+          <FormErrorMessage>
+            {errors.phoneNumber && errors.phoneNumber.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl mb={2} isRequired isInvalid={errors.gender ? true : false}>
           <FormLabel>성별</FormLabel>
-          <RadioGroup<GenderValue, GenderText>
-            value={genderValue}
-            onChange={changeGenderValue}
-            radios={[
-              { value: 'MALE', text: '남성' },
-              { value: 'FEMALE', text: '여성' },
-            ]}
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <RadioGroup<PersonGenderEng, PersonGenderKor>
+                value={value}
+                onChange={onChange}
+                radios={[
+                  { text: '남성', value: 'MALE' },
+                  { text: '여성', value: 'FEMALE' },
+                ]}
+              />
+            )}
           />
         </FormControl>
         <VStack
