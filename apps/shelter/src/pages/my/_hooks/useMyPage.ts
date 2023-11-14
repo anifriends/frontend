@@ -35,13 +35,6 @@ const createProfile = (response: ShelterInfo): ShelterProfile => {
 export const useMyPage = () => {
   const [isAddressPublic, setIsAddressPublic] = useState(false);
 
-  const getShelterInfo = async (): Promise<ShelterProfile> => {
-    const response = await getShelterInfoAPI();
-    setIsAddressPublic(response.shelterIsOpenedAddress);
-
-    return createProfile(response);
-  };
-
   const updateAddressStatus = async () => {
     try {
       await updateAddressStatusAPI(!isAddressPublic);
@@ -53,7 +46,12 @@ export const useMyPage = () => {
 
   const { data } = useQuery({
     queryKey: ['shelterProfile'],
-    queryFn: getShelterInfo,
+    queryFn: async () => {
+      const response = (await getShelterInfoAPI()).data;
+      setIsAddressPublic(response.shelterIsOpenedAddress);
+
+      return createProfile(response);
+    },
     initialData: {
       shelterName: '',
       email: '',
