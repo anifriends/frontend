@@ -48,13 +48,14 @@ type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 export const getShelterRecruitments = async (
   recruitSearchParams: Partial<RecruitSearchParams>,
 ) => {
+  console.log(recruitSearchParams);
   const data = await axiosInstance.get<
     {
       pageInfo: PageInfo;
       recruitments: Recruitment[];
     },
     RecruitSearchParams
-  >('shelters/recruitments', {
+  >('/shelters/recruitments', {
     params: recruitSearchParams,
   });
   return {

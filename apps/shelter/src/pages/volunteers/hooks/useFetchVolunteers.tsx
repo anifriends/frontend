@@ -2,17 +2,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getShelterRecruitments } from '@/apis/recruitment';
 
-export default function useFetchVolunteers() {
+export default function useFetchVolunteers(pageSize: number) {
   return useInfiniteQuery({
     queryKey: ['recruitments'],
     queryFn: ({ pageParam }) =>
-      getShelterRecruitments({ pageNumber: pageParam }),
+      getShelterRecruitments({ pageNumber: pageParam, pageSize }),
     initialPageParam: 0,
-    getNextPageParam: (lastpage) =>
-      lastpage.data.pageInfo.hasNext
-        ? lastpage?.offset
-          ? lastpage.offset + 1
-          : undefined
-        : undefined,
+    getNextPageParam: ({ data: { pageInfo } }, _, lastPageParam) =>
+      pageInfo.hasNext ? lastPageParam + 1 : null,
   });
 }
