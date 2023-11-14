@@ -6,6 +6,7 @@ export const createFormattedTime = (
 ): string => {
   const formatReplacements: Record<string, string> = {
     YYYY: String(date.getFullYear()),
+    YY: String(date.getFullYear()).substring(2, 4),
     MM: String(date.getMonth() + 1).padStart(2, '0'),
     DD: String(date.getDate()).padStart(2, '0'),
     hh: String(date.getHours()).padStart(2, '0'),
@@ -13,7 +14,7 @@ export const createFormattedTime = (
   };
 
   const formattedTime = format.replace(
-    /YYYY|MM|DD|hh|mm/g,
+    /YYYY|YY|MM|DD|hh|mm/g,
     (match) => formatReplacements[match],
   );
 

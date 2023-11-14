@@ -48,6 +48,6 @@ export const getShelterReviewList = (pageParams: PageParams) =>
       volunteerReviewCount: number;
       volunteerImageUrl: string;
     }[];
-  }>(`/me/reviews`, {
+  }>(`/shelters/me/reviews`, {
     params: pageParams,
   });

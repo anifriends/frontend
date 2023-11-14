@@ -1,31 +1,18 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import ReviewItem from 'shared/components/ReviewItem';
+import { createFormattedTime } from 'shared/utils/date';
 
 import useIntersect from '@/hooks/useIntersection';
 
 import useFetchShelterReviews from './hooks/useFetchShelterReviews';
 import VolunteerProfile from './VolunteerProfile';
 
-const DUMMY_IMAGE = 'https://source.unsplash.com/random';
-
-const DUMMY_IMAGE_LIST = Array.from({ length: 4 }, () => DUMMY_IMAGE);
-const DUMMY_REVIEW = {
-  reviewId: 32,
-  reviewCreatedAt: '2023-03-16T18:00',
-  reviewContent: '시설이 너무 깨끗하고 강아지도...',
-  reviewImageUrls: [DUMMY_IMAGE, DUMMY_IMAGE],
-  volunteerName: '강혜린',
-  volunteerTemperature: 44,
-  volunteerReviewCount: 4,
-  volunteerImageUrl: DUMMY_IMAGE,
-};
-
-const DUMMY_REVIEW_LIST = Array.from({ length: 4 }, () => DUMMY_REVIEW);
-
 const PAGE_SIZE = 10;
 
 function Reviews() {
+  //TODO 봉사자 옆에 화살표 버튼 클릭시 봉사자 프로필 페이지로 가는 기능추가
+
   const {
     data: { pages },
     hasNextPage,
@@ -34,11 +21,7 @@ function Reviews() {
   } = useFetchShelterReviews(PAGE_SIZE);
 
   const totalReviews = pages[0].data.pageInfo.totalElements;
-
   const reviews = pages.flatMap(({ data }) => data.reviews);
-
-  console.log(totalReviews, reviews);
-
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
     if (hasNextPage && !isFetchingNextPage) {
@@ -57,7 +40,7 @@ function Reviews() {
         fontSize="md"
         fontWeight="bold"
       >
-        봉사자들이 작성한 봉사후기{` ${DUMMY_REVIEW_LIST.length}개`}
+        봉사자들이 작성한 봉사후기{` ${totalReviews}개`}
       </Heading>
 
       <VStack spacing={3}>
@@ -72,7 +55,10 @@ function Reviews() {
               volunteerTempature={review.volunteerTemperature}
               volunteerReviewCount={review.volunteerReviewCount}
               volunteerImageUrl={review.volunteerImageUrl}
-              reviewCreatedAt={review.reviewCreatedAt}
+              reviewCreatedAt={createFormattedTime(
+                new Date(review.reviewCreatedAt),
+                'YY.MM.DD.',
+              )}
             />
           </ReviewItem>
         ))}

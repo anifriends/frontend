@@ -36,7 +36,7 @@ export const handlers = [
     await delay(200);
     return HttpResponse.json({ status: 200 });
   }),
-  http.get('/me/reviews', async () => {
+  http.get('/shelters/me/reviews', async () => {
     await delay(200);
     return HttpResponse.json(
       {
