@@ -1,31 +1,14 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type ShelterInfo = {
-  name: string;
-  imageUrl: string;
-  address: string;
-  addressDetail: string;
-  phoneNumber: string;
-  sparePhoneNumber: string;
-  isOpenedAddress: boolean;
-};
+import { ShelterInfo } from '@/types/apis/shetler';
 
 type PasswordUpdateParams = {
   newPassword: string;
   oldPassword: string;
 };
 
-export const getShelterInfo = () =>
-  axiosInstance.get<{
-    shelterId: number;
-    shelterName: string;
-    shelterImageUrl: string;
-    shelterAddress: string;
-    shelterAddressDetail: string;
-    shelterPhoneNumber: string;
-    shelterSparePhoneNumber: string;
-    shelterIsOpenedAddress: boolean;
-  }>('/shelters/me');
+export const getShelterInfoAPI = () =>
+  axiosInstance.get<ShelterInfo>('/shelters/me');
 
 export const updateShelterInfo = (shelterInfo: ShelterInfo) =>
   axiosInstance.patch<unknown, ShelterInfo>('/shelters/me', shelterInfo);
@@ -36,7 +19,7 @@ export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) =>
     passwordUpdateParams,
   );
 
-export const updateAddressStatus = (isOpenedAddress: boolean) =>
+export const updateAddressStatusAPI = (isOpenedAddress: boolean) =>
   axiosInstance.patch<
     unknown,
     {
