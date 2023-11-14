@@ -7,6 +7,11 @@ type PasswordUpdateParams = {
   oldPassword: string;
 };
 
+type PageParams = {
+  pageSize: number;
+  pageNumber: number;
+};
+
 export const getShelterInfoAPI = () =>
   axiosInstance.get<ShelterInfo>('/shelters/me');
 
@@ -27,11 +32,7 @@ export const updateAddressStatusAPI = (isOpenedAddress: boolean) =>
     }
   >('/shelters/me/address/status', { isOpenedAddress });
 
-export const getShelterReviewList = (
-  shelterId: number,
-  pageNumber: number,
-  pageSize: number,
-) =>
+export const getShelterReviewList = (pageParams: PageParams) =>
   axiosInstance.get<{
     pageInfo: {
       totalElements: number;
@@ -45,11 +46,8 @@ export const getShelterReviewList = (
       volunteerName: string;
       volunteerTemperature: number;
       volunteerReviewCount: number;
-      volunteerImageUrl: number;
+      volunteerImageUrl: string;
     }[];
-  }>(`/shelters/${shelterId}/reviews`, {
-    params: {
-      pageSize,
-      pageNumber,
-    },
+  }>(`/me/reviews`, {
+    params: pageParams,
   });

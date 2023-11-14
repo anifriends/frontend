@@ -1,6 +1,10 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
+import { Suspense } from 'react';
 import ReviewItem from 'shared/components/ReviewItem';
 
+import useIntersect from '@/hooks/useIntersection';
+
+import useFetchShelterReviews from './hooks/useFetchShelterReviews';
 import VolunteerProfile from './VolunteerProfile';
 
 const DUMMY_IMAGE = 'https://source.unsplash.com/random';
@@ -19,7 +23,29 @@ const DUMMY_REVIEW = {
 
 const DUMMY_REVIEW_LIST = Array.from({ length: 4 }, () => DUMMY_REVIEW);
 
-export default function MyReviewsPage() {
+const PAGE_SIZE = 10;
+
+function Reviews() {
+  const {
+    data: { pages },
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchShelterReviews(PAGE_SIZE);
+
+  const totalReviews = pages[0].data.pageInfo.totalElements;
+
+  const reviews = pages.flatMap(({ data }) => data.reviews);
+
+  console.log(totalReviews, reviews);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
+
   return (
     <Box px={4}>
       <Heading
@@ -35,10 +61,10 @@ export default function MyReviewsPage() {
       </Heading>
 
       <VStack spacing={3}>
-        {DUMMY_REVIEW_LIST.map((review) => (
+        {reviews.map((review) => (
           <ReviewItem
             content={review.reviewContent}
-            images={DUMMY_IMAGE_LIST}
+            images={review.reviewImageUrls}
             key={review.reviewId}
           >
             <VolunteerProfile
@@ -51,6 +77,15 @@ export default function MyReviewsPage() {
           </ReviewItem>
         ))}
       </VStack>
+      <Box ref={ref} />
     </Box>
+  );
+}
+
+export default function MyReviewsPage() {
+  return (
+    <Suspense fallback={<p>글목록 로딩중...</p>}>
+      <Reviews />
+    </Suspense>
   );
 }
