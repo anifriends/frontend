@@ -5,7 +5,7 @@ const DUMMY_RECRUITMENT = {
   recruitmentTitle: '봉사자를 모집합니다',
   recruitmentStartTime: '2021-11-08T11:44:30.327959',
   recruitmentEndTime: '2021-11-08T11:44:30.327959',
-  recruitmentDeadline: '2021-11-08T11:44:30.327959',
+  recruitmentDeadline: '2023-11-20T11:44:30.327959',
   recruitmentIsClosed: false,
   recruitmentApplicantCount: 15,
   recruitmentCapacity: 15,

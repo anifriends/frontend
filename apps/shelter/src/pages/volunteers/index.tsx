@@ -1,12 +1,22 @@
 import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import RecruitItem from './_components/RecruitItem';
 import useFetchVolunteers from './hooks/useFetchVolunteers';
 import useIntersect from './hooks/useIntersection';
-import RecruitItem from './RecruitItem';
 
 const PAGE_SIZE = 10;
 
 function Recruitments() {
+  const navigate = useNavigate();
+
+  const goToManagePage = (postId: number) => {
+    navigate(`/manage/apply/${postId}`);
+  };
+
+  //TODO recruit id 받아서 마감
+  const closeRecruit = () => {};
+
   const {
     data: { pages },
     hasNextPage,
@@ -29,7 +39,12 @@ function Recruitments() {
   return (
     <>
       {recruitments.map((recruitment) => (
-        <RecruitItem key={recruitment.recruitmentId} {...recruitment} />
+        <RecruitItem
+          key={recruitment.recruitmentId}
+          {...recruitment}
+          onClickManageButton={() => goToManagePage(recruitment.recruitmentId)}
+          onClickCloseRecruitButton={closeRecruit}
+        />
       ))}
       <div ref={ref} />
     </>

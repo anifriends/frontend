@@ -14,8 +14,10 @@ import {
 } from '@chakra-ui/react';
 import MenuIcon from 'shared/assets/icon_menu.svg';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
+import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 
+import { getDDay, getFullDate, getTime } from '../util';
 import RecruitDateText from './RecruitDateText';
 
 type Recruitment = {
@@ -33,6 +35,8 @@ type RecruitItemProps = {
   showMenuButton?: boolean;
   onUpdate?: VoidFunction;
   onDelete?: VoidFunction;
+  onClickManageButton: VoidFunction;
+  onClickCloseRecruitButton: VoidFunction;
 } & Recruitment;
 
 export default function RecruitItem({
@@ -47,6 +51,8 @@ export default function RecruitItem({
   recruitmentIsClosed,
   recruitmentApplicantCount,
   recruitmentCapacity,
+  onClickCloseRecruitButton,
+  onClickManageButton,
 }: RecruitItemProps) {
   return (
     <Box
@@ -59,24 +65,30 @@ export default function RecruitItem({
     >
       <VStack spacing="1.5rem" align="stretch">
         <VStack spacing={2} align="stretch">
-          <LabelText
-            content={recruitmentDeadline}
-            labelTitle={recruitmentIsClosed ? '마감 완료' : '모집중'}
-          />
+          {recruitmentIsClosed ? (
+            <Label type="GRAY" labelTitle="마감완료" />
+          ) : (
+            <LabelText
+              content={`D-${getDDay(recruitmentDeadline)}`}
+              labelTitle="모집중"
+            />
+          )}
           <Text fontWeight="bold" lineHeight="base">
             {recruitmentTitle}
           </Text>
           <Box>
             <RecruitDateText
-              title="봉사일"
-              date={`${recruitmentStartTime}`}
-              time={`${recruitmentStartTime}~${recruitmentEndTime}`}
+              title="봉사일시"
+              date={`${getFullDate(recruitmentStartTime)}`}
+              time={`${getTime(recruitmentStartTime)}~${getTime(
+                recruitmentEndTime,
+              )}`}
             />
             <Flex minWidth="max-content" alignItems="center">
               <RecruitDateText
-                title="마감일"
-                date={`${recruitmentDeadline}`}
-                time={`${recruitmentDeadline}`}
+                title="마감일시"
+                date={`${getFullDate(recruitmentDeadline)}`}
+                time={`${getTime(recruitmentDeadline)}`}
               />
               <Spacer />
               <ApplicantStatus
@@ -89,7 +101,10 @@ export default function RecruitItem({
         {recruitmentIsClosed ? (
           <AttendanceManagementButton />
         ) : (
-          <RecruitingButtons />
+          <RecruitingButtons
+            onClickCloseRecruitButton={onClickCloseRecruitButton}
+            onClickManageButton={onClickManageButton}
+          />
         )}
       </VStack>
       {showMenuButton && <CustomMenu onUpdate={onUpdate} onDelete={onDelete} />}
@@ -97,7 +112,13 @@ export default function RecruitItem({
   );
 }
 
-function RecruitingButtons() {
+function RecruitingButtons({
+  onClickManageButton,
+  onClickCloseRecruitButton,
+}: Pick<
+  RecruitItemProps,
+  'onClickCloseRecruitButton' | 'onClickManageButton'
+>) {
   return (
     <HStack align="stretch" justifyContent="space-between" spacing={5}>
       <Button
@@ -115,6 +136,7 @@ function RecruitingButtons() {
         }}
         fontSize="sm"
         lineHeight={5}
+        onClick={onClickManageButton}
       >
         신청현황
       </Button>
@@ -131,6 +153,7 @@ function RecruitingButtons() {
         _active={{
           bg: undefined,
         }}
+        onClick={onClickCloseRecruitButton}
       >
         마감하기
       </Button>
