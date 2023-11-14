@@ -22,9 +22,9 @@ const handleDeletePost = (postId: number) => {
   console.log('[Delete Volunteer] postId:', postId);
 };
 
-export default function VolunteersDetailPage(postId: number) {
+export default function VolunteersDetailPage() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
-
+  const postId = 5;
   useEffect(() => {
     setOnDelete(handleDeletePost);
 
