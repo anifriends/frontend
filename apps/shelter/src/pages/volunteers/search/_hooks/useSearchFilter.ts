@@ -10,21 +10,14 @@ const parseSearchParams = (searchParams: URLSearchParams) => {
   return params;
 };
 
-export const useSearchFilter = <SearchFilter extends object>(
-  onSearch: (filter: SearchFilter) => void,
-): [SearchFilter, (filter: SearchFilter) => void] => {
+export const useSearchFilter = <SearchFilter extends object>(): [
+  SearchFilter,
+  (filter: SearchFilter) => void,
+] => {
   const setKeyword = useSearchHeaderStore((state) => state.setKeyword);
 
   const [filter, setFilter] = useState<SearchFilter>({} as SearchFilter);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (Object.keys(filter).length === 0) {
-      return;
-    }
-
-    onSearch(filter);
-  }, [filter, onSearch]);
 
   useEffect(() => {
     if (searchParams.size === 0) {
@@ -53,8 +46,10 @@ export const useSearchFilter = <SearchFilter extends object>(
     );
   };
 
-  const setFilterValue = (filter: SearchFilter) => {
-    setSearchParams(createSearchParams(filter), { replace: true });
+  const setFilterValue = (newFilter: SearchFilter) => {
+    setSearchParams(createSearchParams({ ...filter, ...newFilter }), {
+      replace: true,
+    });
     setFilter(filter);
   };
 
