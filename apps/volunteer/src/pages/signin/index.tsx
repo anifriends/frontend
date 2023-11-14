@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Icon,
   Image,
@@ -11,28 +12,64 @@ import {
   InputRightElement,
   VStack,
 } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
+import * as z from 'zod';
+
+type Schema = z.infer<typeof schema>;
+
+const schema = z.object({
+  email: z
+    .string()
+    .min(1, '이메일이 입려되지 않았습니다')
+    .email('유효하지 않은 이메일입니다'),
+  password: z.string().min(1, '비밀번호가 입력되지 않았습니다'),
+});
 
 export default function SigninPage() {
   const [isShow, toggleInputType] = useToggle();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: Schema) => {
+    console.log(data);
+  };
 
   return (
     <Box px={4} pb="152px">
       <Center w="100%" py={10}>
         <Image boxSize={160} borderRadius={100} src={AnimalfriendsLogo} />
       </Center>
-      <form>
-        <FormControl mb={2} isRequired>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl mb={2} isRequired isInvalid={errors.email ? true : false}>
           <FormLabel>이메일</FormLabel>
-          <Input placeholder="이메일을 입력하세요" type="email" />
+          <Input
+            {...register('email')}
+            placeholder="이메일을 입력하세요"
+            type="email"
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.password ? true : false}
+        >
           <FormLabel>비밀번호</FormLabel>
           <InputGroup>
             <Input
+              {...register('password')}
               placeholder="비밀번호를 입력하세요"
               type={isShow ? 'text' : 'password'}
             />
@@ -40,6 +77,9 @@ export default function SigninPage() {
               <Icon as={isShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
         </FormControl>
         <VStack
           maxW="container.sm"
