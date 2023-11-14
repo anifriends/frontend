@@ -83,7 +83,7 @@ export default function RecruitItem({
               title="봉사일시"
               date={`${createFormattedTime(
                 new Date(recruitmentStartTime),
-                'YYYY.MM.DD.',
+                'YYYY.MM.DD',
               )}`}
               time={`${createFormattedTime(
                 new Date(recruitmentStartTime),
@@ -95,7 +95,7 @@ export default function RecruitItem({
                 title="마감일시"
                 date={`${createFormattedTime(
                   new Date(recruitmentDeadline),
-                  'YYYY.MM.DD.',
+                  'YYYY.MM.DD',
                 )}`}
                 time={`${createFormattedTime(
                   new Date(recruitmentDeadline),
