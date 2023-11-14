@@ -10,8 +10,11 @@ const PAGE_SIZE = 10;
 function Recruitments() {
   const navigate = useNavigate();
 
-  const goToManagePage = (postId: number) => {
+  const goToManageApplyPage = (postId: number) => {
     navigate(`/manage/apply/${postId}`);
+  };
+  const goToManageAttendancePage = (postId: number) => {
+    navigate(`/manage/attendance/${postId}`);
   };
 
   //TODO recruit id 받아서 마감
@@ -42,7 +45,12 @@ function Recruitments() {
         <RecruitItem
           key={recruitment.recruitmentId}
           {...recruitment}
-          onClickManageButton={() => goToManagePage(recruitment.recruitmentId)}
+          onClickManageApplyButton={() =>
+            goToManageApplyPage(recruitment.recruitmentId)
+          }
+          onClickManageAttendanceButton={() =>
+            goToManageAttendancePage(recruitment.recruitmentId)
+          }
           onClickCloseRecruitButton={closeRecruit}
         />
       ))}

@@ -35,7 +35,8 @@ type RecruitItemProps = {
   showMenuButton?: boolean;
   onUpdate?: VoidFunction;
   onDelete?: VoidFunction;
-  onClickManageButton: VoidFunction;
+  onClickManageApplyButton: VoidFunction;
+  onClickManageAttendanceButton: VoidFunction;
   onClickCloseRecruitButton: VoidFunction;
 } & Recruitment;
 
@@ -52,7 +53,8 @@ export default function RecruitItem({
   recruitmentApplicantCount,
   recruitmentCapacity,
   onClickCloseRecruitButton,
-  onClickManageButton,
+  onClickManageApplyButton,
+  onClickManageAttendanceButton,
 }: RecruitItemProps) {
   return (
     <Box
@@ -99,11 +101,13 @@ export default function RecruitItem({
           </Box>
         </VStack>
         {recruitmentIsClosed ? (
-          <AttendanceManagementButton />
+          <AttendanceManagementButton
+            onClickManageAttendanceButton={onClickManageAttendanceButton}
+          />
         ) : (
           <RecruitingButtons
             onClickCloseRecruitButton={onClickCloseRecruitButton}
-            onClickManageButton={onClickManageButton}
+            onClickManageApplyButton={onClickManageApplyButton}
           />
         )}
       </VStack>
@@ -113,11 +117,11 @@ export default function RecruitItem({
 }
 
 function RecruitingButtons({
-  onClickManageButton,
+  onClickManageApplyButton,
   onClickCloseRecruitButton,
 }: Pick<
   RecruitItemProps,
-  'onClickCloseRecruitButton' | 'onClickManageButton'
+  'onClickCloseRecruitButton' | 'onClickManageApplyButton'
 >) {
   return (
     <HStack align="stretch" justifyContent="space-between" spacing={5}>
@@ -136,7 +140,7 @@ function RecruitingButtons({
         }}
         fontSize="sm"
         lineHeight={5}
-        onClick={onClickManageButton}
+        onClick={onClickManageApplyButton}
       >
         신청현황
       </Button>
@@ -161,7 +165,9 @@ function RecruitingButtons({
   );
 }
 
-function AttendanceManagementButton() {
+function AttendanceManagementButton({
+  onClickManageAttendanceButton,
+}: Pick<RecruitItemProps, 'onClickManageAttendanceButton'>) {
   return (
     <Button
       border="1px"
@@ -178,6 +184,7 @@ function AttendanceManagementButton() {
       }}
       fontSize="sm"
       lineHeight={5}
+      onClick={onClickManageAttendanceButton}
     >
       출석 관리
     </Button>
