@@ -90,8 +90,8 @@ export const createPeriodSearchFilter = (value: string): SearchFilter => {
   }
 
   return {
-    startDate: createFormattedTime(startDate, '-'),
-    endDate: createFormattedTime(endDate, '-'),
+    startDate: createFormattedTime(startDate, 'YYYY-MM-DD'),
+    endDate: createFormattedTime(endDate, 'YYYY-MM-DD'),
   };
 };
 
