@@ -45,18 +45,24 @@ type AttendanceStatus = {
 type Gender = 'MALE' | 'FEMALE';
 type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
 
-export const getShelterRecruitments = (
+export const getShelterRecruitments = async (
   recruitSearchParams: Partial<RecruitSearchParams>,
-) =>
-  axiosInstance.get<
+) => {
+  console.log(recruitSearchParams);
+  const data = await axiosInstance.get<
     {
       pageInfo: PageInfo;
       recruitments: Recruitment[];
     },
     RecruitSearchParams
-  >('shelters/recruitments', {
+  >('/shelters/recruitments', {
     params: recruitSearchParams,
   });
+  return {
+    ...data,
+    offset: recruitSearchParams.pageNumber,
+  };
+};
 
 export const createShelterRecruitment = (
   recruitmentParams: PostRecruitmentParams,

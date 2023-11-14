@@ -11,5 +11,5 @@ export default function RecruitDateText({
   date,
   time,
 }: RecruitDateTextProps) {
-  return <Text fontSize="xs">{`${title} | ${date} · ${time}`}</Text>;
+  return <Text fontSize="xs">{`${title} | ${date} • ${time}`}</Text>;
 }

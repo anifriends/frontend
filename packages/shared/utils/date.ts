@@ -25,3 +25,11 @@ export const isSameDay = (a: Date, b: Date): boolean => {
 
   return Math.trunc(diff / MILISECONDS.DAY) === 0;
 };
+
+export function getDDay(deadLine: string) {
+  const deadLineDate = new Date(deadLine).getTime();
+  const currentDate = new Date().getTime();
+  const diffDate = deadLineDate - currentDate;
+
+  return Math.floor(diffDate / (1000 * MILISECONDS.DAY)).toString();
+}

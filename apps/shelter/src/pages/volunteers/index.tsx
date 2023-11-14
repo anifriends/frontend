@@ -1,27 +1,71 @@
-import RecruitItem from './RecruitItem';
+import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const DUMMY_RECRUITMENT = {
-  recruitmentId: 1,
-  recruitmentTitle: '봉사자를 모집합니다',
-  recruitmentStartTime: '2021-11-08T11:44:30.327959',
-  recruitmentEndTime: '2021-11-08T11:44:30.327959',
-  recruitmentDeadline: '2021-11-08T11:44:30.327959',
-  recruitmentIsClosed: false,
-  recruitmentApplicantCount: 15,
-  recruitmentCapacity: 15,
-};
+import RecruitItem from './_components/RecruitItem';
+import useFetchVolunteers from './hooks/useFetchVolunteers';
+import useIntersect from './hooks/useIntersection';
 
-const DUMMY_RECRUITMENT_LIST = Array.from(
-  { length: 10 },
-  () => DUMMY_RECRUITMENT,
-);
+const PAGE_SIZE = 10;
+
+function Recruitments() {
+  const navigate = useNavigate();
+
+  const goToManageApplyPage = (postId: number) => {
+    navigate(`/manage/apply/${postId}`);
+  };
+  const goToManageAttendancePage = (postId: number) => {
+    navigate(`/manage/attendance/${postId}`);
+  };
+  const goToUpdatePage = (postId: number) => {
+    navigate(`/volunteers/write/${postId}`);
+  };
+
+  //TODO 삭제 버튼 눌렀을 때 기능 추가
+
+  //TODO recruit id 받아서 마감
+  const closeRecruit = () => {};
+
+  const {
+    data: { pages },
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchVolunteers(PAGE_SIZE);
+
+  const recruitments = pages.flatMap(({ data }) => data.recruitments);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
+
+  return (
+    <>
+      {recruitments.map((recruitment) => (
+        <RecruitItem
+          key={recruitment.recruitmentId}
+          {...recruitment}
+          onClickManageApplyButton={() =>
+            goToManageApplyPage(recruitment.recruitmentId)
+          }
+          onClickManageAttendanceButton={() =>
+            goToManageAttendancePage(recruitment.recruitmentId)
+          }
+          onClickCloseRecruitButton={closeRecruit}
+          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
+        />
+      ))}
+      <div ref={ref} />
+    </>
+  );
+}
 
 export default function VolunteersPage() {
   return (
-    <>
-      {DUMMY_RECRUITMENT_LIST.map((recruitment) => (
-        <RecruitItem key={recruitment.recruitmentId} {...recruitment} />
-      ))}
-    </>
+    <Suspense fallback={<p>글목록 로딩중...</p>}>
+      <Recruitments />
+    </Suspense>
   );
 }

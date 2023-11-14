@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 
-import RecruitItem from '@/pages/volunteers/RecruitItem';
+import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import FilterGroup from '@/pages/volunteers/search/_components/FilterGroup';
 import FilterSelect from '@/pages/volunteers/search/_components/FilterSelect';
 import {

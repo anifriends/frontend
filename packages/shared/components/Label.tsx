@@ -5,6 +5,7 @@ const LABEL_BACKGROUND_COLOR = {
   ORANGE: 'orange.400',
   YELLOW: 'yellow.300',
   RED: 'red.400',
+  GRAY: 'gray.400',
 } as const;
 
 export type LabelProps = {
@@ -21,7 +22,9 @@ export default function Label({ labelTitle, type = 'GREEN' }: LabelProps) {
       fontSize="sm"
       fontWeight="normal"
       lineHeight={4}
+      textAlign="center"
       textTransform="uppercase"
+      maxW={14}
     >
       {labelTitle}
     </Badge>
