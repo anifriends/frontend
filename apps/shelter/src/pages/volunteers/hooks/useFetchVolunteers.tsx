@@ -1,9 +1,9 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 import { getShelterRecruitments } from '@/apis/recruitment';
 
 export default function useFetchVolunteers(pageSize: number) {
-  return useInfiniteQuery({
+  return useSuspenseInfiniteQuery({
     queryKey: ['recruitments'],
     queryFn: ({ pageParam }) =>
       getShelterRecruitments({ pageNumber: pageParam, pageSize }),

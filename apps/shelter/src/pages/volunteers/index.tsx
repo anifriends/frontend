@@ -1,12 +1,20 @@
+import { Suspense } from 'react';
+
 import useFetchVolunteers from './hooks/useFetchVolunteers';
 import useIntersect from './hooks/useIntersection';
 import RecruitItem from './RecruitItem';
 
-export default function VolunteersPage() {
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, status } =
-    useFetchVolunteers(10);
+const PAGE_SIZE = 10;
 
-  const recruitments = data?.pages.flatMap(({ data }) => data.recruitments);
+function Recruitments() {
+  const {
+    data: { pages },
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useFetchVolunteers(PAGE_SIZE);
+
+  const recruitments = pages.flatMap(({ data }) => data.recruitments);
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
@@ -18,16 +26,20 @@ export default function VolunteersPage() {
     }
   });
 
-  if (status === 'pending') {
-    return <> '로딩 중'</>;
-  }
-
   return (
     <>
-      {recruitments?.map((recruitment) => (
+      {recruitments.map((recruitment) => (
         <RecruitItem key={recruitment.recruitmentId} {...recruitment} />
       ))}
       <div ref={ref} />
     </>
+  );
+}
+
+export default function VolunteersPage() {
+  return (
+    <Suspense fallback={<p>글목록 로딩중...</p>}>
+      <Recruitments />
+    </Suspense>
   );
 }

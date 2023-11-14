@@ -18,7 +18,7 @@ const DUMMY_RECRUITMENT_LIST = Array.from(
 
 export const handlers = [
   http.get('/shelters/recruitments', async () => {
-    await delay(200);
+    await delay(1000);
     return HttpResponse.json(
       {
         pageInfo: {
