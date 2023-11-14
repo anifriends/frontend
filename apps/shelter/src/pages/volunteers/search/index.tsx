@@ -1,5 +1,7 @@
 import { Box } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
+import { Recruitment } from '@/apis/recruitment';
 import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import FilterGroup from '@/pages/volunteers/search/_components/FilterGroup';
 import FilterSelect from '@/pages/volunteers/search/_components/FilterSelect';
@@ -12,6 +14,7 @@ import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVoluntee
 
 export default function VolunteersSearchPage() {
   const {
+    ref,
     isSearched,
     recruitmentList,
     volunteerSearchFilter,
@@ -21,6 +24,23 @@ export default function VolunteersSearchPage() {
   const { period, recruitmentStatus, category } = volunteerSearchFilter;
   const { setPeriod, setRecruitmentStatus, setCategory } =
     setVolunteerSearchFilter;
+
+  const navigate = useNavigate();
+
+  const goToManageApplyPage = (postId: number) => {
+    navigate(`/manage/apply/${postId}`);
+  };
+  const goToManageAttendancePage = (postId: number) => {
+    navigate(`/manage/attendance/${postId}`);
+  };
+  const goToUpdatePage = (postId: number) => {
+    navigate(`/volunteers/write/${postId}`);
+  };
+
+  //TODO 삭제 버튼 눌렀을 때 기능 추가
+
+  //TODO recruit id 받아서 마감
+  const closeRecruit = () => {};
 
   if (!isSearched) {
     return null;
@@ -59,9 +79,21 @@ export default function VolunteersSearchPage() {
           <option value={CATEGORY.CONTENT}>글 내용</option>
         </FilterSelect>
       </FilterGroup>
-      {recruitmentList?.map((recruitmentItem: any) => (
-        <RecruitItem key={recruitmentItem.recruitmentId} {...recruitmentItem} />
+      {recruitmentList?.map((recruitment: Recruitment) => (
+        <RecruitItem
+          key={recruitment.recruitmentId}
+          {...recruitment}
+          onClickManageApplyButton={() =>
+            goToManageApplyPage(recruitment.recruitmentId)
+          }
+          onClickManageAttendanceButton={() =>
+            goToManageAttendancePage(recruitment.recruitmentId)
+          }
+          onClickCloseRecruitButton={closeRecruit}
+          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
+        />
       ))}
+      <div ref={ref} />
     </Box>
   );
 }
