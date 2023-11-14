@@ -16,16 +16,21 @@ export type Recruitment = {
   recruitmentCapacity: number;
 };
 
-type RecruitSearchParams = {
+export type RecruitSearchFilter = Partial<{
   keyword: string;
   startDate: string;
   endDate: string;
   isClosed: boolean;
   content: boolean;
   title: boolean;
+}>;
+
+export type Pagination = {
   pageSize: number;
   pageNumber: number;
 };
+
+type RecruitSearchParams = RecruitSearchFilter & Pagination;
 
 export type RecruitmentSearchResponse = {
   pageInfo: PageInfo;
