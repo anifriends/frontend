@@ -1,10 +1,9 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { useSearchFilter } from '@/pages/volunteers/search/_hooks/useSearchFilter';
+import { RecruitSearchFilter } from '@/apis/recruitment';
 import {
   Category,
   RecruitmentStatus,
-  SearchFilter,
   VolunteerSearchFilter,
 } from '@/pages/volunteers/search/_types/filter';
 import {
@@ -14,17 +13,10 @@ import {
   createVolunteerSearchFilter,
 } from '@/pages/volunteers/search/_utils/createFilter';
 
-export const useVolunteerSearchFilter = (searchAPI: () => void) => {
-  const search = (filter: SearchFilter) => {
-    console.log('filter', filter);
-    // TODO: filter 를 통해 request 객체 가공하기
-    // request = createSearchRequest(filter);
-    // searchAPI(request);
-    searchAPI();
-  };
-
-  const [searchFilter, setSearchFilter] = useSearchFilter<SearchFilter>(search);
-
+export const useVolunteerSearchFilter = (
+  searchFilter: RecruitSearchFilter,
+  setSearchFilter: (filter: RecruitSearchFilter) => void,
+) => {
   const [volunteerSearchFilter, setVolunteerSearchFilter] =
     useState<VolunteerSearchFilter>({} as VolunteerSearchFilter);
 
@@ -47,7 +39,7 @@ export const useVolunteerSearchFilter = (searchAPI: () => void) => {
 
     const newFilter = createPeriodSearchFilter(value);
 
-    setSearchFilter({ ...searchFilter, ...newFilter });
+    setSearchFilter(newFilter);
   };
 
   const setRecruitmentStatus = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -60,7 +52,7 @@ export const useVolunteerSearchFilter = (searchAPI: () => void) => {
 
     const newFilter = createRecruitmentStatusSearchFilter(value);
 
-    setSearchFilter({ ...searchFilter, ...newFilter });
+    setSearchFilter(newFilter);
   };
 
   const setCategory = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -73,16 +65,10 @@ export const useVolunteerSearchFilter = (searchAPI: () => void) => {
 
     const newFilter = createCategorySearchFilter(value);
 
-    setSearchFilter({ ...searchFilter, ...newFilter });
-  };
-
-  const setKeywordFilter = (keyword: string) => {
-    setSearchFilter({ ...searchFilter, keyword });
+    setSearchFilter(newFilter);
   };
 
   return {
-    isSearched: Boolean(searchFilter.keyword),
-    setKeywordFilter,
     volunteerSearchFilter,
     setVolunteerSearchFilter: { setPeriod, setRecruitmentStatus, setCategory },
   };
