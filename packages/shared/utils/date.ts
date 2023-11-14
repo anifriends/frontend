@@ -3,11 +3,11 @@ export const createFormattedTime = (
   format = 'YYYY.MM.DD',
 ): string => {
   const formatReplacements: Record<string, string> = {
-    YYYY: date.getFullYear().toString(),
-    MM: (date.getMonth() + 1).toString().padStart(2, '0'),
-    DD: date.getDate().toString().padStart(2, '0'),
-    hh: date.getHours().toString().padStart(2, '0'),
-    mm: date.getMinutes().toString().padStart(2, '0'),
+    YYYY: String(date.getFullYear()),
+    MM: String(date.getMonth() + 1).padStart(2, '0'),
+    DD: String(date.getDate()).padStart(2, '0'),
+    hh: String(date.getHours()).padStart(2, '0'),
+    mm: String(date.getMinutes()).padStart(2, '0'),
   };
 
   const formattedTime = format.replace(
