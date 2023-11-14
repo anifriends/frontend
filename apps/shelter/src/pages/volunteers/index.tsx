@@ -32,7 +32,7 @@ function Recruitments() {
     fetchNextPage,
   } = useFetchVolunteers(PAGE_SIZE);
 
-  const recruitments = pages.flatMap(({ data }) => data.recruitments);
+  const recruitments = pages.flatMap(({ recruitments }) => recruitments);
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
