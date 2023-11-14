@@ -16,6 +16,11 @@ function Recruitments() {
   const goToManageAttendancePage = (postId: number) => {
     navigate(`/manage/attendance/${postId}`);
   };
+  const goToUpdatePage = (postId: number) => {
+    navigate(`/volunteers/write/${postId}`);
+  };
+
+  //TODO 삭제 버튼 눌렀을 때 기능 추가
 
   //TODO recruit id 받아서 마감
   const closeRecruit = () => {};
@@ -31,10 +36,7 @@ function Recruitments() {
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
-    console.log('다시 패칭 요청 할까요?');
-    console.log(hasNextPage, isFetchingNextPage);
     if (hasNextPage && !isFetchingNextPage) {
-      console.log('다시 패칭 요청 할게요');
       fetchNextPage();
     }
   });
@@ -52,6 +54,7 @@ function Recruitments() {
             goToManageAttendancePage(recruitment.recruitmentId)
           }
           onClickCloseRecruitButton={closeRecruit}
+          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
         />
       ))}
       <div ref={ref} />
