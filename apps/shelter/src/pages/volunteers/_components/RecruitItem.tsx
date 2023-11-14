@@ -16,8 +16,8 @@ import MenuIcon from 'shared/assets/icon_menu.svg';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
 import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
+import { createFormattedTime, getDDay } from 'shared/utils/date';
 
-import { getDDay, getFullDate, getTime } from '../util';
 import RecruitDateText from './RecruitDateText';
 
 type Recruitment = {
@@ -81,16 +81,26 @@ export default function RecruitItem({
           <Box>
             <RecruitDateText
               title="봉사일시"
-              date={`${getFullDate(recruitmentStartTime)}`}
-              time={`${getTime(recruitmentStartTime)}~${getTime(
-                recruitmentEndTime,
+              date={`${createFormattedTime(
+                new Date(recruitmentStartTime),
+                'YYYY.MM.DD.',
               )}`}
+              time={`${createFormattedTime(
+                new Date(recruitmentStartTime),
+                'hh:mm',
+              )}~${createFormattedTime(new Date(recruitmentEndTime), 'hh:mm')}`}
             />
             <Flex minWidth="max-content" alignItems="center">
               <RecruitDateText
                 title="마감일시"
-                date={`${getFullDate(recruitmentDeadline)}`}
-                time={`${getTime(recruitmentDeadline)}`}
+                date={`${createFormattedTime(
+                  new Date(recruitmentDeadline),
+                  'YYYY.MM.DD.',
+                )}`}
+                time={`${createFormattedTime(
+                  new Date(recruitmentDeadline),
+                  'hh:mm',
+                )}`}
               />
               <Spacer />
               <ApplicantStatus
