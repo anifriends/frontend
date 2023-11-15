@@ -8,7 +8,7 @@ export type SigninParams = checkDuplicatedEmailParams & {
 
 export type SigninResponse = {
   accessToken: string;
-  useId: string;
+  useId: number;
   role: string;
 };
 
