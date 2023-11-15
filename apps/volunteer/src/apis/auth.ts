@@ -1,44 +1,68 @@
+import type { AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import axiosInstance from 'shared/apis/axiosInstance';
+import type {
+  checkDuplicatedEmailParams,
+  checkDuplicatedEmailResponse,
+  SigninParams,
+  SigninResponse,
+} from 'shared/types/apis/auth';
+import type { ErrorResponse } from 'shared/types/apis/error';
 
-export const signInVolunteer = ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) =>
-  axiosInstance.post<
-    {
-      accessToken: string;
-      userId: number;
-      role: string;
-    },
-    {
-      email: string;
-      password: string;
+import { SignupParams } from '@/types/apis/auth';
+
+export const signinVolunteer = async (
+  data: SigninParams,
+): Promise<AxiosResponse<SigninResponse> | AxiosError<ErrorResponse>> => {
+  try {
+    const response = await axiosInstance.post<SigninResponse, SigninParams>(
+      '/auth/volunteers/login',
+      data,
+    );
+
+    return response;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error;
     }
-  >('/auth/volunteers/login', {
-    email,
-    password,
-  });
 
-type SignUpParams = {
-  email: string;
-  password: string;
-  name: string;
-  birthDate: string;
-  phoneNumber: string;
-  gender: 'FEMALE' | 'MALE';
+    throw error;
+  }
 };
 
-export const signUpVolunteer = (signUpParams: SignUpParams) =>
-  axiosInstance.post<unknown, SignUpParams>('/volunteers', signUpParams);
+export const signupVolunteer = async (
+  data: SignupParams,
+): Promise<AxiosError<ErrorResponse> | void> => {
+  try {
+    await axiosInstance.post<unknown, SignupParams>('/volunteers', data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error;
+    }
 
-export const checkDuplicatedVolunteerEmail = (email: string) => {
-  return axiosInstance.post<{ isDuplicated: boolean }, { email: string }>(
-    '/volunteers/email',
-    {
+    throw error;
+  }
+};
+
+export const checkDuplicatedVolunteerEmail = async (
+  email: string,
+): Promise<
+  AxiosResponse<checkDuplicatedEmailResponse> | AxiosError<ErrorResponse>
+> => {
+  try {
+    const response = axiosInstance.post<
+      checkDuplicatedEmailResponse,
+      checkDuplicatedEmailParams
+    >('/volunteers/email', {
       email,
-    },
-  );
+    });
+
+    return response;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error;
+    }
+
+    throw error;
+  }
 };
