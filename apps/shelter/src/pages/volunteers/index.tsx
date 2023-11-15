@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import useIntersect from '@/hooks/useIntersection';
+
 import RecruitItem from './_components/RecruitItem';
 import useFetchVolunteers from './hooks/useFetchVolunteers';
-import useIntersect from './hooks/useIntersection';
 
 const PAGE_SIZE = 10;
 
