@@ -1,15 +1,13 @@
 import { MILISECONDS } from 'shared/constants/date';
 import { createFormattedTime, isSameDay } from 'shared/utils/date';
 
+import { RecruitSearchFilter } from '@/apis/recruitment';
 import {
   CATEGORY,
   PERIOD,
   RECRUITMENT_STATUS,
 } from '@/pages/volunteers/search/_constants/filter';
-import {
-  SearchFilter,
-  VolunteerSearchFilter,
-} from '@/pages/volunteers/search/_types/filter';
+import { VolunteerSearchFilter } from '@/pages/volunteers/search/_types/filter';
 
 const createPeriod = (startDate?: string, endDate?: string) => {
   if (!startDate) {
@@ -41,7 +39,7 @@ const createPeriod = (startDate?: string, endDate?: string) => {
 };
 
 export const createVolunteerSearchFilter = (
-  filter: SearchFilter,
+  filter: RecruitSearchFilter,
 ): VolunteerSearchFilter => {
   const { startDate, endDate, isClosed, title, content } = filter;
 
@@ -53,8 +51,7 @@ export const createVolunteerSearchFilter = (
   }
 
   if (isClosed) {
-    volunteerSearchFilter.recruitmentStatus =
-      isClosed === String(true) ? 'isClosed' : 'isOpen';
+    volunteerSearchFilter.recruitmentStatus = isClosed ? 'isClosed' : 'isOpen';
   }
 
   if (title) {
@@ -68,7 +65,9 @@ export const createVolunteerSearchFilter = (
   return volunteerSearchFilter;
 };
 
-export const createPeriodSearchFilter = (value: string): SearchFilter => {
+export const createPeriodSearchFilter = (
+  value: string,
+): RecruitSearchFilter => {
   if (Object.values(PERIOD).every((period) => period !== value)) {
     return { startDate: undefined, endDate: undefined };
   }
@@ -96,25 +95,27 @@ export const createPeriodSearchFilter = (value: string): SearchFilter => {
 
 export const createRecruitmentStatusSearchFilter = (
   value: string,
-): SearchFilter => {
+): RecruitSearchFilter => {
   if (value === RECRUITMENT_STATUS.IS_CLOSED) {
-    return { isClosed: String(true) };
+    return { isClosed: true };
   }
 
   if (value === RECRUITMENT_STATUS.IS_OPEN) {
-    return { isClosed: String(false) };
+    return { isClosed: false };
   }
 
   return { isClosed: undefined };
 };
 
-export const createCategorySearchFilter = (value: string): SearchFilter => {
+export const createCategorySearchFilter = (
+  value: string,
+): RecruitSearchFilter => {
   if (value === CATEGORY.TITLE) {
-    return { title: String(true), content: undefined };
+    return { title: true, content: undefined };
   }
 
   if (value === CATEGORY.CONTENT) {
-    return { title: undefined, content: String(true) };
+    return { title: undefined, content: true };
   }
 
   return { title: undefined, content: undefined };
