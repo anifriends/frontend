@@ -10,15 +10,29 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
+import type {
+  SigninRequestData,
+  SigninResponseData,
+} from 'shared/types/apis/auth';
+import { ErrorResponseData } from 'shared/types/apis/error';
 import * as z from 'zod';
+
+import { signinShelter } from '@/apis/auth';
+import PATH from '@/constants/path';
 
 type Schema = z.infer<typeof schema>;
 
@@ -31,18 +45,47 @@ const schema = z.object({
 });
 
 export default function SigninPage() {
-  const [isShow, toggleInputType] = useToggle();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [isShow, toggleInputShow] = useToggle();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setFocus,
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const { mutate } = useMutation<
+    AxiosResponse<SigninResponseData>,
+    AxiosError<ErrorResponseData>,
+    SigninRequestData
+  >({
+    mutationFn: (data) => signinShelter(data),
+    onSuccess: () => {
+      navigate(`/${PATH.VOLUNTEERS.INDEX}`);
+    },
+    onError: (error) => {
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 1500,
+      });
 
-  const onSubmit = (data: Schema) => {
-    console.log(data);
+      setFocus('email');
+    },
+  });
+
+  const goSignupPage = () => {
+    navigate(`/${PATH.SIGNUP}`);
   };
+
+  const onSubmit = async (data: Schema) => {
+    mutate(data);
+  };
+
+  useEffect(() => setFocus('email'), [setFocus]);
 
   return (
     <Box px={4} pb="104px">
@@ -73,7 +116,7 @@ export default function SigninPage() {
               placeholder="비밀번호를 입력하세요"
               type={isShow ? 'text' : 'password'}
             />
-            <InputRightElement onClick={toggleInputType}>
+            <InputRightElement onClick={toggleInputShow}>
               <Icon as={isShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
@@ -121,6 +164,7 @@ export default function SigninPage() {
             _active={{
               bg: undefined,
             }}
+            onClick={goSignupPage}
           >
             회원가입
           </Button>
