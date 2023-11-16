@@ -1,17 +1,17 @@
-export type checkDuplicatedEmailParams = {
+export type checkDuplicatedEmailRequestData = {
   email: string;
 };
 
-export type SigninParams = checkDuplicatedEmailParams & {
+export type SigninRequestData = checkDuplicatedEmailRequestData & {
   password: string;
 };
 
-export type SigninResponse = {
+export type SigninResponseData = {
   accessToken: string;
   useId: number;
   role: string;
 };
 
-export type checkDuplicatedEmailResponse = {
+export type checkDuplicatedEmailResponseData = {
   isDuplicated: boolean;
 };

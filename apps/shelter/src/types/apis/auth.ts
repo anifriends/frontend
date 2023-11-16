@@ -1,6 +1,6 @@
-import { SigninParams } from 'shared/types/apis/auth';
+import { SigninRequestData } from 'shared/types/apis/auth';
 
-export type SignupParams = SigninParams & {
+export type SignupRequestData = SigninRequestData & {
   name: string;
   address: string;
   addressDetail: string;
