@@ -1,8 +1,8 @@
-import { SigninParams } from 'shared/types/apis/auth';
+import { SigninRequestData } from 'shared/types/apis/auth';
 
 import { PersonGenderEng } from '../gender';
 
-export type SignupParams = SigninParams & {
+export type SignupRequestData = SigninRequestData & {
   name: string;
   birthDate: string;
   phoneNumber: string;
