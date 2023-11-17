@@ -12,17 +12,30 @@ import {
   InputGroup,
   InputRightAddon,
   InputRightElement,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import RadioGroup from 'shared/components/RadioGroup';
 import useToggle from 'shared/hooks/useToggle';
+import {
+  CheckDuplicatedEmailRequestData,
+  CheckDuplicatedEmailResponseData,
+} from 'shared/types/apis/auth';
+import { ErrorResponseData } from 'shared/types/apis/error';
 import * as z from 'zod';
 
+import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';
+import PATH from '@/constants/path';
+import { SignupRequestData } from '@/types/apis/auth';
 import { PersonGenderEng, PersonGenderKor } from '@/types/gender';
 
 type Schema = z.infer<typeof schema>;
@@ -32,16 +45,21 @@ const schema = z
     email: z
       .string()
       .min(1, '이메일은 필수 정보입니다')
-      .email('유효하지 않은 이메일입니다'),
-    password: z
-      .string()
       .regex(
-        /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-        '비밀번호는 필수 정보입니다(8자 이상)',
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        '이메일 형식에 맞게 적어주세요',
       ),
+    isEmailDuplicated: z.boolean(),
+    password: z.string(),
+    // TODO 나중에 추가 예정
+    //
+    // .regex(
+    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    //   '비밀번호는 필수 정보입니다(8자 이상)',
+    // ),
     passwordConfirm: z.string().min(1, '비밀번호 확인 정보는 필수입니다'),
     name: z.string().min(1, '이름 정보는 필수입니다'),
-    date: z
+    birthDate: z
       .string()
       .min(1, '생년월일 정보는 필수입니다')
       .refine(
@@ -67,6 +85,8 @@ const schema = z
   });
 
 export default function SignupPage() {
+  const navigate = useNavigate();
+  const toast = useToast();
   const [isPasswordShow, togglePasswordShow] = useToggle();
   const [isPasswordConfirmShow, togglePasswordConfirmShow] = useToggle();
   const {
@@ -74,12 +94,142 @@ export default function SignupPage() {
     handleSubmit,
     formState: { errors },
     control,
+    watch,
+    setValue,
+    setFocus,
+    getValues,
   } = useForm<Schema>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      isEmailDuplicated: true,
+    },
+  });
+  const watchIsEmailDuplicated = watch('isEmailDuplicated');
+  const watchEmail = watch('email');
+  const { mutate: signupVolunteerMutate } = useMutation<
+    AxiosResponse<unknown>,
+    AxiosError<ErrorResponseData>,
+    SignupRequestData
+  >({
+    mutationFn: (data) => signupVolunteer(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '회원가입이 완료되었습니다',
+        status: 'success',
+        duration: 1500,
+      });
+
+      navigate(`/${PATH.SIGNIN}`);
+    },
+    onError: (error) => {
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 1500,
+      });
+    },
+  });
+  const { mutate: checkDuplicatedEmailMutate } = useMutation<
+    AxiosResponse<CheckDuplicatedEmailResponseData>,
+    AxiosError<ErrorResponseData>,
+    CheckDuplicatedEmailRequestData
+  >({
+    mutationFn: (data) => checkDuplicatedVolunteerEmail(data),
+    onSuccess: ({ data: { isDuplicated } }) => {
+      if (isDuplicated) {
+        setValue('isEmailDuplicated', true);
+
+        toast({
+          position: 'top',
+          description: '이메일이 중복됩니다',
+          status: 'error',
+          duration: 2500,
+        });
+
+        setFocus('email');
+      } else {
+        setValue('isEmailDuplicated', false);
+
+        toast({
+          position: 'top',
+          description: '이메일이 확인되었습니다',
+          status: 'success',
+          duration: 2500,
+        });
+      }
+    },
+    onError: (error) => {
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 2500,
+      });
+
+      setFocus('email');
+    },
   });
 
-  const onSubmit = (data: Schema) => {
-    console.log(data);
+  const checkDuplicatedEmail = () => {
+    if (!watchIsEmailDuplicated) {
+      setValue('email', '');
+      setValue('isEmailDuplicated', true);
+      return;
+    }
+
+    const isValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+      watchEmail,
+    );
+
+    if (!isValid) {
+      toast({
+        position: 'top',
+        description: '이메일이 유효하지 않습니다',
+        status: 'error',
+        duration: 1500,
+      });
+
+      setValue('isEmailDuplicated', true);
+      setFocus('email');
+
+      return;
+    }
+
+    checkDuplicatedEmailMutate({ email: getValues('email') });
+  };
+
+  const goSigninPage = () => navigate(`/${PATH.SIGNIN}`);
+
+  const onSubmit = ({
+    email,
+    password,
+    name,
+    birthDate,
+    phoneNumber,
+    gender,
+    isEmailDuplicated,
+  }: Schema) => {
+    if (isEmailDuplicated) {
+      toast({
+        position: 'top',
+        description: '이메일 중복 확인을 해주세요',
+        status: 'error',
+        duration: 1500,
+      });
+
+      return;
+    }
+
+    signupVolunteerMutate({
+      email,
+      password,
+      name,
+      birthDate,
+      phoneNumber,
+      gender,
+    });
   };
 
   return (
@@ -94,10 +244,17 @@ export default function SignupPage() {
             <Input
               {...register('email')}
               placeholder="이메일을 입력하세요"
-              type="email"
+              type="text"
+              disabled={watchIsEmailDuplicated ? false : true}
             />
-            <InputRightAddon as="button" bgColor="orange.400" color="white">
-              확인
+            <InputRightAddon
+              as="button"
+              type="button"
+              bgColor="orange.400"
+              color="white"
+              onClick={checkDuplicatedEmail}
+            >
+              {watchIsEmailDuplicated ? '확인' : '초기화'}
             </InputRightAddon>
           </InputGroup>
           <FormErrorMessage>
@@ -160,11 +317,15 @@ export default function SignupPage() {
             {errors.name && errors.name.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl mb={2} isRequired isInvalid={errors.date ? true : false}>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.birthDate ? true : false}
+        >
           <FormLabel>생년월일</FormLabel>
-          <Input {...register('date')} type="date" />
+          <Input {...register('birthDate')} type="date" />
           <FormErrorMessage>
-            {errors.date && errors.date.message}
+            {errors.birthDate && errors.birthDate.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl
