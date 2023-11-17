@@ -85,10 +85,9 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
         element: <MyPage />,
       },
       {
-        id: PAGE_TYPE.SETTINGS,
         path: PATH.SETTINGS.INDEX,
-        element: <SettingsPage />,
         children: [
+          { id: PAGE_TYPE.SETTINGS, index: true, element: <SettingsPage /> },
           {
             id: PAGE_TYPE.SETTINGS_ACCOUNT,
             path: PATH.SETTINGS.ACCOUNT,
