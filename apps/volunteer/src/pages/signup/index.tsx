@@ -387,7 +387,7 @@ export default function SignupPage() {
               bg: undefined,
             }}
           >
-            로그인
+            회원가입
           </Button>
           <Button
             fontWeight="semibold"
@@ -401,8 +401,9 @@ export default function SignupPage() {
             _active={{
               bg: undefined,
             }}
+            onClick={goSigninPage}
           >
-            회원가입
+            로그인
           </Button>
           <Button
             fontWeight="semibold"
