@@ -5,3 +5,5 @@ export const MILISECONDS = {
   HOUR: 60 * 60,
   MINUITE: 60,
 };
+
+export const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토'];

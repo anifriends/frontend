@@ -1,4 +1,4 @@
-import { MILISECONDS } from '../constants/date';
+import { MILISECONDS, WEEK_DAYS } from '../constants/date';
 
 export const createFormattedTime = (
   date: Date,
@@ -18,6 +18,10 @@ export const createFormattedTime = (
   );
 
   return formattedTime;
+};
+
+export const createWeekDayLocalString = (date: Date) => {
+  return WEEK_DAYS[date.getDay()];
 };
 
 export const isSameDay = (a: Date, b: Date): boolean => {
