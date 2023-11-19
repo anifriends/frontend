@@ -1,8 +1,10 @@
+import { IconButton } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useIntersect from '@/hooks/useIntersection';
 
+import PlusIcon from './_components/PlusIcon';
 import RecruitItem from './_components/RecruitItem';
 import useFetchVolunteers from './hooks/useFetchVolunteers';
 
@@ -25,6 +27,8 @@ function Recruitments() {
 
   //TODO recruit id 받아서 마감
   const closeRecruit = () => {};
+
+  const goToWritePage = () => navigate('/volunteers/write');
 
   const {
     data: { pages },
@@ -59,6 +63,19 @@ function Recruitments() {
         />
       ))}
       <div ref={ref} />
+      <IconButton
+        size="lg"
+        aria-label="Plus Button"
+        icon={<PlusIcon />}
+        pos="fixed"
+        bottom="4.125rem"
+        right={4}
+        borderRadius="full"
+        bgColor="orange.400"
+        color="white"
+        onClick={goToWritePage}
+        boxShadow="lg"
+      />
     </>
   );
 }
