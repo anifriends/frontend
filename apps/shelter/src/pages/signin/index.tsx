@@ -15,8 +15,6 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import type { AxiosResponse } from 'axios';
-import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -24,11 +22,7 @@ import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
-import type {
-  SigninRequestData,
-  SigninResponseData,
-} from 'shared/types/apis/auth';
-import { ErrorResponseData } from 'shared/types/apis/error';
+import { SigninRequestData } from 'shared/types/apis/auth';
 import * as z from 'zod';
 
 import { signinShelter } from '@/apis/auth';
@@ -56,12 +50,8 @@ export default function SigninPage() {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
-  const { mutate } = useMutation<
-    AxiosResponse<SigninResponseData>,
-    AxiosError<ErrorResponseData>,
-    SigninRequestData
-  >({
-    mutationFn: (data) => signinShelter(data),
+  const { mutate } = useMutation({
+    mutationFn: (data: SigninRequestData) => signinShelter(data),
     onSuccess: () => {
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
