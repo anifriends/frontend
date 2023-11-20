@@ -4,25 +4,34 @@ import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import FilterGroup from '@/pages/volunteers/search/_components/FilterGroup';
 import FilterSelect from '@/pages/volunteers/search/_components/FilterSelect';
 import {
-  CATEGORY,
   PERIOD,
   RECRUITMENT_STATUS,
+  SEARCH_TYPE,
 } from '@/pages/volunteers/search/_constants/filter';
 import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
 
+const DUMMY_RECRUITMENT = {
+  recruitmentId: 1,
+  recruitmentTitle: '봉사자를 모집합니다',
+  recruitmentStartTime: '2021-11-08T11:44:30.327959',
+  recruitmentEndTime: '2021-11-08T11:44:30.327959',
+  recruitmentDeadline: '2021-11-08T11:44:30.327959',
+  recruitmentIsClosed: false,
+  recruitmentApplicantCount: 15,
+  recruitmentCapacity: 15,
+};
+
 export default function VolunteersSearchPage() {
-  const {
-    isSearched,
-    recruitmentList,
-    volunteerSearchFilter,
-    setVolunteerSearchFilter,
-  } = useVolunteerSearch();
+  const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
+    useVolunteerSearch();
+  const { period, recruitmentStatus, searchType } = searchFilter;
 
-  const { period, recruitmentStatus, category } = volunteerSearchFilter;
-  const { setPeriod, setRecruitmentStatus, setCategory } =
-    setVolunteerSearchFilter;
+  // TODO: msw API 호출
+  const recruitmentList = Array.from({ length: 10 }, (_, index) => {
+    return { recruitmentId: index, DUMMY_RECRUITMENT };
+  });
 
-  if (!isSearched) {
+  if (!isKeywordSearched) {
     return null;
   }
 
@@ -33,30 +42,37 @@ export default function VolunteersSearchPage() {
           name="period"
           placeholder="봉사일"
           value={period}
-          onChange={setPeriod}
+          onChange={handleChangeSearchFilter}
         >
-          <option value={PERIOD.WITHIN_ONE_DAY}>1일 이내</option>
-          <option value={PERIOD.WITHIN_ONE_WEEK}>1주 이내</option>
-          <option value={PERIOD.WITHIN_ONE_MONTH}>1개월 이내</option>
-          <option value={PERIOD.CUSTOM_PERIOD}>기간 설정...</option>
+          {Object.entries(PERIOD).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </FilterSelect>
         <FilterSelect
           name="recruitmentStatus"
           placeholder="모집"
           value={recruitmentStatus}
-          onChange={setRecruitmentStatus}
+          onChange={handleChangeSearchFilter}
         >
-          <option value={RECRUITMENT_STATUS.IS_OPEN}>모집 중</option>
-          <option value={RECRUITMENT_STATUS.IS_CLOSED}>마감</option>
+          {Object.entries(RECRUITMENT_STATUS).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </FilterSelect>
         <FilterSelect
-          name="category"
+          name="searchType"
           placeholder="전체"
-          value={category}
-          onChange={setCategory}
+          value={searchType}
+          onChange={handleChangeSearchFilter}
         >
-          <option value={CATEGORY.TITLE}>글 제목</option>
-          <option value={CATEGORY.CONTENT}>글 내용</option>
+          {Object.entries(SEARCH_TYPE).map(([key, value]) => (
+            <option key={key} value={key}>
+              {value}
+            </option>
+          ))}
         </FilterSelect>
       </FilterGroup>
       {recruitmentList?.map((recruitmentItem: any) => (
