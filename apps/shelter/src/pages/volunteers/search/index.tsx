@@ -8,16 +8,19 @@ import useFetchVolunteers from '@/pages/volunteers/_hooks/useFetchVolunteers';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
 import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
 import { VolunteerSearchFilter } from '@/pages/volunteers/search/_types/filter';
+import { getDatesFromPeriod } from '@/pages/volunteers/search/_utils/period';
 import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
 const getVolunteerSearchRequestFilter = (
   searchFilter: Partial<VolunteerSearchFilter>,
 ): Partial<RecruitmentSearchFilter> => {
   const { keyword, period, recruitmentStatus, searchType } = searchFilter;
+  const { startDate, endDate } = getDatesFromPeriod(period);
+
   return {
     keyword,
-    startDate: period,
-    endDate: period,
+    startDate,
+    endDate,
     closedFilter: recruitmentStatus,
     keywordFilter: searchType,
   };
