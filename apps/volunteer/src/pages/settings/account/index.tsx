@@ -46,10 +46,8 @@ export default function SettingsAccountPage() {
             display="none"
           />
         </Center>
-        <FormControl>
-          <FormLabel my={3.5} fontWeight={400}>
-            이메일
-          </FormLabel>
+        <FormControl mb={5}>
+          <FormLabel fontWeight={400}>이메일</FormLabel>
           <Input
             disabled
             bgColor="gray.100"
@@ -57,24 +55,18 @@ export default function SettingsAccountPage() {
             _hover={{ border: `none` }}
           />
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel my={3.5} fontWeight={400}>
-            이름
-          </FormLabel>
+        <FormControl mb={5} isRequired>
+          <FormLabel fontWeight={400}>이름</FormLabel>
           <Input placeholder="이름을 입력하세요" />
         </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel my={3.5} fontWeight={400}>
-            생년월일
-          </FormLabel>
+        <FormControl mb={5} isRequired>
+          <FormLabel fontWeight={400}>생년월일</FormLabel>
           <Input type="date" pr="10px" />
         </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel my={3.5} fontWeight={400}>
-            전화번호
-          </FormLabel>
+        <FormControl mb={5} isRequired>
+          <FormLabel fontWeight={400}>전화번호</FormLabel>
           <InputGroup>
             <InputRightElement>
               <Image src={PhoneIcon} />
@@ -83,10 +75,8 @@ export default function SettingsAccountPage() {
           </InputGroup>
         </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel my={3.5} fontWeight={400}>
-            성별
-          </FormLabel>
+        <FormControl mb={5} isRequired>
+          <FormLabel fontWeight={400}>성별</FormLabel>
           <RadioGroup>
             <HStack spacing={10}>
               <Radio colorScheme="orange" value="Male">
@@ -99,18 +89,19 @@ export default function SettingsAccountPage() {
           </RadioGroup>
         </FormControl>
 
-        <Button
-          type="submit"
-          w="100%"
-          h="44px"
-          bgColor="orange.400"
-          color="white"
-          pos="absolute"
-          bottom={21}
-          left={0}
-        >
-          수정 완료
-        </Button>
+        <Center>
+          <Button
+            type="submit"
+            w="100%"
+            h="44px"
+            bgColor="orange.400"
+            color="white"
+            pos="absolute"
+            bottom={21}
+          >
+            수정 완료
+          </Button>
+        </Center>
       </form>
     </Box>
   );
