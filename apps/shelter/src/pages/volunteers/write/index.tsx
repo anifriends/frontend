@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
   FormControl,
   FormHelperText,
@@ -21,7 +20,7 @@ export default function VolunteersWritePage() {
   const [imageUrls, setImageUrls] = useState<string[]>(DUMMY_IMAGE_URLS);
 
   return (
-    <Box py={6} px={2}>
+    <Box pt={6} px={4}>
       <form>
         <FormControl mb={5} isRequired>
           <FormLabel>제목</FormLabel>
@@ -56,24 +55,22 @@ export default function VolunteersWritePage() {
           </Flex>
         </FormControl>
         <EditPhotoList urls={imageUrls} setUrls={setImageUrls} />
-        <Center mt={10}>
-          <Button
-            pos="sticky"
-            bottom={0}
-            width="100%"
-            bgColor="orange.400"
-            color="white"
-            borderRadius="0.625rem"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-          >
-            등록
-          </Button>
-        </Center>
+        <Button
+          mt={10}
+          pos="sticky"
+          bottom={2}
+          width="100%"
+          bgColor="orange.400"
+          color="white"
+          _hover={{
+            bg: undefined,
+          }}
+          _active={{
+            bg: undefined,
+          }}
+        >
+          등록
+        </Button>
       </form>
     </Box>
   );
