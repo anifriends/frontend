@@ -8,13 +8,15 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ImageCarousel from 'shared/components/ImageCarousel';
 import InfoTextList from 'shared/components/InfoTextList';
 import { LabelProps } from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import useDetailHeaderStore from 'shared/store/detailHeaderStore';
+import { getDDay } from 'shared/utils/date';
 
+import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
 import AlertModal from './AlertModal';
 
 const handleDeletePost = (postId: number) => {
@@ -24,7 +26,7 @@ const handleDeletePost = (postId: number) => {
 
 export default function VolunteersDetailPage() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
-  const postId = 5;
+
   useEffect(() => {
     setOnDelete(handleDeletePost);
 
@@ -34,55 +36,77 @@ export default function VolunteersDetailPage() {
   }, [setOnDelete]);
 
   const navigate = useNavigate();
+  const { id: recruitmentId } = useParams();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    imageUrls,
+    title,
+    content,
+    applicant,
+    capacity,
+    volunteerDay,
+    recruitmentDeadline,
+    volunteerStartTime,
+    volunteerEndTime,
+    recruitmentCreatedAt,
+    recruitmentIsClosed,
+  } = useGetVolunteerDetail(100).data;
+
   const [label, setLabel] = useState<LabelProps>({
     labelTitle: '모집 중',
     type: 'GREEN',
   });
   const [isClosed, setIsClosed] = useState(false);
 
-  const goManageApply = () => navigate(`/manage/apply/${postId}`);
-  const goManageAttendance = () => navigate(`/manage/attendance/${postId}`);
-  const onVolunteerDeadline = () => {
+  useEffect(() => {
+    if (recruitmentIsClosed) {
+      setIsClosed(true);
+      setLabel({ labelTitle: '모집 마감', type: 'GRAY' });
+    }
+  }, [recruitmentIsClosed]);
+
+  const goManageApply = () => navigate(`/manage/apply/${recruitmentId}`);
+  const goManageAttendance = () =>
+    navigate(`/manage/attendance/${recruitmentId}`);
+  const onCloseRecruitment = () => {
     onClose();
-    //TODO label type gray로 변경
-    setLabel({ labelTitle: '모집 마감', type: 'ORANGE' });
-    setIsClosed(!isClosed);
+    setIsClosed(true);
+    setLabel({ labelTitle: '모집 마감', type: 'GRAY' });
   };
 
   return (
     <Box>
-      <ImageCarousel
-        imageUrls={[
-          'https://images.unsplash.com/photo-1682686578456-69ae00b0ecbd?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-          'https://images.unsplash.com/photo-1699031153161-b719847e2607?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        ]}
-      />
+      <ImageCarousel imageUrls={imageUrls} />
       <VStack spacing="5px" align="flex-start" p={4}>
-        <LabelText labelTitle={label.labelTitle} content="D-12" />
+        <LabelText
+          labelTitle={label.labelTitle}
+          type={label.type}
+          content={`D-${getDDay(recruitmentDeadline)}`}
+        />
         <Text fontSize="xl" fontWeight="semibold">
-          강아지 목욕 봉사자를 모집합니다!
+          {title}
         </Text>
         <Text fontSize="sm" fontWeight="normal" color="gray.500">
-          작성일 | 2023.10.23(수정됨)
+          작성일 | {recruitmentCreatedAt}(수정됨)
         </Text>
       </VStack>
       <Divider />
 
       <InfoTextList
         infoTextItems={[
-          { title: '모집 인원', content: '2명 / 6명' },
-          { title: '봉사일', content: '2023.10.31(화)' },
-          { title: '봉사 시간', content: '14:00 ~ 16:00' },
-          { title: '마감일', content: '2023.10.28(토) 17:00' },
+          { title: '모집 인원', content: `${applicant}명 / ${capacity}명` },
+          { title: '봉사일', content: volunteerDay },
+          {
+            title: '봉사 시간',
+            content: `${volunteerStartTime}~${volunteerEndTime}`,
+          },
+          { title: '마감일', content: recruitmentDeadline },
         ]}
       />
       <Divider />
-      <Text fontWeight="medium" px={4} pt={6} mb="68px">
-        강아지 봉사자를 모집합니다~~~강아지 봉사자를 모집합니다~~~강아지
-        봉사자를 모집합니다~~~강아지 봉사자를 모집합니다~~~강아지 봉사자를
-        모집합니다~~~
+      <Text fontWeight="medium" px={4} pt={6} mb="68px" wordBreak="keep-all">
+        {content}
       </Text>
       <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
         {isClosed ? (
@@ -131,7 +155,7 @@ export default function VolunteersDetailPage() {
         modalContent="봉사자 모집을 마감하시겠습니까?"
         isOpen={isOpen}
         onClose={onClose}
-        onClick={onVolunteerDeadline}
+        onClick={onCloseRecruitment}
       />
     </Box>
   );
