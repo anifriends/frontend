@@ -21,7 +21,7 @@ import * as z from 'zod';
 type Schema = z.infer<typeof schema>;
 
 const schema = z.object({
-  password: z.string().min(1, '기본 비밀번호 정보는 필수입니다'),
+  oldPassword: z.string().min(1, '기본 비밀번호 정보는 필수입니다'),
   newPassword: z.string().min(1, '변경 비밀번호 정보는 필수입니다'),
   // TODO
   //
@@ -33,7 +33,7 @@ const schema = z.object({
 });
 
 export default function SettingsPasswordPage() {
-  const [isPasswordShow, togglePasswordShow] = useToggle();
+  const [isOldPasswordShow, toggleOldPasswordShow] = useToggle();
   const [isNewPasswordShow, toggleNewPasswordShow] = useToggle();
   const [isNewPasswordConfirmShow, toggleNewPasswordConfirmShow] = useToggle();
   const {
@@ -55,21 +55,21 @@ export default function SettingsPasswordPage() {
         <FormControl
           mb={5}
           isRequired
-          isInvalid={errors.password ? true : false}
+          isInvalid={errors.oldPassword ? true : false}
         >
           <FormLabel>기존 비밀번호</FormLabel>
           <InputGroup>
             <Input
-              {...register('password')}
+              {...register('oldPassword')}
               placeholder="기존 비밀번호를 입력하세요"
-              type={isPasswordShow ? 'text' : 'password'}
+              type={isOldPasswordShow ? 'text' : 'password'}
             />
-            <InputRightElement onClick={togglePasswordShow}>
-              <Icon as={isPasswordShow ? IoEyeOff : IoEyeSharp} />
+            <InputRightElement onClick={toggleOldPasswordShow}>
+              <Icon as={isOldPasswordShow ? IoEyeOff : IoEyeSharp} />
             </InputRightElement>
           </InputGroup>
           <FormErrorMessage>
-            {errors.password && errors.password.message}
+            {errors.oldPassword && errors.oldPassword.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl
@@ -109,7 +109,7 @@ export default function SettingsPasswordPage() {
             </InputRightElement>
           </InputGroup>
           <FormErrorMessage>
-            {errors.password && errors.password.message}
+            {errors.newPasswordConfirm && errors.newPasswordConfirm.message}
           </FormErrorMessage>
         </FormControl>
         <VStack
