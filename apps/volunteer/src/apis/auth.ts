@@ -1,5 +1,6 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 import type {
+  ChangePasswordRequestData,
   CheckDuplicatedEmailRequestData,
   CheckDuplicatedEmailResponseData,
   SigninRequestData,
@@ -24,3 +25,11 @@ export const checkDuplicatedVolunteerEmail = async (
     CheckDuplicatedEmailResponseData,
     CheckDuplicatedEmailRequestData
   >('/volunteers/email', data);
+
+export const changeVolunteerPassword = async (
+  data: ChangePasswordRequestData,
+) =>
+  await axiosInstance.patch<unknown, ChangePasswordRequestData>(
+    '/volunteers/me/passwords',
+    data,
+  );
