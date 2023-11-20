@@ -2,61 +2,64 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
-const parseSearchParams = (searchParams: URLSearchParams) => {
-  const params: Record<string, string> = {};
-  for (const [key, value] of searchParams) {
-    params[key] = value;
-  }
-  return params;
+type KeywordFilter = {
+  keyword: string;
 };
 
-export const useSearchFilter = <SearchFilter extends object>(
-  onSearch: (filter: SearchFilter) => void,
-): [SearchFilter, (filter: SearchFilter) => void] => {
+const parseSearchParams = <SearchFilter>(
+  searchParams: URLSearchParams,
+): Partial<SearchFilter> => {
+  const searchFilter: Partial<SearchFilter> = {};
+
+  for (const [key, value] of searchParams) {
+    searchFilter[key as keyof SearchFilter] =
+      value as SearchFilter[keyof SearchFilter];
+  }
+
+  return searchFilter;
+};
+
+const serializeSearchFilter = <SearchFilter>(
+  searchFilter: Partial<SearchFilter>,
+): URLSearchParams => {
+  const searchFilterEntries = Object.entries(searchFilter);
+  const searchParams = new URLSearchParams();
+
+  for (const [key, value] of searchFilterEntries) {
+    if (value) {
+      searchParams.append(key, String(value));
+    }
+  }
+
+  return searchParams;
+};
+
+export const useSearchFilter = <SearchFilter extends KeywordFilter>(
+  filter: Partial<SearchFilter> = {},
+): [Partial<SearchFilter>, (filter: Partial<SearchFilter>) => void] => {
   const setKeyword = useSearchHeaderStore((state) => state.setKeyword);
 
-  const [filter, setFilter] = useState<SearchFilter>({} as SearchFilter);
+  const [searchFilter, setSearchFilter] =
+    useState<Partial<SearchFilter>>(filter);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    if (Object.keys(filter).length === 0) {
-      return;
-    }
-
-    onSearch(filter);
-  }, [filter, onSearch]);
-
-  useEffect(() => {
-    if (searchParams.size === 0) {
-      return;
-    }
-
-    const params = parseSearchParams(searchParams);
+    const params: Partial<SearchFilter> = parseSearchParams(searchParams);
 
     if (params.keyword) {
       setKeyword(params.keyword);
     }
 
-    setFilter(params as SearchFilter);
-  }, [searchParams, setKeyword]);
+    setSearchFilter(params);
+  }, [searchParams]);
 
-  const createSearchParams = (filter: SearchFilter) => {
-    const keys = Object.keys(filter);
+  const setSearchFilterValue = (filterValue: Partial<SearchFilter>) => {
+    const newSearchFilter = { ...searchFilter, ...filterValue };
+    const newSearchParams = serializeSearchFilter(newSearchFilter);
 
-    return keys.reduce(
-      (params, key) => {
-        return filter[key as keyof SearchFilter]
-          ? { ...params, [key]: String(filter[key as keyof SearchFilter]) }
-          : params;
-      },
-      {} as Record<string, string>,
-    );
+    setSearchFilter(newSearchFilter);
+    setSearchParams(newSearchParams, { replace: true });
   };
 
-  const setFilterValue = (filter: SearchFilter) => {
-    setSearchParams(createSearchParams(filter), { replace: true });
-    setFilter(filter);
-  };
-
-  return [filter, setFilterValue];
+  return [searchFilter, setSearchFilterValue];
 };
