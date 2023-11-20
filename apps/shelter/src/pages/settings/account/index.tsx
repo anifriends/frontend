@@ -4,17 +4,12 @@ import {
   Button,
   Center,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   HStack,
-  Image,
   Input,
-  InputGroup,
-  InputRightElement,
   Switch,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import PhoneIcon from 'shared/assets/icon_phone.svg';
 
 export default function SettingsAccountPage() {
   const [imgFile, setImgFile] = useState<string>('');
@@ -91,24 +86,12 @@ export default function SettingsAccountPage() {
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 전화번호</FormLabel>
-          <InputGroup>
-            <InputRightElement>
-              <Image src={PhoneIcon} />
-            </InputRightElement>
-            <Input type="tel" placeholder="전화번호를 입력하세요" />
-          </InputGroup>
-          <FormErrorMessage />
+          <Input type="tel" placeholder="전화번호를 입력하세요" />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 임시 전화번호</FormLabel>
-          <InputGroup>
-            <InputRightElement>
-              <Image src={PhoneIcon} />
-            </InputRightElement>
-            <Input type="tel" placeholder="전화번호를 입력하세요" />
-          </InputGroup>
-          <FormErrorMessage />
+          <Input type="tel" placeholder="전화번호를 입력하세요" />
         </FormControl>
         <Center>
           <Button
