@@ -17,8 +17,6 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import type { AxiosResponse } from 'axios';
-import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
@@ -26,11 +24,7 @@ import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import RadioGroup from 'shared/components/RadioGroup';
 import useToggle from 'shared/hooks/useToggle';
-import {
-  CheckDuplicatedEmailRequestData,
-  CheckDuplicatedEmailResponseData,
-} from 'shared/types/apis/auth';
-import { ErrorResponseData } from 'shared/types/apis/error';
+import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
 import * as z from 'zod';
 
 import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';
@@ -106,12 +100,8 @@ export default function SignupPage() {
   });
   const watchIsEmailDuplicated = watch('isEmailDuplicated');
   const watchEmail = watch('email');
-  const { mutate: signupVolunteerMutate } = useMutation<
-    AxiosResponse<unknown>,
-    AxiosError<ErrorResponseData>,
-    SignupRequestData
-  >({
-    mutationFn: (data) => signupVolunteer(data),
+  const { mutate: signupVolunteerMutate } = useMutation({
+    mutationFn: (data: SignupRequestData) => signupVolunteer(data),
     onSuccess: () => {
       toast({
         position: 'top',
@@ -131,12 +121,9 @@ export default function SignupPage() {
       });
     },
   });
-  const { mutate: checkDuplicatedEmailMutate } = useMutation<
-    AxiosResponse<CheckDuplicatedEmailResponseData>,
-    AxiosError<ErrorResponseData>,
-    CheckDuplicatedEmailRequestData
-  >({
-    mutationFn: (data) => checkDuplicatedVolunteerEmail(data),
+  const { mutate: checkDuplicatedEmailMutate } = useMutation({
+    mutationFn: (data: CheckDuplicatedEmailRequestData) =>
+      checkDuplicatedVolunteerEmail(data),
     onSuccess: ({ data: { isDuplicated } }) => {
       if (isDuplicated) {
         setValue('isEmailDuplicated', true);
