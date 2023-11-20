@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
 import InfoTextList from 'shared/components/InfoTextList';
 import { LabelProps } from 'shared/components/Label';
@@ -17,7 +18,6 @@ import useDetailHeaderStore from 'shared/store/detailHeaderStore';
 import { getDDay } from 'shared/utils/date';
 
 import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
-import AlertModal from './AlertModal';
 
 const handleDeletePost = (postId: number) => {
   // TODO: VolunteerPost delete API 호출
@@ -54,7 +54,7 @@ export default function VolunteersDetailPage() {
   } = useGetVolunteerDetail(100).data;
 
   const [label, setLabel] = useState<LabelProps>({
-    labelTitle: '모집 중',
+    labelTitle: '모집중',
     type: 'GREEN',
   });
   const [isClosed, setIsClosed] = useState(false);
@@ -62,7 +62,7 @@ export default function VolunteersDetailPage() {
   useEffect(() => {
     if (recruitmentIsClosed) {
       setIsClosed(true);
-      setLabel({ labelTitle: '모집 마감', type: 'GRAY' });
+      setLabel({ labelTitle: '마감완료', type: 'GRAY' });
     }
   }, [recruitmentIsClosed]);
 
@@ -72,7 +72,7 @@ export default function VolunteersDetailPage() {
   const onCloseRecruitment = () => {
     onClose();
     setIsClosed(true);
-    setLabel({ labelTitle: '모집 마감', type: 'GRAY' });
+    setLabel({ labelTitle: '마감완료', type: 'GRAY' });
   };
 
   return (
@@ -108,6 +108,7 @@ export default function VolunteersDetailPage() {
       <Text fontWeight="medium" px={4} pt={6} mb="68px" wordBreak="keep-all">
         {content}
       </Text>
+
       <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
         {isClosed ? (
           <Button
@@ -153,6 +154,7 @@ export default function VolunteersDetailPage() {
       <AlertModal
         modalTitle="봉사자 모집 마감"
         modalContent="봉사자 모집을 마감하시겠습니까?"
+        btnTitle="마감하기"
         isOpen={isOpen}
         onClose={onClose}
         onClick={onCloseRecruitment}
