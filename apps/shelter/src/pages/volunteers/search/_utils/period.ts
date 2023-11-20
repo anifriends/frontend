@@ -28,6 +28,6 @@ export const getDatesFromPeriod = (period?: Period) => {
 
   return {
     startDate: createFormattedTime(startDate, 'YYYY-MM-DD'),
-    endDate: createFormattedTime(startDate, 'YYYY-MM-DD'),
+    endDate: createFormattedTime(endDate, 'YYYY-MM-DD'),
   };
 };
