@@ -9,25 +9,25 @@ import type {
 
 import { SignupRequestData } from '@/types/apis/auth';
 
-export const signinShelter = async (data: SigninRequestData) =>
-  await axiosInstance.post<SigninResponseData, SigninRequestData>(
+export const signinShelter = (data: SigninRequestData) =>
+  axiosInstance.post<SigninResponseData, SigninRequestData>(
     '/auth/shelters/login',
     data,
   );
 
-export const signupShelter = async (data: SignupRequestData) =>
-  await axiosInstance.post<unknown, SignupRequestData>('/shelters', data);
+export const signupShelter = (data: SignupRequestData) =>
+  axiosInstance.post<unknown, SignupRequestData>('/shelters', data);
 
-export const checkDuplicatedShelterEmail = async (
+export const checkDuplicatedShelterEmail = (
   data: CheckDuplicatedEmailRequestData,
 ) =>
-  await axiosInstance.post<
+  axiosInstance.post<
     CheckDuplicatedEmailResponseData,
     CheckDuplicatedEmailRequestData
   >('/shelters/email', data);
 
-export const changeShelterPassword = async (data: ChangePasswordRequestData) =>
-  await axiosInstance.patch<unknown, ChangePasswordRequestData>(
+export const changeShelterPassword = (data: ChangePasswordRequestData) =>
+  axiosInstance.patch<unknown, ChangePasswordRequestData>(
     '/shelters/me/passwords',
     data,
   );
