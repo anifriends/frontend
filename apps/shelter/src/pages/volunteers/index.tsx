@@ -6,7 +6,7 @@ import useIntersect from '@/hooks/useIntersection';
 
 import PlusIcon from './_components/PlusIcon';
 import RecruitItem from './_components/RecruitItem';
-import useFetchVolunteers from './hooks/useFetchVolunteers';
+import useFetchVolunteers from './_hooks/useFetchVolunteers';
 
 const PAGE_SIZE = 10;
 
