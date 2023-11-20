@@ -6,15 +6,11 @@ import {
   FormControl,
   FormLabel,
   HStack,
-  Image,
   Input,
-  InputGroup,
-  InputRightElement,
   Radio,
   RadioGroup,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import PhoneIcon from 'shared/assets/icon_phone.svg';
 
 export default function SettingsAccountPage() {
   const [imgFile, setImgFile] = useState<string>('');
@@ -67,12 +63,7 @@ export default function SettingsAccountPage() {
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>전화번호</FormLabel>
-          <InputGroup>
-            <InputRightElement>
-              <Image src={PhoneIcon} />
-            </InputRightElement>
-            <Input type="tel" placeholder="전화번호를 입력하세요" />
-          </InputGroup>
+          <Input type="tel" placeholder="전화번호를 입력하세요" />
         </FormControl>
 
         <FormControl mb={5} isRequired>
