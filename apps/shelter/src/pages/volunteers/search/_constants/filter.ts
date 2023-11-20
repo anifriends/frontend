@@ -11,6 +11,6 @@ export const RECRUITMENT_STATUS = {
 } as const;
 
 export const SEARCH_TYPE = {
-  TITLE: '제목 포함',
-  CONTENT: '내용 포함',
+  IS_TITLE: '제목 포함',
+  IS_CONTENT: '내용 포함',
 } as const;
