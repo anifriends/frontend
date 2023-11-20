@@ -79,7 +79,7 @@ export default function SettingsAccountPage() {
             <InputRightElement>
               <Image src={PhoneIcon} />
             </InputRightElement>
-            <Input type="tel" />
+            <Input type="tel" placeholder="전화번호를 입력하세요" />
           </InputGroup>
         </FormControl>
 
