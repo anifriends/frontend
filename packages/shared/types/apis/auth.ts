@@ -1,8 +1,8 @@
-export type checkDuplicatedEmailRequestData = {
+export type CheckDuplicatedEmailRequestData = {
   email: string;
 };
 
-export type SigninRequestData = checkDuplicatedEmailRequestData & {
+export type SigninRequestData = CheckDuplicatedEmailRequestData & {
   password: string;
 };
 
@@ -12,6 +12,6 @@ export type SigninResponseData = {
   role: string;
 };
 
-export type checkDuplicatedEmailResponseData = {
+export type CheckDuplicatedEmailResponseData = {
   isDuplicated: boolean;
 };

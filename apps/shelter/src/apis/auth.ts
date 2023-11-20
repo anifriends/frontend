@@ -1,7 +1,7 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 import type {
-  checkDuplicatedEmailRequestData,
-  checkDuplicatedEmailResponseData,
+  CheckDuplicatedEmailRequestData,
+  CheckDuplicatedEmailResponseData,
   SigninRequestData,
   SigninResponseData,
 } from 'shared/types/apis/auth';
@@ -17,10 +17,10 @@ export const signinShelter = async (data: SigninRequestData) =>
 export const signupShelter = async (data: SignupRequestData) =>
   await axiosInstance.post<unknown, SignupRequestData>('/shelters', data);
 
-export const checkDuplicatedShelterEmail = async (email: string) =>
+export const checkDuplicatedShelterEmail = async (
+  data: CheckDuplicatedEmailRequestData,
+) =>
   await axiosInstance.post<
-    checkDuplicatedEmailResponseData,
-    checkDuplicatedEmailRequestData
-  >('/shelters/email', {
-    email,
-  });
+    CheckDuplicatedEmailResponseData,
+    CheckDuplicatedEmailRequestData
+  >('/shelters/email', data);

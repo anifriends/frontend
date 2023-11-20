@@ -14,15 +14,29 @@ import {
   InputRightAddon,
   InputRightElement,
   Switch,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
+import {
+  CheckDuplicatedEmailRequestData,
+  CheckDuplicatedEmailResponseData,
+} from 'shared/types/apis/auth';
+import { ErrorResponseData } from 'shared/types/apis/error';
 import * as z from 'zod';
+
+import { checkDuplicatedShelterEmail, signupShelter } from '@/apis/auth';
+import PATH from '@/constants/path';
+import { SignupRequestData } from '@/types/apis/auth';
 
 type Schema = z.infer<typeof schema>;
 
@@ -31,18 +45,23 @@ const schema = z
     email: z
       .string()
       .min(1, '이메일은 필수 정보입니다')
-      .email('유효하지 않은 이메일입니다'),
-    password: z
-      .string()
       .regex(
-        /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-        '비밀번호는 필수 정보입니다(8자 이상)',
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        '이메일 형식에 맞게 적어주세요',
       ),
+    isEmailDuplicated: z.boolean(),
+    password: z.string().min(1, '비밀번호는 필수 정보입니다'),
+    // TODO 나중에 추가 예정
+    //
+    // .regex(
+    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    //   '비밀번호는 필수 정보입니다(8자 이상)',
+    // ),
     passwordConfirm: z.string().min(1, '비밀번호 확인 정보는 필수입니다'),
     name: z.string().min(1, '보호소 이름 정보는 필수입니다'),
     address: z.string().min(1, '보호소 주소 정보는 필수입니다'),
     addressDetail: z.string().min(1, '보호소 상세주소 정보는 필수입니다'),
-    isOpendedAddress: z.boolean(),
+    isOpenedAddress: z.boolean(),
     phoneNumber: z
       .string()
       .min(1, '보호소 전화번호 정보는 필수입니다')
@@ -63,6 +82,8 @@ const schema = z
   });
 
 export default function SignupPage() {
+  const navigate = useNavigate();
+  const toast = useToast();
   const [isPasswordShow, togglePasswordShow] = useToggle();
   const [isPasswordConfirmShow, togglePasswordConfirmShow] = useToggle();
   const {
@@ -70,15 +91,147 @@ export default function SignupPage() {
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
+    getValues,
+    watch,
+    setFocus,
   } = useForm<Schema>({
     defaultValues: {
-      isOpendedAddress: false,
+      isOpenedAddress: false,
+      isEmailDuplicated: true,
     },
     resolver: zodResolver(schema),
   });
+  const watchIsEmailDuplicated = watch('isEmailDuplicated');
+  const watchEmail = watch('email');
+  const { mutate: signupShelterMutate } = useMutation<
+    AxiosResponse<unknown>,
+    AxiosError<ErrorResponseData>,
+    SignupRequestData
+  >({
+    mutationFn: (data) => signupShelter(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '회원가입이 완료되었습니다',
+        status: 'success',
+        duration: 1500,
+      });
 
-  const onSubmit = (data: Schema) => {
-    console.log(data);
+      navigate(`/${PATH.SIGNIN}`);
+    },
+    onError: (error) => {
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 1500,
+      });
+    },
+  });
+  const { mutate: checkDuplicatedEmailMutate } = useMutation<
+    AxiosResponse<CheckDuplicatedEmailResponseData>,
+    AxiosError<ErrorResponseData>,
+    CheckDuplicatedEmailRequestData
+  >({
+    mutationFn: (data) => checkDuplicatedShelterEmail(data),
+    onSuccess: ({ data: { isDuplicated } }) => {
+      if (isDuplicated) {
+        setValue('isEmailDuplicated', true);
+
+        toast({
+          position: 'top',
+          description: '이메일이 중복됩니다',
+          status: 'error',
+          duration: 2500,
+        });
+
+        setFocus('email');
+      } else {
+        setValue('isEmailDuplicated', false);
+
+        toast({
+          position: 'top',
+          description: '이메일이 확인되었습니다',
+          status: 'success',
+          duration: 2500,
+        });
+      }
+    },
+    onError: (error) => {
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 2500,
+      });
+
+      setFocus('email');
+    },
+  });
+
+  const checkDuplicatedEmail = () => {
+    if (!watchIsEmailDuplicated) {
+      setValue('email', '');
+      setValue('isEmailDuplicated', true);
+      return;
+    }
+
+    const isValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+      watchEmail,
+    );
+
+    if (!isValid) {
+      toast({
+        position: 'top',
+        description: '이메일이 유효하지 않습니다',
+        status: 'error',
+        duration: 1500,
+      });
+
+      setValue('isEmailDuplicated', true);
+      setFocus('email');
+
+      return;
+    }
+
+    checkDuplicatedEmailMutate({ email: getValues('email') });
+  };
+
+  const goSigninPage = () => navigate(`/${PATH.SIGNIN}`);
+
+  const onSubmit = async ({
+    email,
+    password,
+    name,
+    address,
+    addressDetail,
+    phoneNumber,
+    sparePhoneNumber,
+    isOpenedAddress,
+    isEmailDuplicated,
+  }: Schema) => {
+    if (isEmailDuplicated) {
+      toast({
+        position: 'top',
+        description: '이메일 중복 확인을 해주세요',
+        status: 'error',
+        duration: 1500,
+      });
+
+      return;
+    }
+
+    signupShelterMutate({
+      email,
+      password,
+      name,
+      address,
+      addressDetail,
+      phoneNumber,
+      sparePhoneNumber,
+      isOpenedAddress,
+    });
   };
 
   return (
@@ -93,10 +246,17 @@ export default function SignupPage() {
             <Input
               {...register('email')}
               placeholder="이메일을 입력하세요"
-              type="email"
+              type="text"
+              disabled={watchIsEmailDuplicated ? false : true}
             />
-            <InputRightAddon as="button" bgColor="orange.400" color="white">
-              확인
+            <InputRightAddon
+              as="button"
+              type="button"
+              bgColor="orange.400"
+              color="white"
+              onClick={checkDuplicatedEmail}
+            >
+              {watchIsEmailDuplicated ? '확인' : '초기화'}
             </InputRightAddon>
           </InputGroup>
           <FormErrorMessage>
@@ -187,7 +347,7 @@ export default function SignupPage() {
               as={HStack}
               spacing={1}
               justify="flex-end"
-              isInvalid={errors.isOpendedAddress ? true : false}
+              isInvalid={errors.isOpenedAddress ? true : false}
             >
               <FormLabel
                 pos="relative"
@@ -199,7 +359,7 @@ export default function SignupPage() {
                 상세주소 공개
               </FormLabel>
               <Controller
-                name="isOpendedAddress"
+                name="isOpenedAddress"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <Switch
@@ -217,7 +377,7 @@ export default function SignupPage() {
             type="text"
           />
           <FormErrorMessage>
-            {errors.isOpendedAddress && errors.isOpendedAddress.message}
+            {errors.isOpenedAddress && errors.isOpenedAddress.message}
           </FormErrorMessage>
           <FormErrorMessage>
             {errors.addressDetail && errors.addressDetail.message}
@@ -276,7 +436,7 @@ export default function SignupPage() {
               bg: undefined,
             }}
           >
-            로그인
+            회원가입
           </Button>
           <Button
             fontWeight="semibold"
@@ -290,8 +450,9 @@ export default function SignupPage() {
             _active={{
               bg: undefined,
             }}
+            onClick={goSigninPage}
           >
-            회원가입
+            로그인
           </Button>
         </VStack>
       </form>
