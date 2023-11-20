@@ -1,24 +1,16 @@
 import {
-  CATEGORY,
+  PERIOD,
   RECRUITMENT_STATUS,
+  SEARCH_TYPE,
 } from '@/pages/volunteers/search/_constants/filter';
 
-export type SearchFilter = Partial<{
+export type Period = keyof typeof PERIOD;
+export type RecruitmentStatus = keyof typeof RECRUITMENT_STATUS;
+export type SearchType = keyof typeof SEARCH_TYPE;
+
+export type VolunteerSearchFilter = {
   keyword: string;
-  startDate: string;
-  endDate: string;
-  isClosed: string;
-  content: string;
-  title: string;
-}>;
-
-export type RecruitmentStatus =
-  (typeof RECRUITMENT_STATUS)[keyof typeof RECRUITMENT_STATUS];
-
-export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
-
-export type VolunteerSearchFilter = Partial<{
-  period: string;
+  period: Period;
   recruitmentStatus: RecruitmentStatus;
-  category: Category;
-}>;
+  searchType: SearchType;
+};
