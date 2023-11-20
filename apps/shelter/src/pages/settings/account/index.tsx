@@ -49,9 +49,7 @@ export default function SettingsAccountPage() {
         </Center>
 
         <FormControl mb={5}>
-          <FormLabel mb={3.5} fontWeight={400}>
-            이메일
-          </FormLabel>
+          <FormLabel fontWeight={400}>이메일</FormLabel>
           <Input
             disabled
             bgColor="gray.100"
@@ -61,26 +59,28 @@ export default function SettingsAccountPage() {
         </FormControl>
 
         <FormControl mb={5} isRequired>
-          <FormLabel mb={3.5} fontWeight={400}>
-            보호소 이름
-          </FormLabel>
+          <FormLabel fontWeight={400}>보호소 이름</FormLabel>
           <Input placeholder="이름을 입력하세요" />
         </FormControl>
 
         <FormControl mb={5} isRequired>
-          <FormLabel mb={3.5} fontWeight={400}>
-            보호소 주소
-          </FormLabel>
+          <FormLabel fontWeight={400}>보호소 주소</FormLabel>
           <Input placeholder="보호소 주소를 입력해주세요" />
         </FormControl>
 
         <FormControl mb={5} isRequired>
-          <HStack>
-            <FormLabel mb={3.5} fontWeight={400} w="100%">
+          <HStack mb={2}>
+            <FormLabel m={0} fontWeight={400} w="100%">
               보호소 상세 주소
             </FormLabel>
-            <FormControl as={HStack} justify="flex-end" mb={3.5}>
-              <FormLabel mb={0} fontSize="sm" color="gray.500">
+            <FormControl as={HStack} justify="flex-end" spacing={1}>
+              <FormLabel
+                m={0}
+                fontSize="sm"
+                color="gray.500"
+                pos="relative"
+                top="1px"
+              >
                 상세주소 공개
               </FormLabel>
               <Switch colorScheme="orange" />
@@ -90,9 +90,7 @@ export default function SettingsAccountPage() {
         </FormControl>
 
         <FormControl mb={5} isRequired>
-          <FormLabel mb={3.5} fontWeight={400}>
-            보호소 전화번호
-          </FormLabel>
+          <FormLabel fontWeight={400}>보호소 전화번호</FormLabel>
           <InputGroup>
             <InputRightElement>
               <Image src={PhoneIcon} />
@@ -103,9 +101,7 @@ export default function SettingsAccountPage() {
         </FormControl>
 
         <FormControl mb={5} isRequired>
-          <FormLabel mb={3.5} fontWeight={400}>
-            보호소 임시 전화번호
-          </FormLabel>
+          <FormLabel fontWeight={400}>보호소 임시 전화번호</FormLabel>
           <InputGroup>
             <InputRightElement>
               <Image src={PhoneIcon} />
