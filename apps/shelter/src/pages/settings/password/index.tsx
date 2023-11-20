@@ -8,31 +8,47 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import LogoImageBox from 'shared/components/LogoImageBox';
 import useToggle from 'shared/hooks/useToggle';
+import { ChangePasswordRequestData } from 'shared/types/apis/auth';
 import * as z from 'zod';
+
+import { changeShelterPassword } from '@/apis/auth';
 
 type Schema = z.infer<typeof schema>;
 
-const schema = z.object({
-  oldPassword: z.string().min(1, '기본 비밀번호 정보는 필수입니다'),
-  newPassword: z.string().min(1, '변경 비밀번호 정보는 필수입니다'),
-  // TODO
-  //
-  // .regex(
-  //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-  //   '비밀번호는 필수 정보입니다(8자 이상)',
-  // ),
-  newPasswordConfirm: z.string().min(1, '변경 비밀번호 확인 정보는 필수입니다'),
-});
+const schema = z
+  .object({
+    oldPassword: z.string().min(1, '기본 비밀번호 정보는 필수입니다'),
+    newPassword: z.string().min(1, '변경 비밀번호 정보는 필수입니다'),
+    // TODO
+    //
+    // .regex(
+    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    //   '비밀번호는 필수 정보입니다(8자 이상)',
+    // ),
+    newPasswordConfirm: z
+      .string()
+      .min(1, '변경 비밀번호 확인 정보는 필수입니다'),
+  })
+  .refine(
+    ({ newPassword, newPasswordConfirm }) => newPassword === newPasswordConfirm,
+    {
+      message: '변경 비밀번호가 일치하지 않습니다',
+      path: ['newPasswordConfirm'],
+    },
+  );
 
 export default function SettingsPasswordPage() {
+  const toast = useToast();
   const [isOldPasswordShow, toggleOldPasswordShow] = useToggle();
   const [isNewPasswordShow, toggleNewPasswordShow] = useToggle();
   const [isNewPasswordConfirmShow, toggleNewPasswordConfirmShow] = useToggle();
@@ -43,9 +59,21 @@ export default function SettingsPasswordPage() {
   } = useForm<Schema>({
     resolver: zodResolver(schema),
   });
+  const { mutate } = useMutation({
+    mutationFn: (data: ChangePasswordRequestData) =>
+      changeShelterPassword(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '비밀번호 변경이 완료되었습니다',
+        status: 'success',
+        duration: 2500,
+      });
+    },
+  });
 
-  const onSubmit = (data: Schema) => {
-    console.log(data);
+  const onSubmit = ({ oldPassword, newPassword }: Schema) => {
+    mutate({ oldPassword, newPassword });
   };
 
   return (
