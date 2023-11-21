@@ -6,13 +6,13 @@ import useIntersect from '@/hooks/useIntersection';
 import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
-import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
-import { VolunteerSearchFilter } from '@/pages/volunteers/search/_types/filter';
+import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecruitmentSearch';
+import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
 import { getDatesFromPeriod } from '@/pages/volunteers/search/_utils/period';
 import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
 const getVolunteerSearchRequestFilter = (
-  searchFilter: Partial<VolunteerSearchFilter>,
+  searchFilter: Partial<SearchFilter>,
 ): Partial<RecruitmentSearchFilter> => {
   const { keyword, period, recruitmentStatus, searchType } = searchFilter;
   const { startDate, endDate } = getDatesFromPeriod(period);
@@ -28,7 +28,7 @@ const getVolunteerSearchRequestFilter = (
 
 export default function VolunteersSearchPage() {
   const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
-    useVolunteerSearch();
+    useRecruitmentSearch();
 
   const navigate = useNavigate();
 
