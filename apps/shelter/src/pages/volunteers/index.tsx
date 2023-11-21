@@ -2,8 +2,8 @@ import { IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useIntersect from 'shared/hooks/useIntersection';
 
-import useIntersect from '@/hooks/useIntersection';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 
 import PlusIcon from './_components/PlusIcon';
