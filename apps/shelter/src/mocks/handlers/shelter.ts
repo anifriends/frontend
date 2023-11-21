@@ -49,4 +49,8 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  http.patch('/shelters/me', async () => {
+    await delay(200);
+    return HttpResponse.json({ status: 204 });
+  }),
 ];
