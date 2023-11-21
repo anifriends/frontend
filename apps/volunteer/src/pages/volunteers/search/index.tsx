@@ -36,11 +36,6 @@ export default function VolunteersSearchPage() {
     }
   };
 
-  //TODO 삭제 버튼 눌렀을 때 기능 추가
-
-  //TODO recruit id 받아서 마감
-  const closeRecruit = () => {};
-
   if (!isKeywordSearched) {
     return null;
   }
