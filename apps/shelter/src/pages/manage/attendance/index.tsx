@@ -21,10 +21,10 @@ import { ChangeEvent, Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
-  AttendanceStatus,
   getShelterApprovedRecruitmentApplicants,
   updateAttendanceAPI,
 } from '@/apis/recruitment';
+import { AttendanceStatus } from '@/types/apis/recruitment';
 
 const attendanceQueryOptions = (recruitmentId: number) =>
   queryOptions({
@@ -61,7 +61,7 @@ function AttendanceForm() {
     }: {
       recruitmentId: number;
       applicants: AttendanceStatus[];
-    }) => updateAttendanceAPI(recruitmentId, applicants),
+    }) => updateAttendanceAPI(recruitmentId, { applicants }),
     onError: (error) => {
       console.warn('error', error);
     },

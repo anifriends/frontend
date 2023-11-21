@@ -94,7 +94,7 @@ export type ApprovedRecruitmentApplicantsResponse = {
 
 export type AttendanceStatus = {
   applicantId: number;
-  attendance: boolean;
+  isAttended: boolean;
 };
 
 export type ApplicantsApprovalRequest = {
