@@ -19,27 +19,17 @@ const DUMMY_USER_LIST = Array.from({ length: 8 }, () => {
 });
 
 export const handlers = [
-  http.get(
-    '/shelters/recruitments/:recruitmentId/approval',
-    async ({ request }) => {
-      console.log(request);
-      await delay(200);
-      return HttpResponse.json(
-        {
-          applicants: DUMMY_USER_LIST,
-        },
-        { status: 200 },
-      );
-    },
-  ),
-  http.patch(
-    '/shelters/recruitments/:recruitmentId/approval',
-    async ({ request, params }) => {
-      const { recruitmentId } = params;
-      const orderUpdates = await request.json();
-      console.log(request, recruitmentId, orderUpdates);
-      await delay(1000);
-      return HttpResponse.json({ status: 200 });
-    },
-  ),
+  http.get('/shelters/recruitments/:recruitmentId/approval', async () => {
+    await delay(200);
+    return HttpResponse.json(
+      {
+        applicants: DUMMY_USER_LIST,
+      },
+      { status: 200 },
+    );
+  }),
+  http.patch('/shelters/recruitments/:recruitmentId/approval', async () => {
+    await delay(1000);
+    return HttpResponse.json({ status: 200 });
+  }),
 ];

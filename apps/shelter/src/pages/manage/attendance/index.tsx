@@ -79,7 +79,6 @@ function AttendanceForm() {
         isAttended: volunteerAttendance,
       }),
     );
-    console.log(updatedUserList);
     mutate({
       recruitmentId: Number(id),
       applicants: updatedUserList,
