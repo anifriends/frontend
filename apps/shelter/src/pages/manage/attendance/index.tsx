@@ -10,7 +10,11 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { ChangeEvent, useState } from 'react';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { ChangeEvent, Suspense, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { getShelterApprovedRecruitmentApplicants } from '@/apis/recruitment';
 
 const DUMMY_USER = {
   volunteerId: 1,
@@ -29,14 +33,31 @@ const DUMMY_USER_LIST = Array.from({ length: 8 }, () => {
   };
 });
 
-export default function ManageAttendancePage() {
-  const [userList, setUserList] = useState(DUMMY_USER_LIST);
-  const [allCheckedAttendance, setAllCheckAttendance] = useState(() => {
-    const attendanceUserList = userList.filter(({ volunteerAttendance }) =>
-      Boolean(volunteerAttendance),
-    );
-    return Boolean(userList.length === attendanceUserList.length);
+const attendanceQueryOptions = (recruitmentId: number) =>
+  queryOptions({
+    queryKey: ['attendance', recruitmentId],
+    queryFn: () => getShelterApprovedRecruitmentApplicants(recruitmentId),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
   });
+
+type Gender = 'MALE' | 'FEMALE';
+
+type Applicant = {
+  volunteerId: number;
+  applicantId: number;
+  volunteerName: string;
+  volunteerBirthDate: string;
+  volunteerGender: Gender;
+  volunteerPhoneNumber: string;
+  volunteerAttendance: boolean;
+};
+
+function AttendanceForm() {
+  const { id } = useParams();
+
+  const [userList, setUserList] = useState<Applicant[]>([]);
 
   const toggleCheck = ({ target: { id } }: ChangeEvent) => {
     const updatedUserList = userList.map((user) =>
@@ -52,7 +73,6 @@ export default function ManageAttendancePage() {
     );
 
     setUserList(updatedUserList);
-    setAllCheckAttendance(updatedApplicantCount === userList.length);
   };
 
   const allCheckedHandler = ({
@@ -61,8 +81,21 @@ export default function ManageAttendancePage() {
     setUserList(
       userList.map((user) => ({ ...user, volunteerAttendance: checked })),
     );
-    setAllCheckAttendance(checked);
   };
+
+  const {
+    data: {
+      data: { applicants },
+    },
+  } = useSuspenseQuery(attendanceQueryOptions(Number(id)));
+
+  useEffect(() => {
+    setUserList(applicants);
+  }, [applicants]);
+
+  const allChecked = userList.every(({ volunteerAttendance }) =>
+    Boolean(volunteerAttendance),
+  );
 
   return (
     <Flex dir="column" justifyContent="center">
@@ -74,7 +107,7 @@ export default function ManageAttendancePage() {
                 <Checkbox
                   colorScheme="orange"
                   borderColor="orange.400"
-                  isChecked={allCheckedAttendance}
+                  isChecked={allChecked}
                   onChange={allCheckedHandler}
                 />
               </Th>
@@ -108,9 +141,9 @@ export default function ManageAttendancePage() {
                     <Checkbox
                       colorScheme="orange"
                       borderColor="orange.400"
-                      id={applicantId.toString()}
                       isChecked={volunteerAttendance}
                       onChange={toggleCheck}
+                      id={applicantId.toString()}
                     />
                   </Td>
                   <Td textAlign="center" fontWeight="semibold">
@@ -132,7 +165,6 @@ export default function ManageAttendancePage() {
         </Table>
       </TableContainer>
       <Button
-        as="button"
         pos="fixed"
         bottom={0}
         width="90%"
@@ -150,5 +182,13 @@ export default function ManageAttendancePage() {
         출석 완료
       </Button>
     </Flex>
+  );
+}
+
+export default function ManageAttendancePage() {
+  return (
+    <Suspense fallback={<p>로딩 중...</p>}>
+      <AttendanceForm />
+    </Suspense>
   );
 }
