@@ -1,11 +1,4 @@
-import {
-  AspectRatio,
-  Box,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { AspectRatio, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { MouseEvent } from 'react';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
 import InfoSubText from 'shared/components/InfoSubtext';
@@ -43,36 +36,35 @@ export default function VolunteerRecruitItem({
   } = recruitment;
 
   return (
-    <Box
+    <Flex
       data-id={id}
       p={4}
+      gap={3}
       borderBottom="1px"
       borderColor="gray.200"
       onClick={onClickItem}
     >
-      <HStack spacing={3} justifyContent="center">
-        <AspectRatio minW="110px" ratio={1}>
-          <Image src={shelterProfileImage} borderRadius={10} />
-        </AspectRatio>
-        <VStack spacing={2.5} w="full">
-          <Box w="full">
-            <LabelText content={`D-${volunteerDateDday}`} labelTitle="모집중" />
-            <Text fontWeight="bold" lineHeight="base">
-              {title}
-            </Text>
-            <Text color="gray.400" fontSize="xs" lineHeight={4}>
-              {shelterName}
-            </Text>
-            <InfoSubText title="봉사일" content={volunteerDate} />
-          </Box>
-          <Box alignSelf="flex-end" lineHeight="none">
-            <ApplicantStatus
-              numerator={applicantCount}
-              denominator={recruitmentCapacity}
-            />
-          </Box>
+      <AspectRatio minW="110px" ratio={1}>
+        <Image src={shelterProfileImage} borderRadius={10} />
+      </AspectRatio>
+      <Box w="full" pos="relative">
+        <VStack w="full" align="start" gap={1}>
+          <LabelText content={`D-${volunteerDateDday}`} labelTitle="모집중" />
+          <Text fontWeight="bold" lineHeight={6}>
+            {title}
+          </Text>
+          <Text color="gray.400" fontSize="xs" lineHeight={4}>
+            {shelterName}
+          </Text>
+          <InfoSubText title="봉사일" content={volunteerDate} />
         </VStack>
-      </HStack>
-    </Box>
+        <Box pos="absolute" right={0} bottom={0}>
+          <ApplicantStatus
+            numerator={applicantCount}
+            denominator={recruitmentCapacity}
+          />
+        </Box>
+      </Box>
+    </Flex>
   );
 }
