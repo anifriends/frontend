@@ -1,3 +1,7 @@
+import { PersonGenderEng } from 'shared/types/gender';
+
+import { applicantStatusEng as RecruitmentApplicantStatus } from '../recruitment';
+
 export type PageInfo = {
   totalElements: number;
   hasNext: boolean;
@@ -34,12 +38,8 @@ export type RecruitmentSearchFilter = {
 
 export type RecruitmentsRequest = Partial<RecruitmentSearchFilter> & Pagination;
 
-export type Gender = 'MALE' | 'FEMALE';
-
-export type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
-
 export type RecruitmentApplicantUpdateRequest = {
-  status: RecruitementStatus;
+  status: RecruitmentApplicantStatus;
 };
 
 export type RecruitmentCreateRequest = {
@@ -67,10 +67,10 @@ export type ShelterRecruitmentApplicant = {
   volunteerId: number;
   volunteerName: string;
   volunteerBirthDate: string;
-  volunteerGender: Gender;
+  volunteerGender: PersonGenderEng;
   completedVolunteerCount: number;
   volunteerTemperature: number;
-  applicantStatus: RecruitementStatus;
+  applicantStatus: RecruitmentApplicantStatus;
 };
 
 export type RecruitmentApplicantsResponse = {
@@ -83,7 +83,7 @@ export type ApprovedRecruitmentApplicant = {
   applicantId: number;
   volunteerName: string;
   volunteerBirthDate: string;
-  volunteerGender: Gender;
+  volunteerGender: PersonGenderEng;
   volunteerPhoneNumber: string;
   volunteerAttendance: boolean;
 };
