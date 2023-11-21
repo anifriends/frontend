@@ -1,16 +1,17 @@
 import { ChangeEvent } from 'react';
+import SearchFilters, {
+  SearchFilterSelectData,
+} from 'shared/components/SearchFilters';
 
-import FilterGroup from '@/pages/volunteers/search/_components/FilterGroup';
-import FilterSelect from '@/pages/volunteers/search/_components/FilterSelect';
 import {
   PERIOD,
   RECRUITMENT_STATUS,
   SEARCH_TYPE,
 } from '@/pages/volunteers/search/_constants/filter';
-import { VolunteerSearchFilter } from '@/pages/volunteers/search/_types/filter';
+import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
 
 type RecruitmentsSearchFilterProps = {
-  searchFilter: Partial<VolunteerSearchFilter>;
+  searchFilter: Partial<SearchFilter>;
   onChangeFilter: (event: ChangeEvent<HTMLSelectElement>) => void;
 };
 
@@ -18,46 +19,31 @@ export default function RecruitmentsSearchFilter({
   searchFilter,
   onChangeFilter,
 }: RecruitmentsSearchFilterProps) {
-  const { period, recruitmentStatus, searchType } = searchFilter;
+  const searchFilters: SearchFilterSelectData[] = [
+    {
+      selectOption: PERIOD,
+      name: 'period',
+      placeholder: '봉사일',
+      value: searchFilter.period,
+    },
+    {
+      selectOption: RECRUITMENT_STATUS,
+      name: 'recruitmentStatus',
+      placeholder: '모집',
+      value: searchFilter.recruitmentStatus,
+    },
+    {
+      selectOption: SEARCH_TYPE,
+      name: 'searchType',
+      placeholder: '전체',
+      value: searchFilter.searchType,
+    },
+  ];
 
   return (
-    <FilterGroup>
-      <FilterSelect
-        name="period"
-        placeholder="봉사일"
-        value={period}
-        onChange={onChangeFilter}
-      >
-        {Object.entries(PERIOD).map(([key, value]) => (
-          <option key={key} value={key}>
-            {value}
-          </option>
-        ))}
-      </FilterSelect>
-      <FilterSelect
-        name="recruitmentStatus"
-        placeholder="모집"
-        value={recruitmentStatus}
-        onChange={onChangeFilter}
-      >
-        {Object.entries(RECRUITMENT_STATUS).map(([key, value]) => (
-          <option key={key} value={key}>
-            {value}
-          </option>
-        ))}
-      </FilterSelect>
-      <FilterSelect
-        name="searchType"
-        placeholder="전체"
-        value={searchType}
-        onChange={onChangeFilter}
-      >
-        {Object.entries(SEARCH_TYPE).map(([key, value]) => (
-          <option key={key} value={key}>
-            {value}
-          </option>
-        ))}
-      </FilterSelect>
-    </FilterGroup>
+    <SearchFilters
+      searchFilters={searchFilters}
+      onChangeFilter={onChangeFilter}
+    />
   );
 }
