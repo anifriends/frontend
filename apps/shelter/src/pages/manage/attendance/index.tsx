@@ -10,16 +10,81 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { ChangeEvent, useState } from 'react';
+
+const DUMMY_USER = {
+  volunteerId: 1,
+  applicantId: 2,
+  volunteerName: '김영희',
+  volunteerBirthDate: '2021-11-08',
+  volunteerGender: 'FEMALE',
+  volunteerPhoneNumber: '010-1234-5678',
+  volunteerAttendance: true,
+};
+
+const DUMMY_USER_LIST = Array.from({ length: 8 }, () => {
+  return {
+    ...DUMMY_USER,
+    applicantId: Math.random(),
+  };
+});
 
 export default function ManageAttendancePage() {
+  const [userList, setUserList] = useState(DUMMY_USER_LIST);
+  const [allCheckedAttendance, setAllCheckAttendance] = useState(() => {
+    const attendanceUserList = userList.filter(({ volunteerAttendance }) =>
+      Boolean(volunteerAttendance),
+    );
+    return Boolean(userList.length === attendanceUserList.length);
+  });
+
+  const toggleCheck = ({ target: { id } }: ChangeEvent) => {
+    const updatedUserList = userList.map((user) =>
+      user.applicantId.toString() === id
+        ? { ...user, volunteerAttendance: !user.volunteerAttendance }
+        : user,
+    );
+
+    const updatedApplicantCount = updatedUserList.reduce(
+      (prev, { volunteerAttendance }) =>
+        volunteerAttendance ? prev + 1 : prev,
+      0,
+    );
+
+    setUserList(updatedUserList);
+    setAllCheckAttendance(updatedApplicantCount === userList.length);
+  };
+
+  const allCheckedHandler = ({
+    target: { checked },
+  }: ChangeEvent<HTMLInputElement>) => {
+    if (checked) {
+      setUserList((prevUserList) =>
+        prevUserList.map((user) => ({ ...user, volunteerAttendance: true })),
+      );
+      console.log(userList);
+      setAllCheckAttendance(true);
+    } else {
+      setUserList((prevUserList) =>
+        prevUserList.map((user) => ({ ...user, volunteerAttendance: false })),
+      );
+      setAllCheckAttendance(false);
+    }
+  };
+
   return (
     <Flex dir="column" justifyContent="center">
-      <TableContainer overflowX="hidden">
+      <TableContainer>
         <Table size="sm">
           <Thead bgColor="gray.100" color="gray.500">
             <Tr>
-              <Th py={2}>
-                <Checkbox colorScheme="orange" borderColor="orange.400" />
+              <Th py={5} textAlign="center">
+                <Checkbox
+                  colorScheme="orange"
+                  borderColor="orange.400"
+                  isChecked={allCheckedAttendance}
+                  onChange={allCheckedHandler}
+                />
               </Th>
               <Th textAlign="center" fontWeight="normal">
                 이름
@@ -36,35 +101,41 @@ export default function ManageAttendancePage() {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr fontSize="sm" lineHeight={5}>
-              <Td py={5}>
-                <Checkbox colorScheme="orange" borderColor="orange.400" />
-              </Td>
-              <Td textAlign="center" fontWeight="semibold">
-                김하나
-              </Td>
-              <Td textAlign="center">여성</Td>
-              <Td textAlign="center">1999.12.31</Td>
-              <Td textAlign="center">01012345678</Td>
-            </Tr>
-            <Tr>
-              <Td py={5}>
-                <Checkbox colorScheme="orange" borderColor="orange.400" />
-              </Td>
-              <Td
-                textAlign="center"
-                fontWeight="semibold"
-                fontSize="sm"
-                lineHeight={5}
-              >
-                김하나
-              </Td>
-              <Td textAlign="center" fontSize="sm" lineHeight={5}>
-                여성
-              </Td>
-              <Td textAlign="center">1999.12.31</Td>
-              <Td textAlign="center">01012345678</Td>
-            </Tr>
+            {userList.map(
+              ({
+                volunteerId,
+                applicantId,
+                volunteerName,
+                volunteerBirthDate,
+                volunteerGender,
+                volunteerPhoneNumber,
+                volunteerAttendance,
+              }) => (
+                <Tr fontSize="sm" lineHeight={5} key={volunteerId}>
+                  <Td py={5}>
+                    <Checkbox
+                      colorScheme="orange"
+                      borderColor="orange.400"
+                      id={applicantId.toString()}
+                      isChecked={volunteerAttendance}
+                      onChange={toggleCheck}
+                    />
+                  </Td>
+                  <Td textAlign="center" fontWeight="semibold">
+                    {volunteerName}
+                  </Td>
+                  <Td textAlign="center">
+                    {volunteerGender === 'FEMALE' ? '여성' : '남성'}
+                  </Td>
+                  <Td textAlign="center">
+                    {volunteerBirthDate.split('-').join('.')}
+                  </Td>
+                  <Td textAlign="center">
+                    {volunteerPhoneNumber.split('-').join('')}
+                  </Td>
+                </Tr>
+              ),
+            )}
           </Tbody>
         </Table>
       </TableContainer>
