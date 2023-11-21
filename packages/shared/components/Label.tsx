@@ -1,4 +1,4 @@
-import { Badge } from '@chakra-ui/react';
+import { Badge, BadgeProps } from '@chakra-ui/react';
 
 const LABEL_BACKGROUND_COLOR = {
   GREEN: 'green.300',
@@ -11,17 +11,22 @@ const LABEL_BACKGROUND_COLOR = {
 export type LabelProps = {
   labelTitle: string;
   type?: keyof typeof LABEL_BACKGROUND_COLOR;
-};
+} & Pick<BadgeProps, 'fontSize' | 'lineHeight'>;
 
-export default function Label({ labelTitle, type = 'GREEN' }: LabelProps) {
+export default function Label({
+  labelTitle,
+  type = 'GREEN',
+  fontSize = 'xs',
+  lineHeight = 4,
+}: LabelProps) {
   return (
     <Badge
       variant="solid"
       color="white"
       bgColor={LABEL_BACKGROUND_COLOR[type]}
-      fontSize="sm"
+      fontSize={fontSize}
       fontWeight="normal"
-      lineHeight={4}
+      lineHeight={lineHeight}
       textAlign="center"
       textTransform="uppercase"
       maxW={14}
