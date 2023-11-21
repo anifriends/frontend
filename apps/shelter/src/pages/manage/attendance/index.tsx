@@ -58,18 +58,10 @@ export default function ManageAttendancePage() {
   const allCheckedHandler = ({
     target: { checked },
   }: ChangeEvent<HTMLInputElement>) => {
-    if (checked) {
-      setUserList((prevUserList) =>
-        prevUserList.map((user) => ({ ...user, volunteerAttendance: true })),
-      );
-      console.log(userList);
-      setAllCheckAttendance(true);
-    } else {
-      setUserList((prevUserList) =>
-        prevUserList.map((user) => ({ ...user, volunteerAttendance: false })),
-      );
-      setAllCheckAttendance(false);
-    }
+    setUserList(
+      userList.map((user) => ({ ...user, volunteerAttendance: checked })),
+    );
+    setAllCheckAttendance(checked);
   };
 
   return (
