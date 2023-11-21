@@ -18,6 +18,8 @@ export default function ManageApplyItem({
     completedVolunteerCount,
   },
 }: ManageApplyItemProps) {
+  const age = getAge(volunteerBirthDate);
+
   return (
     <Flex
       p={4}
@@ -30,7 +32,7 @@ export default function ManageApplyItem({
           <Text fontWeight="semibold">{volunteerName}</Text>
           <Label labelTitle={String(volunteerTemperature) + '°C'} />
         </HStack>
-        <Text fontSize="14px">{`${getAge(volunteerBirthDate)}살 · ${
+        <Text fontSize="14px">{`${age < 0 ? '00' : age}살 · ${
           PERSON_GENDER_KOR[volunteerGender]
         } · 봉사횟수 ${completedVolunteerCount}회`}</Text>
       </VStack>

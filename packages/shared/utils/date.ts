@@ -47,7 +47,6 @@ export const getAge = (birthDate: string) => {
     currentDate.getMonth() < parsedBirthDate.getMonth() ||
     (currentDate.getMonth() === parsedBirthDate.getMonth() &&
       currentDate.getDate() <= parsedBirthDate.getDate());
-  const realAge = age + Number(isPassed);
 
-  return realAge < 0 ? '00' : realAge;
+  return age + Number(isPassed);
 };
