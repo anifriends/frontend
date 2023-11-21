@@ -31,10 +31,23 @@ export const isSameDay = (a: Date, b: Date): boolean => {
   return Math.trunc(diff / MILISECONDS.DAY) === 0;
 };
 
-export function getDDay(deadLine: string) {
+export const getDDay = (deadLine: string) => {
   const deadLineDate = new Date(deadLine).getTime();
   const currentDate = new Date().getTime();
   const diffDate = deadLineDate - currentDate;
 
   return Math.floor(diffDate / (1000 * MILISECONDS.DAY)).toString();
-}
+};
+
+export const getAge = (birthDate: string) => {
+  const currentDate = new Date();
+  const parsedBirthDate = new Date(birthDate);
+  const age = currentDate.getFullYear() - parsedBirthDate.getFullYear() - 1;
+  const isPassed =
+    currentDate.getMonth() < parsedBirthDate.getMonth() ||
+    (currentDate.getMonth() === parsedBirthDate.getMonth() &&
+      currentDate.getDate() <= parsedBirthDate.getDate());
+  const realAge = age + Number(isPassed);
+
+  return realAge < 0 ? '00' : realAge;
+};
