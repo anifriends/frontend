@@ -13,12 +13,14 @@ import {
 type AlertModalProps = {
   modalTitle: string;
   modalContent: string;
+  btnTitle: string;
   onClick?: VoidFunction;
 } & Omit<ModalProps, 'children'>;
 
 export default function AlertModal({
   modalTitle,
   modalContent,
+  btnTitle,
   isOpen,
   onClose,
   onClick,
@@ -43,7 +45,7 @@ export default function AlertModal({
             color="white"
             onClick={onClick}
           >
-            마감하기
+            {btnTitle}
           </Button>
         </ModalFooter>
       </ModalContent>
