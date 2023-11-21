@@ -25,12 +25,12 @@ import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import RadioGroup from 'shared/components/RadioGroup';
 import useToggle from 'shared/hooks/useToggle';
 import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
+import { PersonGenderEng, PersonGenderKor } from 'shared/types/gender';
 import * as z from 'zod';
 
 import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';
 import PATH from '@/constants/path';
 import { SignupRequestData } from '@/types/apis/auth';
-import { PersonGenderEng, PersonGenderKor } from '@/types/gender';
 
 type Schema = z.infer<typeof schema>;
 

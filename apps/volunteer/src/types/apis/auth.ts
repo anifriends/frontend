@@ -1,6 +1,5 @@
 import { SigninRequestData } from 'shared/types/apis/auth';
-
-import { PersonGenderEng } from '../gender';
+import { PersonGenderEng } from 'shared/types/gender';
 
 export type SignupRequestData = SigninRequestData & {
   name: string;

@@ -65,4 +65,8 @@ export const handlers = [
       { status: 400 },
     );
   }),
+  http.patch('/volunteers/me/passwords', async () => {
+    await delay(200);
+    return HttpResponse.json({}, { status: 200 });
+  }),
 ];
