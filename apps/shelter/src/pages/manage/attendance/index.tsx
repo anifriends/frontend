@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Flex,
+  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -10,33 +11,26 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { ChangeEvent, Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getShelterApprovedRecruitmentApplicants } from '@/apis/recruitment';
-
-const DUMMY_USER = {
-  volunteerId: 1,
-  applicantId: 2,
-  volunteerName: '김영희',
-  volunteerBirthDate: '2021-11-08',
-  volunteerGender: 'FEMALE',
-  volunteerPhoneNumber: '010-1234-5678',
-  volunteerAttendance: true,
-};
-
-const DUMMY_USER_LIST = Array.from({ length: 8 }, () => {
-  return {
-    ...DUMMY_USER,
-    applicantId: Math.random(),
-  };
-});
+import {
+  AttendanceStatus,
+  getShelterApprovedRecruitmentApplicants,
+  updateAttendanceAPI,
+} from '@/apis/recruitment';
 
 const attendanceQueryOptions = (recruitmentId: number) =>
   queryOptions({
     queryKey: ['attendance', recruitmentId],
     queryFn: () => getShelterApprovedRecruitmentApplicants(recruitmentId),
+    select: ({ data }) => data,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchInterval: false,
@@ -55,9 +49,42 @@ type Applicant = {
 };
 
 function AttendanceForm() {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
 
   const [userList, setUserList] = useState<Applicant[]>([]);
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({
+      recruitmentId,
+      applicants,
+    }: {
+      recruitmentId: number;
+      applicants: AttendanceStatus[];
+    }) => updateAttendanceAPI(recruitmentId, applicants),
+    onError: (error) => {
+      console.warn('error', error);
+    },
+    onSettled: (_, __, { recruitmentId }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['attendance', recruitmentId],
+      });
+    },
+  });
+
+  const updateAttendance = () => {
+    const updatedUserList = userList.map(
+      ({ applicantId, volunteerAttendance }) => ({
+        applicantId,
+        isAttended: volunteerAttendance,
+      }),
+    );
+    console.log(updatedUserList);
+    mutate({
+      recruitmentId: Number(id),
+      applicants: updatedUserList,
+    });
+  };
 
   const toggleCheck = ({ target: { id } }: ChangeEvent) => {
     const updatedUserList = userList.map((user) =>
@@ -66,16 +93,10 @@ function AttendanceForm() {
         : user,
     );
 
-    const updatedApplicantCount = updatedUserList.reduce(
-      (prev, { volunteerAttendance }) =>
-        volunteerAttendance ? prev + 1 : prev,
-      0,
-    );
-
     setUserList(updatedUserList);
   };
 
-  const allCheckedHandler = ({
+  const toggleAllCheck = ({
     target: { checked },
   }: ChangeEvent<HTMLInputElement>) => {
     setUserList(
@@ -84,18 +105,16 @@ function AttendanceForm() {
   };
 
   const {
-    data: {
-      data: { applicants },
-    },
+    data: { applicants },
   } = useSuspenseQuery(attendanceQueryOptions(Number(id)));
-
-  useEffect(() => {
-    setUserList(applicants);
-  }, [applicants]);
 
   const allChecked = userList.every(({ volunteerAttendance }) =>
     Boolean(volunteerAttendance),
   );
+
+  useEffect(() => {
+    setUserList(applicants);
+  }, [applicants]);
 
   return (
     <Flex dir="column" justifyContent="center">
@@ -108,7 +127,7 @@ function AttendanceForm() {
                   colorScheme="orange"
                   borderColor="orange.400"
                   isChecked={allChecked}
-                  onChange={allCheckedHandler}
+                  onChange={toggleAllCheck}
                 />
               </Th>
               <Th textAlign="center" fontWeight="normal">
@@ -178,8 +197,11 @@ function AttendanceForm() {
         _active={{
           bg: undefined,
         }}
+        onClick={updateAttendance}
+        disabled={isPending}
+        opacity={isPending ? '0.5' : '1'}
       >
-        출석 완료
+        {isPending ? <Spinner /> : '출석 완료'}
       </Button>
     </Flex>
   );

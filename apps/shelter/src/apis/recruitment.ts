@@ -37,9 +37,9 @@ type PostRecruitmentParams = {
   imageUrls: string[];
 };
 
-type AttendanceStatus = {
+export type AttendanceStatus = {
   applicantId: number;
-  attendance: boolean;
+  isAttended: boolean;
 };
 
 type Gender = 'MALE' | 'FEMALE';
@@ -126,7 +126,7 @@ export const getShelterApprovedRecruitmentApplicants = (
     }[];
   }>(`/shelters/recruitments/${recruitmentId}/approval`);
 
-export const updatShelterApplicantsApproval = (
+export const updateAttendanceAPI = (
   recruitmentId: number,
   applicants: AttendanceStatus[],
 ) =>

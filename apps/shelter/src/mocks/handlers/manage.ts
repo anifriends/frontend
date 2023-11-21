@@ -32,4 +32,14 @@ export const handlers = [
       );
     },
   ),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/approval',
+    async ({ request, params }) => {
+      const { recruitmentId } = params;
+      const orderUpdates = await request.json();
+      console.log(request, recruitmentId, orderUpdates);
+      await delay(1000);
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
 ];
