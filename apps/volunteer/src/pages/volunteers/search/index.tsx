@@ -1,26 +1,32 @@
 import { Box } from '@chakra-ui/react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useIntersect from 'shared/hooks/useIntersection';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
+import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
+import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
 import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecruitmentSearch';
+import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
+import { getDatesFromPeriod } from '@/pages/volunteers/search/_utils/period';
+import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
-const DUMMY_RECRUITMENT = {
-  id: 1,
-  title: '봉사자 모집합니다!!',
-  shelterName: '양천구 보건소',
-  shelterProfileImage: 'https://source.unsplash.com/random',
-  volunteerDate: '23.10.23',
-  volunteerDateDday: 12,
-  applicantCount: 2,
-  recruitmentCapacity: 6,
+const getVolunteerSearchRequestFilter = (
+  searchFilter: Partial<SearchFilter>,
+): Partial<RecruitmentSearchFilter> => {
+  const { keyword, period, recruitmentStatus, searchType } = searchFilter;
+  const { startDate, endDate } = getDatesFromPeriod(period);
+
+  return {
+    keyword,
+    startDate,
+    endDate,
+    closedFilter: recruitmentStatus,
+    keywordFilter: searchType,
+  };
 };
-
-const DUMMY_RECRUITMENT_LIST = Array.from(
-  { length: 4 },
-  () => DUMMY_RECRUITMENT,
-);
 
 export default function VolunteersSearchPage() {
   const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
@@ -36,8 +42,31 @@ export default function VolunteersSearchPage() {
     }
   };
 
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
+    useInfiniteQuery(
+      recruitmentQueryOptions.search(
+        getVolunteerSearchRequestFilter(searchFilter),
+        isKeywordSearched,
+      ),
+    );
+
+  const recruitments = data?.pages
+    .flatMap(({ data }) => data.recruitments)
+    .map(createRecruitmentItem);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
+
   if (!isKeywordSearched) {
     return null;
+  }
+
+  if (isLoading) {
+    return <p>로딩중</p>;
   }
 
   return (
@@ -46,13 +75,14 @@ export default function VolunteersSearchPage() {
         searchFilter={searchFilter}
         onChangeFilter={handleChangeSearchFilter}
       />
-      {DUMMY_RECRUITMENT_LIST?.map((recruitment) => (
+      {recruitments?.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
           recruitment={recruitment}
           onClickItem={goVolunteersDetail}
         />
       ))}
+      <div ref={ref} />
     </Box>
   );
 }
