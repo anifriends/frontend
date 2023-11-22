@@ -1,9 +1,20 @@
-import { Button, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Button, Flex, HStack, Text, useToast, VStack } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Label from 'shared/components/Label';
 import { PERSON_GENDER_KOR } from 'shared/constants/gender';
 import { getAge } from 'shared/utils/date';
 
-import { ShelterRecruitmentApplicant } from '@/types/apis/recruitment';
+import { updateShelterRecruitmentApplicant } from '@/apis/recruitment';
+import CkCheck from '@/assets/CkCheck';
+import CkClose from '@/assets/CkClose';
+import {
+  APPLICANT_STATUS_ENG,
+  APPLICANT_STATUS_KOR,
+} from '@/constants/recruitment';
+import type {
+  RecruitmentApplicantUpdateRequest,
+  ShelterRecruitmentApplicant,
+} from '@/types/apis/recruitment';
 
 type ManageApplyItemProps = {
   applicant: ShelterRecruitmentApplicant;
@@ -11,6 +22,9 @@ type ManageApplyItemProps = {
 
 export default function ManageApplyItem({
   applicant: {
+    applicantId,
+    applicantStatus,
+    volunteerId,
     volunteerBirthDate,
     volunteerGender,
     volunteerName,
@@ -18,7 +32,39 @@ export default function ManageApplyItem({
     completedVolunteerCount,
   },
 }: ManageApplyItemProps) {
+  const toast = useToast();
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (data: RecruitmentApplicantUpdateRequest) =>
+      updateShelterRecruitmentApplicant(applicantId, volunteerId, data),
+    onSuccess: async (_, { isApproved }) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['recruitment', 'manage', 'apply', volunteerId],
+      });
+
+      const descriptionStatus = isApproved
+        ? APPLICANT_STATUS_KOR.APPROVE
+        : APPLICANT_STATUS_KOR.REFUSE;
+
+      toast({
+        position: 'top',
+        description: `${volunteerName}님의 봉사신청을 ${descriptionStatus}했습니다 `,
+        status: 'success',
+        duration: 1000,
+        isClosable: true,
+      });
+    },
+  });
+
   const age = getAge(volunteerBirthDate);
+  const isRefused = applicantStatus === APPLICANT_STATUS_ENG.REFUSED;
+  const isApproved = applicantStatus === APPLICANT_STATUS_ENG.APPROVED;
+
+  const changeApplicantStatus = ({
+    isApproved,
+  }: RecruitmentApplicantUpdateRequest) => {
+    mutate({ isApproved });
+  };
 
   return (
     <Flex
@@ -39,27 +85,35 @@ export default function ManageApplyItem({
       <HStack align="flex-end">
         <Button
           size="sm"
-          px={6}
+          px={isRefused ? 3 : 6}
           border="1px solid"
           borderColor="orange.400"
-          bgColor="white"
-          color="orange.400"
+          bgColor={isRefused ? 'orange.400' : 'white'}
+          color={isRefused ? 'white' : 'orange.400'}
           _hover={{ bg: undefined }}
           _active={{ bg: undefined }}
+          onClick={() => changeApplicantStatus({ isApproved: false })}
         >
-          거절
+          {isRefused
+            ? APPLICANT_STATUS_KOR.REFUSED
+            : APPLICANT_STATUS_KOR.REFUSE}
+          {isRefused && <CkClose />}
         </Button>
         <Button
           size="sm"
-          px={6}
+          px={isApproved ? 3 : 6}
           border="1px solid"
           borderColor="orange.400"
-          bgColor="white"
-          color="orange.400"
+          bgColor={isApproved ? 'orange.400' : 'white'}
+          color={isApproved ? 'white' : 'orange.400'}
           _hover={{ bg: undefined }}
           _active={{ bg: undefined }}
+          onClick={() => changeApplicantStatus({ isApproved: true })}
         >
-          승인
+          {isApproved
+            ? APPLICANT_STATUS_KOR.APPROVED
+            : APPLICANT_STATUS_KOR.APPROVE}
+          {isApproved && <CkCheck />}
         </Button>
       </HStack>
     </Flex>
