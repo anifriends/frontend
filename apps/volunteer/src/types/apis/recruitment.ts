@@ -13,6 +13,7 @@ export type Recruitment = {
   recruitmentTitle: string;
   recruitmentStartTime: string;
   recruitmentEndTime: string;
+  recruitmentDeadline: string;
   recruitmentIsClosed: boolean;
   recruitmentApplicantCount: number;
   recruitmentCapacity: number;
