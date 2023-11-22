@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import useSearchHeaderStore from 'shared/store/searchHeaderStore';
+
+import useSearchHeaderStore from '../store/searchHeaderStore';
 
 type KeywordFilter = {
   keyword: string;
