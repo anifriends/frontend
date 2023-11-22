@@ -15,4 +15,9 @@ export const handlers = [
       volunteerGender: 'FEMALE',
     });
   }),
+  http.patch('/volunteers/me', async ({ request }) => {
+    const updateVolunteer = await request.json();
+    console.log(updateVolunteer);
+    return new HttpResponse(null, { status: 204 });
+  }),
 ];
