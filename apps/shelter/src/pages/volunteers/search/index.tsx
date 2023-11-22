@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import useIntersect from 'shared/hooks/useIntersection';
 
-import useIntersect from '@/hooks/useIntersection';
 import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
