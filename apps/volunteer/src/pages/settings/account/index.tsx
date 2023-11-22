@@ -10,10 +10,20 @@ import {
   Radio,
   RadioGroup,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useFetchAccount from './_hooks/useFetchAccount';
 
 export default function SettingsAccountPage() {
   const [imgFile, setImgFile] = useState<string>('');
+  const { data } = useFetchAccount();
+  const { register, handleSubmit, reset, watch } = useForm();
+
+  useEffect(() => {
+    reset(data);
+    setImgFile(data.imageUrl);
+  }, [data]);
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -22,9 +32,13 @@ export default function SettingsAccountPage() {
       setImgFile(newImgFile);
     }
   };
+
+  const onSubmit = handleSubmit((newData) => {
+    console.log(newData);
+  });
   return (
     <Box px={4} pb={208}>
-      <form>
+      <form onSubmit={onSubmit}>
         <Center py={30}>
           <Avatar
             boxSize={100}
@@ -38,8 +52,8 @@ export default function SettingsAccountPage() {
             id="profileImg"
             type="file"
             accept="image/*"
-            onChange={uploadImgFile}
             display="none"
+            {...register('imageUrl', { onChange: uploadImgFile })}
           />
         </Center>
         <FormControl mb={5}>
@@ -49,31 +63,40 @@ export default function SettingsAccountPage() {
             bgColor="gray.100"
             color="gray.500"
             _hover={{ border: `none` }}
+            value={data.email}
           />
         </FormControl>
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>이름</FormLabel>
-          <Input placeholder="이름을 입력하세요" />
+          <Input placeholder="이름을 입력하세요" {...register('name')} />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>생년월일</FormLabel>
-          <Input type="date" pr="10px" />
+          <Input type="date" pr="10px" {...register('birthDate')} />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>전화번호</FormLabel>
-          <Input type="tel" placeholder="전화번호를 입력하세요" />
+          <Input
+            type="tel"
+            placeholder="전화번호를 입력하세요"
+            {...register('phoneNumber')}
+          />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>성별</FormLabel>
-          <RadioGroup>
+          <RadioGroup value={watch('gender')}>
             <HStack spacing={10}>
-              <Radio colorScheme="orange" value="Male">
+              <Radio colorScheme="orange" value="MALE" {...register('gender')}>
                 남성
               </Radio>
-              <Radio colorScheme="orange" value="Female">
+              <Radio
+                colorScheme="orange"
+                value="FEMALE"
+                {...register('gender')}
+              >
                 여성
               </Radio>
             </HStack>
