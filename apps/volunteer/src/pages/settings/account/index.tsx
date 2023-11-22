@@ -112,6 +112,8 @@ export default function SettingsAccountPage() {
             color="white"
             pos="absolute"
             bottom={21}
+            _active={{ bg: undefined }}
+            _hover={{ bg: undefined }}
           >
             수정 완료
           </Button>
