@@ -1,6 +1,13 @@
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import useAuthStore from 'store/authStore';
 
-export const onRequest = (config: InternalAxiosRequestConfig) => config;
+const getAccessToken = () =>
+  `bearer ${useAuthStore.getState().user?.accessToken}`;
+
+export const onRequest = (config: InternalAxiosRequestConfig) => {
+  config.headers.Authorization = getAccessToken();
+  return config;
+};
 
 export const onErrorRequest = (error: Error) => {
   return Promise.reject(error);
