@@ -8,17 +8,32 @@ import {
   HStack,
   Input,
   Switch,
+  useToast,
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { updateShelterInfo } from '@/apis/shelter';
 import { UpdateShelterInfo } from '@/types/apis/shetler';
 
 import useFetchShelterAccount from './_hooks/useFetchShelterAccount';
 
 export default function SettingsAccountPage() {
+  const toast = useToast();
   const [imgFile, setImgFile] = useState<string>('');
   const { data } = useFetchShelterAccount();
+  const { mutate: updateShelter } = useMutation({
+    mutationFn: (data: UpdateShelterInfo) => updateShelterInfo(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '계정 정보가 수정되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
 
   const { register, handleSubmit, reset, watch } = useForm<UpdateShelterInfo>();
 
@@ -28,8 +43,7 @@ export default function SettingsAccountPage() {
   }, [data]);
 
   const onSubmit = handleSubmit((newData) => {
-    //TODO 계정정보수정 API
-    console.log(newData);
+    updateShelter(newData);
   });
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
