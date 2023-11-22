@@ -1,6 +1,6 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type MyInfoResponse = {
+export type MyInfoResponse = {
   volunteerId: number;
   volunteerEmail: string;
   volunteerName: string;
@@ -9,7 +9,7 @@ type MyInfoResponse = {
   volunteerTemperture: number;
   volunteerCount: number;
   volunteerImageUrl: string;
-  volunteerGender: 'FEMAIL' | 'MALE';
+  volunteerGender: 'FEMALE' | 'MALE';
 };
 
 export const getMyVolunteerInfo = () =>
