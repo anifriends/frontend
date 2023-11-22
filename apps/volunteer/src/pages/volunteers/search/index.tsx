@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
+import { getDatesFromPeriod } from 'shared/utils/period';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
@@ -10,7 +11,6 @@ import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
 import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecruitmentSearch';
 import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
-import { getDatesFromPeriod } from '@/pages/volunteers/search/_utils/period';
 import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
 const getVolunteerSearchRequestFilter = (
