@@ -1,4 +1,4 @@
-import { createFormattedTime } from 'shared/utils/date';
+import { createFormattedTime, getDDay } from 'shared/utils/date';
 
 import { Recruitment } from '@/types/apis/recruitment';
 
@@ -11,6 +11,7 @@ export const createRecruitmentItem = (recruitment: Recruitment) => {
     recruitmentApplicantCount,
     recruitmentCapacity,
     recruitmentStartTime,
+    recruitmentDeadline,
     recruitmentIsClosed,
   } = recruitment;
 
@@ -24,7 +25,7 @@ export const createRecruitmentItem = (recruitment: Recruitment) => {
       new Date(recruitmentStartTime),
       'YY.MM.DD',
     ),
-    volunteerDateDday: 12,
+    volunteerDateDday: getDDay(recruitmentDeadline),
     applicantCount: recruitmentApplicantCount,
     recruitmentCapacity: recruitmentCapacity,
   };
