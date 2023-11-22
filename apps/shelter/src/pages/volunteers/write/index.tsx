@@ -32,12 +32,7 @@ const DUMMY_IMAGE = 'https://source.unsplash.com/random';
 const DUMMY_IMAGE_URLS = Array.from({ length: 2 }, () => DUMMY_IMAGE);
 
 export default function VolunteersWritePage() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<RecruitmentSchema>({
+  const { register, handleSubmit } = useForm<RecruitmentSchema>({
     resolver: zodResolver(recruitmentSchema),
   });
   const [imageUrls, setImageUrls] = useState<string[]>(DUMMY_IMAGE_URLS);
@@ -48,8 +43,6 @@ export default function VolunteersWritePage() {
     // alert(JSON.stringify(data));
     console.log('data', data);
   };
-
-  // const onInvalid = (error) => console.log(error);
 
   return (
     <Box pt={6} px={4}>
