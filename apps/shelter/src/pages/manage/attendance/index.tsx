@@ -2,7 +2,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -49,7 +48,7 @@ type Applicant = {
 };
 
 function AttendanceForm() {
-  const { id } = useParams() as { id: string };
+  const { id } = useParams<{ id: string }>();
 
   const [userList, setUserList] = useState<Applicant[]>([]);
   const queryClient = useQueryClient();
@@ -73,6 +72,9 @@ function AttendanceForm() {
   });
 
   const updateAttendance = () => {
+    if (isPending) {
+      return;
+    }
     const updatedUserList = userList.map(
       ({ applicantId, volunteerAttendance }) => ({
         applicantId,
@@ -86,6 +88,9 @@ function AttendanceForm() {
   };
 
   const toggleCheck = ({ target: { id } }: ChangeEvent) => {
+    if (isPending) {
+      return;
+    }
     const updatedUserList = userList.map((user) =>
       user.applicantId.toString() === id
         ? { ...user, volunteerAttendance: !user.volunteerAttendance }
@@ -98,6 +103,9 @@ function AttendanceForm() {
   const toggleAllCheck = ({
     target: { checked },
   }: ChangeEvent<HTMLInputElement>) => {
+    if (isPending) {
+      return;
+    }
     setUserList(
       userList.map((user) => ({ ...user, volunteerAttendance: checked })),
     );
@@ -198,9 +206,9 @@ function AttendanceForm() {
         }}
         onClick={updateAttendance}
         disabled={isPending}
-        opacity={isPending ? '0.5' : '1'}
+        isLoading={isPending}
       >
-        {isPending ? <Spinner /> : '출석 완료'}
+        출석 완료
       </Button>
     </Flex>
   );
