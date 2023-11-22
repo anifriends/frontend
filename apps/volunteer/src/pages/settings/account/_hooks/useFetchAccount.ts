@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getMyVolunteerInfo } from '@/apis/volunteer';
+import { getMyVolunteerInfo, MyInfoResponse } from '@/apis/volunteer';
 
 const useFetchAccount = () =>
   useQuery({
     queryKey: ['volunteer', 'account'],
     queryFn: async () => (await getMyVolunteerInfo()).data,
-    select: (data) => {
+    select: (data: MyInfoResponse) => {
       return {
         imageUrl: data.volunteerImageUrl,
         email: data.volunteerEmail,
