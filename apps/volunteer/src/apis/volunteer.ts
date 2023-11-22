@@ -1,7 +1,7 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
 type MyInfoResponse = {
-  volunteerId: string;
+  volunteerId: number;
   volunteerEmail: string;
   volunteerName: string;
   volunteerBirthDate: string;
@@ -29,10 +29,10 @@ export const updateVolunteerPassword = (
   );
 };
 
-type UpdateUserInfoParams = {
+export type UpdateUserInfoParams = {
   name: string;
-  gender: string;
-  birthData: string;
+  gender: 'FEMALE' | 'MALE';
+  birthDate: string;
   phoneNumber: string;
   imageUrl: string;
 };
