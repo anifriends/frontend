@@ -9,21 +9,47 @@ import {
   Input,
   Radio,
   RadioGroup,
+  useToast,
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
+import {
+  UpdateUserInfoParams,
+  updateVolunteerUserInfo,
+} from '@/apis/volunteer';
 
 import useFetchAccount from './_hooks/useFetchAccount';
 
 export default function SettingsAccountPage() {
+  const toast = useToast();
   const [imgFile, setImgFile] = useState<string>('');
   const { data } = useFetchAccount();
-  const { register, handleSubmit, reset, watch } = useForm();
+  const { mutate: updateAccount } = useMutation({
+    mutationFn: (data: UpdateUserInfoParams) => updateVolunteerUserInfo(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '계정 정보가 수정되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
+  const { register, handleSubmit, reset, watch } =
+    useForm<UpdateUserInfoParams>();
 
   useEffect(() => {
-    reset(data);
+    reset({
+      name: data.name,
+      imageUrl: data.imageUrl,
+      birthDate: data.birthDate,
+      phoneNumber: data.phoneNumber,
+      gender: data.gender,
+    });
     setImgFile(data.imageUrl);
-  }, [data]);
+  }, [data, reset]);
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,7 +60,8 @@ export default function SettingsAccountPage() {
   };
 
   const onSubmit = handleSubmit((newData) => {
-    console.log(newData);
+    updateAccount(newData);
+    // console.log(newData);
   });
   return (
     <Box px={4} pb={208}>
