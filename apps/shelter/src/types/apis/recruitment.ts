@@ -39,7 +39,7 @@ export type RecruitmentSearchFilter = {
 export type RecruitmentsRequest = Partial<RecruitmentSearchFilter> & Pagination;
 
 export type RecruitmentApplicantUpdateRequest = {
-  status: RecruitmentApplicantStatus;
+  isApproved: boolean;
 };
 
 export type RecruitmentCreateRequest = {
