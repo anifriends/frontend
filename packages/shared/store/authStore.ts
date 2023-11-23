@@ -10,12 +10,12 @@ interface AuthState {
 }
 
 interface AuthActions {
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 }
 
 const useAuthStore = create<AuthState & AuthActions>((set) => ({
   user: null,
-  setUser: (user: User) => {
+  setUser: (user: User | null) => {
     set({ user });
   },
 }));

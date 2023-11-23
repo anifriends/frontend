@@ -1,5 +1,6 @@
 import { Box, Container } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { AppType } from '../types/app';
 import BottomNavBar from './BottomNavBar';
@@ -10,6 +11,15 @@ type LayoutProps = {
 };
 
 export default function Layout({ appType }: LayoutProps) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === '/') {
+      navigate('/volunteers');
+    }
+  }, []);
+
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
       <Header appType={appType} />

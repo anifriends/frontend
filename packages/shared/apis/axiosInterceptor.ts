@@ -1,5 +1,6 @@
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import useAuthStore from 'store/authStore';
+
+import useAuthStore from '../store/authStore';
 
 const getAccessToken = () =>
   `bearer ${useAuthStore.getState().user?.accessToken}`;
