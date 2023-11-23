@@ -12,6 +12,7 @@ type RecruitmentDetailResponse = {
   recruitmentCreatedAt: string;
   recruitmentUpdatedAt: string;
   recruitmentImageUrls: string[];
+  shelterId: number;
 };
 
 export const getRecruitmentDetail = (recruitmentId: number) =>

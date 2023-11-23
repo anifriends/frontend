@@ -49,6 +49,7 @@ const useGetVolunteerDetail = (recruitmentId: number) => {
       recruitmentCreatedAt: '',
       recruitmentUpdatedAt: '',
       recruitmentImageUrls: [],
+      shelterId: 0,
     },
   });
 };
