@@ -2,7 +2,7 @@ import { Box, Container } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import useAccessTokenMutation from '../hooks/useAccessTokenQuery';
+import useAccessTokenMutation from '../hooks/useAccessTokenMutation';
 import { AppType } from '../types/app';
 import BottomNavBar from './BottomNavBar';
 import Header from './Header';
