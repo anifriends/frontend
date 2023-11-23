@@ -62,7 +62,7 @@ export const getShelterApprovedRecruitmentApplicants = (
     `/shelters/recruitments/${recruitmentId}/approval`,
   );
 
-export const updatShelterApplicantsApproval = (
+export const updateAttendanceAPI = (
   recruitmentId: number,
   request: ApplicantsApprovalRequest,
 ) =>
