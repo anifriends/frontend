@@ -2,6 +2,7 @@ import { Box, Container } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import useAccessTokenMutation from '../hooks/useAccessTokenQuery';
 import { AppType } from '../types/app';
 import BottomNavBar from './BottomNavBar';
 import Header from './Header';
@@ -13,11 +14,21 @@ type LayoutProps = {
 export default function Layout({ appType }: LayoutProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { mutate } = useAccessTokenMutation();
 
   useEffect(() => {
-    if (pathname === '/') {
-      navigate('/volunteers');
-    }
+    mutate(undefined, {
+      onSuccess: () => {
+        console.log('성공');
+        if (pathname === '/') {
+          navigate('/volunteers');
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+        navigate('/signin');
+      },
+    });
   }, []);
 
   return (
