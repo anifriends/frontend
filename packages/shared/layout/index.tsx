@@ -14,22 +14,26 @@ type LayoutProps = {
 export default function Layout({ appType }: LayoutProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { mutate } = useAccessTokenMutation();
+  const { mutate, isPending } = useAccessTokenMutation();
 
   useEffect(() => {
     mutate(undefined, {
+      //TODO 봉사자 어플 예외처리
       onSuccess: () => {
-        console.log('성공');
         if (pathname === '/') {
           navigate('/volunteers');
         }
       },
       onError: (error) => {
-        console.log(error);
+        console.warn(error);
         navigate('/signin');
       },
     });
-  }, []);
+  }, [mutate]);
+
+  if (isPending) {
+    return <p>...로딩중</p>;
+  }
 
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
