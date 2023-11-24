@@ -11,11 +11,6 @@ const DUMMY_RECRUITMENT = {
   recruitmentCapacity: 15,
 };
 
-const DUMMY_RECRUITMENT_LIST = Array.from(
-  { length: 4 },
-  () => DUMMY_RECRUITMENT,
-);
-
 export const handlers = [
   http.get('/shelters/recruitments', async () => {
     await delay(1000);
@@ -25,7 +20,11 @@ export const handlers = [
           totalElements: 100,
           hasNext: true,
         },
-        recruitments: DUMMY_RECRUITMENT_LIST,
+        recruitments: Array.from({ length: 4 }, () => ({
+          ...DUMMY_RECRUITMENT,
+          recruitmentId: Math.random(),
+          shelterId: Math.random(),
+        })),
       },
       { status: 200 },
     );

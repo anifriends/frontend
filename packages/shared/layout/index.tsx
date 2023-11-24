@@ -1,6 +1,8 @@
 import { Box, Container } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import useAccessTokenMutation from '../hooks/useAccessTokenMutation';
 import { AppType } from '../types/app';
 import BottomNavBar from './BottomNavBar';
 import Header from './Header';
@@ -10,6 +12,30 @@ type LayoutProps = {
 };
 
 export default function Layout({ appType }: LayoutProps) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { mutate, isPending } = useAccessTokenMutation();
+
+  useEffect(() => {
+    mutate(undefined, {
+      onSuccess: () => {
+        if (appType === 'SHELTER_APP' && pathname === '/') {
+          navigate('/volunteers');
+        }
+      },
+      onError: (error) => {
+        console.warn(error);
+        if (appType === 'SHELTER_APP') {
+          navigate('/signin');
+        }
+      },
+    });
+  }, [mutate]);
+
+  if (isPending) {
+    return <p>...로딩중</p>;
+  }
+
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
       <Header appType={appType} />
