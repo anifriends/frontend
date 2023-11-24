@@ -18,7 +18,6 @@ export default function Layout({ appType }: LayoutProps) {
 
   useEffect(() => {
     mutate(undefined, {
-      //TODO 봉사자 어플 예외처리
       onSuccess: () => {
         if (appType === 'SHELTER_APP' && pathname === '/') {
           navigate('/volunteers');
