@@ -1,10 +1,10 @@
+import { Period } from 'shared/types/period';
+
 import {
-  PERIOD,
   RECRUITMENT_STATUS,
   SEARCH_TYPE,
 } from '@/pages/volunteers/search/_constants/filter';
 
-export type Period = keyof typeof PERIOD;
 export type RecruitmentStatus = keyof typeof RECRUITMENT_STATUS;
 export type SearchType = keyof typeof SEARCH_TYPE;
 

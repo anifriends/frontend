@@ -2,9 +2,9 @@ import { ChangeEvent } from 'react';
 import SearchFilters, {
   SearchFilterSelectData,
 } from 'shared/components/SearchFilters';
+import { PERIOD } from 'shared/constants/period';
 
 import {
-  PERIOD,
   RECRUITMENT_STATUS,
   SEARCH_TYPE,
 } from '@/pages/volunteers/search/_constants/filter';
