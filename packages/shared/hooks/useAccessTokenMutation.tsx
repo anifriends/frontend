@@ -11,16 +11,13 @@ export default function useAccessTokenMutation() {
       return data;
     },
     onSuccess: ({ accessToken, userId }) => {
-      //TODO store에 저장
-      console.log('성공', accessToken, userId);
       setUser({
         accessToken,
         userId,
       });
     },
     onError: (error) => {
-      //TODO store에서 제거
-      console.log(error);
+      console.warn(error);
       setUser(null);
     },
   });

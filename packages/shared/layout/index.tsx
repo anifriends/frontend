@@ -20,13 +20,15 @@ export default function Layout({ appType }: LayoutProps) {
     mutate(undefined, {
       //TODO 봉사자 어플 예외처리
       onSuccess: () => {
-        if (pathname === '/') {
+        if (appType === 'SHELTER_APP' && pathname === '/') {
           navigate('/volunteers');
         }
       },
       onError: (error) => {
         console.warn(error);
-        navigate('/signin');
+        if (appType === 'SHELTER_APP') {
+          navigate('/signin');
+        }
       },
     });
   }, [mutate]);
