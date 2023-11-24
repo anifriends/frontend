@@ -48,8 +48,8 @@ export type RecruitmentCreateRequest = {
   endTime: string;
   deadline: string;
   capacity: number;
-  content: string;
-  imageUrls: string[];
+  content?: string;
+  imageUrls?: string[];
 };
 
 export type RecruitmentUpdateRequest = {

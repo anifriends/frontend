@@ -30,11 +30,11 @@ export const handlers = [
       { status: 200 },
     );
   }),
-  http.post('/recruitments', async () => {
+  http.post('/shelters/recruitments', async () => {
     await delay(1000);
     return HttpResponse.json({}, { status: 201 });
   }),
-  http.patch('/recruitments/:recruitmentId', async () => {
+  http.patch('/shelters/recruitments/:recruitmentId', async () => {
     await delay(1000);
     return HttpResponse.json({}, { status: 204 });
   }),

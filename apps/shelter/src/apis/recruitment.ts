@@ -20,10 +20,12 @@ export const getShelterRecruitments = async (
   );
 
 export const createShelterRecruitment = (request: RecruitmentCreateRequest) =>
-  axiosInstance.post<unknown, RecruitmentCreateRequest>(
-    `/shelters/recruitments`,
-    request,
-  );
+  axiosInstance.post<
+    {
+      recruitmentId: number;
+    },
+    RecruitmentCreateRequest
+  >(`/shelters/recruitments`, request);
 
 export const updateShelterRecruitment = (
   recruitmentId: number,

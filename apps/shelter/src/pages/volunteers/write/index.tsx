@@ -12,17 +12,21 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import * as z from 'zod';
+
+import { createShelterRecruitment } from '@/apis/recruitment';
 
 const recruitmentSchema = z
   .object({
     title: z.string().min(1, '제목은 필수로 입력해주세요'),
     startTime: z.coerce.date(),
     endTime: z.coerce.date(),
-    deadLine: z.coerce.date(),
+    deadline: z.coerce.date(),
     capacity: z.coerce.number(),
     content: z
       .string()
@@ -34,7 +38,7 @@ const recruitmentSchema = z
     path: ['endTime'],
   })
   .refine(
-    ({ startTime, deadLine }) => deadLine.getTime() <= startTime.getTime(),
+    ({ startTime, deadline }) => deadline.getTime() <= startTime.getTime(),
     {
       message: '봉사 시작 일시 전으로 입력해주세요',
       path: ['deadLine'],
@@ -59,25 +63,45 @@ export default function VolunteersWritePage() {
 
   const contentLength = watch('content')?.length ?? 0;
 
+  const navigate = useNavigate();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: createShelterRecruitment,
+    onSuccess: ({ data: { recruitmentId } }) => {
+      navigate(`/volunteers/${recruitmentId}`);
+    },
+    onError: (error) => {
+      console.warn(error);
+    },
+  });
+
   const onSubmit: SubmitHandler<RecruitmentSchema> = (
     data: RecruitmentSchema,
   ) => {
     // alert(JSON.stringify(data));
+    const { startTime, endTime, deadline } = data;
 
-    console.log('data', data);
+    const request = {
+      ...data,
+      startTime: String(startTime),
+      endTime: String(endTime),
+      deadline: String(deadline),
+    };
+
+    mutate(request);
   };
 
   return (
     <Box pt={6} px={4}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mb={5} isRequired isInvalid={!!errors.title}>
+        <FormControl mb={5} isRequired isInvalid={Boolean(errors.title)}>
           <FormLabel>제목</FormLabel>
           <Input
             {...register('title')}
             placeholder="모집글 제목을 입력해 주세요"
           />
         </FormControl>
-        <FormControl mb={5} isRequired isInvalid={!!errors.startTime}>
+        <FormControl mb={5} isRequired isInvalid={Boolean(errors.startTime)}>
           <FormLabel>봉사시작 일시</FormLabel>
           <Input
             {...register('startTime')}
@@ -95,14 +119,14 @@ export default function VolunteersWritePage() {
           />
           <FormErrorMessage>{errors.endTime?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl mb={5} isRequired isInvalid={!!errors.deadLine}>
+        <FormControl mb={5} isRequired isInvalid={Boolean(errors.deadline)}>
           <FormLabel>모집 마감 일시</FormLabel>
           <Input
-            {...register('deadLine')}
+            {...register('deadline')}
             placeholder="모집 마감 일시를 입력해 주세요"
             type="datetime-local"
           />
-          <FormErrorMessage>{errors.deadLine?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.deadline?.message}</FormErrorMessage>
         </FormControl>
         <FormControl mb={5} isRequired isInvalid={!!errors.capacity}>
           <FormLabel>모집 인원</FormLabel>
@@ -144,6 +168,7 @@ export default function VolunteersWritePage() {
           _active={{
             bg: undefined,
           }}
+          isLoading={isPending}
           type="submit"
         >
           등록
