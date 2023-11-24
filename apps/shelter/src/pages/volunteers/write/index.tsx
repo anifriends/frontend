@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
@@ -16,15 +17,29 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import * as z from 'zod';
 
-const recruitmentSchema = z.object({
-  title: z.string().min(1, '제목은 필수로 입력해주세요'),
-  volunteerDate: z.coerce.string(),
-  startTime: z.coerce.string(),
-  endTime: z.coerce.string(),
-  deadLine: z.coerce.string(),
-  capacity: z.coerce.number(),
-  content: z.coerce.string().optional(),
-});
+const recruitmentSchema = z
+  .object({
+    title: z.string().min(1, '제목은 필수로 입력해주세요'),
+    startTime: z.coerce.date(),
+    endTime: z.coerce.date(),
+    deadLine: z.coerce.date(),
+    capacity: z.coerce.number(),
+    content: z
+      .string()
+      .optional()
+      .refine((val) => val?.length && val.length < 500, '에러입니다'),
+  })
+  .refine(({ startTime, endTime }) => startTime.getTime() < endTime.getTime(), {
+    message: '봉사 시작 일시 이후로 입력해주세요 ',
+    path: ['endTime'],
+  })
+  .refine(
+    ({ startTime, deadLine }) => deadLine.getTime() <= startTime.getTime(),
+    {
+      message: '봉사 시작 일시 전으로 입력해주세요',
+      path: ['deadLine'],
+    },
+  );
 
 type RecruitmentSchema = z.infer<typeof recruitmentSchema>;
 
@@ -32,61 +47,64 @@ const DUMMY_IMAGE = 'https://source.unsplash.com/random';
 const DUMMY_IMAGE_URLS = Array.from({ length: 2 }, () => DUMMY_IMAGE);
 
 export default function VolunteersWritePage() {
-  const { register, handleSubmit } = useForm<RecruitmentSchema>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RecruitmentSchema>({
     resolver: zodResolver(recruitmentSchema),
   });
   const [imageUrls, setImageUrls] = useState<string[]>(DUMMY_IMAGE_URLS);
+
+  const contentLength = watch('content')?.length ?? 0;
 
   const onSubmit: SubmitHandler<RecruitmentSchema> = (
     data: RecruitmentSchema,
   ) => {
     // alert(JSON.stringify(data));
+
     console.log('data', data);
   };
 
   return (
     <Box pt={6} px={4}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mb={5} isRequired>
+        <FormControl mb={5} isRequired isInvalid={!!errors.title}>
           <FormLabel>제목</FormLabel>
           <Input
             {...register('title')}
             placeholder="모집글 제목을 입력해 주세요"
           />
         </FormControl>
-        <FormControl mb={5} isRequired>
-          <FormLabel>봉사시작 시간</FormLabel>
-          <Input
-            {...register('volunteerDate')}
-            placeholder="봉사일을 입력해 주세요"
-            type="date"
-          />
-        </FormControl>
-        <FormControl mb={5} isRequired>
+        <FormControl mb={5} isRequired isInvalid={!!errors.startTime}>
           <FormLabel>봉사시작 일시</FormLabel>
           <Input
             {...register('startTime')}
-            placeholder="봉사 시작 시간을 입력해 주세요"
-            type="time"
+            placeholder="봉사 시작 일시를 입력해 주세요"
+            type="datetime-local"
           />
+          <FormErrorMessage>{errors.startTime?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl mb={5} isRequired>
+        <FormControl mb={5} isRequired isInvalid={Boolean(errors.endTime)}>
           <FormLabel>봉사종료 일시</FormLabel>
           <Input
             {...register('endTime')}
-            placeholder="봉사 종료 시간을 입력해 주세요"
-            type="time"
+            placeholder="봉사 종료 일시를 입력해 주세요"
+            type="datetime-local"
           />
+          <FormErrorMessage>{errors.endTime?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl mb={5} isRequired>
+        <FormControl mb={5} isRequired isInvalid={!!errors.deadLine}>
           <FormLabel>모집 마감 일시</FormLabel>
           <Input
             {...register('deadLine')}
             placeholder="모집 마감 일시를 입력해 주세요"
             type="datetime-local"
           />
+          <FormErrorMessage>{errors.deadLine?.message}</FormErrorMessage>
         </FormControl>
-        <FormControl mb={5} isRequired>
+        <FormControl mb={5} isRequired isInvalid={!!errors.capacity}>
           <FormLabel>모집 인원</FormLabel>
           <InputGroup>
             <Input
@@ -97,7 +115,7 @@ export default function VolunteersWritePage() {
             <InputRightAddon>명</InputRightAddon>
           </InputGroup>
         </FormControl>
-        <FormControl mb={5}>
+        <FormControl mb={5} isInvalid={!!errors.content}>
           <FormLabel>모집글 상세</FormLabel>
           <Textarea
             {...register('content')}
@@ -105,7 +123,11 @@ export default function VolunteersWritePage() {
             mb={2}
           />
           <Flex justifyContent="end">
-            <FormHelperText>글자수 0 / 100</FormHelperText>
+            {errors.content ? (
+              <FormErrorMessage>글자수 {contentLength} / 500</FormErrorMessage>
+            ) : (
+              <FormHelperText>글자수 {contentLength} / 500</FormHelperText>
+            )}
           </Flex>
         </FormControl>
         <EditPhotoList urls={imageUrls} setUrls={setImageUrls} />
@@ -119,9 +141,9 @@ export default function VolunteersWritePage() {
           _hover={{
             bg: undefined,
           }}
-          // _active={{
-          //   bg: undefined,
-          // }}
+          _active={{
+            bg: undefined,
+          }}
           type="submit"
         >
           등록
