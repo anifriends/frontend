@@ -7,7 +7,7 @@ export default function Fonts() {
       @font-face {
         font-family: 'IBMPlexSans-Heading';
         font-style: normal;
-        font-weight: 700;
+        font-weight: 600;
         font-display: swap;
         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
       }
@@ -15,7 +15,6 @@ export default function Fonts() {
       @font-face {
         font-family: 'IBMPlexSans-Body';
         font-style: normal;
-        font-weight: 400;
         font-display: swap;
         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
       }
