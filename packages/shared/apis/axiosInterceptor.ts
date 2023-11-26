@@ -2,11 +2,11 @@ import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import useAuthStore from '../store/authStore';
 
-const getAccessToken = () =>
-  `bearer ${useAuthStore.getState().user?.accessToken}`;
-
 export const onRequest = (config: InternalAxiosRequestConfig) => {
-  config.headers.Authorization = getAccessToken();
+  const accessToken = useAuthStore.getState().user?.accessToken;
+  if (useAuthStore.getState().user?.accessToken) {
+    config.headers.Authorization = `bearer ${accessToken}`;
+  }
   return config;
 };
 
