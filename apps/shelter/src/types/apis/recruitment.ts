@@ -59,7 +59,7 @@ export type RecruitmentUpdateRequest = {
   deadline: string;
   capacity: number;
   content?: string;
-  imageUrl?: string[];
+  imageUrls?: string[];
 };
 
 export type ShelterRecruitmentApplicant = {
