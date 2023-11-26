@@ -5,7 +5,7 @@ import useAuthStore from '../store/authStore';
 export const onRequest = (config: InternalAxiosRequestConfig) => {
   const accessToken = useAuthStore.getState().user?.accessToken;
   if (useAuthStore.getState().user?.accessToken) {
-    config.headers.Authorization = `bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 };
