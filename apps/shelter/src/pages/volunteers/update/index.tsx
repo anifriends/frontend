@@ -12,14 +12,15 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import * as z from 'zod';
 
-import { createShelterRecruitment } from '@/apis/recruitment';
+import { updateShelterRecruitment } from '@/apis/recruitment';
+import type { RecruitmentUpdateRequest } from '@/types/apis/recruitment';
 
 import useGetVolunteerDetail from '../detail/_hooks/useGetVolunteerDetail';
 
@@ -53,8 +54,9 @@ const DUMMY_IMAGE = 'https://source.unsplash.com/random';
 const DUMMY_IMAGE_URLS = Array.from({ length: 2 }, () => DUMMY_IMAGE);
 
 export default function VolunteersUpdatePage() {
-  const { id: recruitmentId } = useParams<{ id: string }>();
+  const { id: recruitmentId } = useParams<{ id: string }>() as { id: string };
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // TODO 이 훅에서 startDate, endDate와 같은 날짜데이터를 가공하기 때문에
   // 다른 훅을 만들어서 사용해야 할 것 같습니다.
@@ -77,8 +79,17 @@ export default function VolunteersUpdatePage() {
   const contentLength = watch('content')?.length ?? 0;
 
   const { mutate, isPending } = useMutation({
-    mutationFn: createShelterRecruitment,
-    onSuccess: ({ data: { recruitmentId } }) => {
+    mutationFn: ({
+      recruitmentId,
+      request,
+    }: {
+      recruitmentId: number;
+      request: RecruitmentUpdateRequest;
+    }) => updateShelterRecruitment(recruitmentId, request),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['recruitment', recruitmentId],
+      });
       navigate(`/volunteers/${recruitmentId}`);
     },
     onError: (error) => {
@@ -92,14 +103,15 @@ export default function VolunteersUpdatePage() {
     // alert(JSON.stringify(data));
     const { startTime, endTime, deadline } = data;
 
-    const request = {
-      ...data,
-      startTime: String(startTime),
-      endTime: String(endTime),
-      deadline: String(deadline),
-    };
-
-    mutate(request);
+    mutate({
+      recruitmentId: Number(recruitmentId),
+      request: {
+        ...data,
+        startTime: String(startTime),
+        endTime: String(endTime),
+        deadline: String(deadline),
+      },
+    });
   };
 
   useEffect(() => {

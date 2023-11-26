@@ -58,8 +58,8 @@ export type RecruitmentUpdateRequest = {
   endTime: string;
   deadline: string;
   capacity: number;
-  content: string;
-  imageUrls: string[];
+  content?: string;
+  imageUrl?: string[];
 };
 
 export type ShelterRecruitmentApplicant = {

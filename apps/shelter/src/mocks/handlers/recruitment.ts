@@ -34,8 +34,9 @@ export const handlers = [
     await delay(1000);
     return HttpResponse.json({}, { status: 201 });
   }),
-  http.patch('/shelters/recruitments/:recruitmentId', async () => {
+  http.patch('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
     await delay(1000);
-    return HttpResponse.json({}, { status: 204 });
+    return HttpResponse.json({ status: 204 });
   }),
 ];
