@@ -10,11 +10,14 @@ import {
   InputRightAddon,
   Textarea,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import EditPhotoList, { Photo } from 'shared/components/EditPhotoList';
+import EditPhotoList from 'shared/components/EditPhotoList';
+import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
+
+const UPLOAD_LIMIT = 5;
 
 export default function VolunteersWritePage() {
-  const [imageUrls, setImageUrls] = useState<Photo[]>([]);
+  const { photos, handleUploadPhoto, handleDeletePhoto } =
+    useUploadPhoto(UPLOAD_LIMIT);
 
   return (
     <Box pt={6} px={4}>
@@ -51,7 +54,12 @@ export default function VolunteersWritePage() {
             <FormHelperText>글자수 0 / 100</FormHelperText>
           </Flex>
         </FormControl>
-        <EditPhotoList photos={imageUrls} setUrls={setImageUrls} />
+        <EditPhotoList
+          photos={photos}
+          uploadLimit={UPLOAD_LIMIT}
+          onUploadPhoto={handleUploadPhoto}
+          onDeletePhoto={handleDeletePhoto}
+        />
         <Button
           mt={10}
           pos="sticky"
