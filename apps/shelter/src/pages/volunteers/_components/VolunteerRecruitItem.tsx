@@ -40,7 +40,6 @@ export default function VolunteerRecruitItem({
   onCloseRecruitment,
 }: RecruitItemProps) {
   const {
-    id,
     title,
     isRecruitmentClosed,
     volunteerDate,
