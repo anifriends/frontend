@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",
-    "lint": "eslint \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,7 +24,7 @@
     "react-error-boundary": "^4.0.11",
     "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.17.0",
-    "ui": "workspace:*",
+    "shared": "workspace:*",
     "zod": "^3.22.4",
     "zustand": "^4.4.4"
   },
@@ -35,8 +35,12 @@
     "@vitejs/plugin-react-swc": "^3.4.0",
     "eslint": "^8.45.0",
     "eslint-config-custom": "workspace:*",
+    "msw": "^2.0.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

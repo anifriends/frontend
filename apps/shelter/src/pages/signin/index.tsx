@@ -1,0 +1,169 @@
+import {
+  Box,
+  Button,
+  Center,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Icon,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
+import IoEyeOff from 'shared/assets/IoEyeOff';
+import IoEyeSharp from 'shared/assets/IoEyeSharp';
+import useToggle from 'shared/hooks/useToggle';
+import useAuthStore from 'shared/store/authStore';
+import { SigninRequestData } from 'shared/types/apis/auth';
+import * as z from 'zod';
+
+import { signinShelter } from '@/apis/auth';
+import PATH from '@/constants/path';
+
+type Schema = z.infer<typeof schema>;
+
+const schema = z.object({
+  email: z
+    .string()
+    .min(1, '이메일이 입려되지 않았습니다')
+    .email('유효하지 않은 이메일입니다'),
+  password: z.string().min(1, '비밀번호가 입력되지 않았습니다'),
+});
+
+export default function SigninPage() {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [isShow, toggleInputShow] = useToggle();
+  const { setUser } = useAuthStore();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setFocus,
+  } = useForm<Schema>({
+    resolver: zodResolver(schema),
+  });
+  const { mutate } = useMutation({
+    mutationFn: (data: SigninRequestData) => signinShelter(data),
+    onSuccess: ({ data: { userId, accessToken } }) => {
+      setUser({ userId, accessToken });
+      navigate(`/${PATH.VOLUNTEERS.INDEX}`);
+    },
+    onError: (error) => {
+      setUser(null);
+      toast({
+        position: 'top',
+        description: error.response?.data.message,
+        status: 'error',
+        duration: 1500,
+      });
+
+      setFocus('email');
+    },
+  });
+
+  const goSignupPage = () => {
+    navigate(`/${PATH.SIGNUP}`);
+  };
+
+  const onSubmit = async (data: Schema) => {
+    mutate(data);
+  };
+
+  useEffect(() => setFocus('email'), [setFocus]);
+
+  return (
+    <Box px={4} pb="104px">
+      <Center w="100%" py={10}>
+        <Image boxSize={160} borderRadius={100} src={AnimalfriendsLogo} />
+      </Center>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl mb={2} isInvalid={errors.email ? true : false} isRequired>
+          <FormLabel>이메일</FormLabel>
+          <Input
+            {...register('email')}
+            placeholder="이메일을 입력하세요"
+            type="email"
+          />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl
+          mb={2}
+          isRequired
+          isInvalid={errors.password ? true : false}
+        >
+          <FormLabel>비밀번호</FormLabel>
+          <InputGroup>
+            <Input
+              {...register('password')}
+              placeholder="비밀번호를 입력하세요"
+              type={isShow ? 'text' : 'password'}
+            />
+            <InputRightElement onClick={toggleInputShow}>
+              <Icon as={isShow ? IoEyeOff : IoEyeSharp} />
+            </InputRightElement>
+          </InputGroup>
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
+        </FormControl>
+        <VStack
+          maxW="container.sm"
+          mx="auto"
+          px={4}
+          bgColor="white"
+          pos="fixed"
+          bottom={0}
+          left={0}
+          right={0}
+          py={2}
+          zIndex={10}
+          spacing={2}
+          align="stretch"
+        >
+          <Button
+            fontWeight="semibold"
+            bgColor="orange.400"
+            color="white"
+            type="submit"
+            _hover={{
+              bg: undefined,
+            }}
+            _active={{
+              bg: undefined,
+            }}
+          >
+            로그인
+          </Button>
+          <Button
+            fontWeight="semibold"
+            color="orange.400"
+            bgColor="inherit"
+            border="1px solid"
+            borderColor="orange.400"
+            _hover={{
+              bg: undefined,
+            }}
+            _active={{
+              bg: undefined,
+            }}
+            onClick={goSignupPage}
+          >
+            회원가입
+          </Button>
+        </VStack>
+      </form>
+    </Box>
+  );
+}
