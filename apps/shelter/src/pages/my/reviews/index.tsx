@@ -1,9 +1,8 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import ReviewItem from 'shared/components/ReviewItem';
+import useIntersect from 'shared/hooks/useIntersection';
 import { createFormattedTime } from 'shared/utils/date';
-
-import useIntersect from '@/hooks/useIntersection';
 
 import useFetchShelterReviews from './hooks/useFetchShelterReviews';
 import VolunteerProfile from './VolunteerProfile';

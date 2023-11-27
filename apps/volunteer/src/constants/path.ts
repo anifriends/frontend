@@ -10,7 +10,7 @@ const PATH = {
   },
   CHATTINGS: {
     INDEX: 'chattings',
-    ROOM: 'chattings/:id',
+    ROOM: ':id',
   },
   MYPAGE: {
     INDEX: 'mypage',

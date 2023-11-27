@@ -1,140 +1,74 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type PageInfo = {
-  totalElements: number;
-  hasNext: boolean;
-};
-
-type Recruitment = {
-  recruitmentId: number;
-  recruitmentTitle: string;
-  recruitmentStartTime: string;
-  recruitmentEndTime: string;
-  recruitmentDeadline: string;
-  recruitmentIsClosed: boolean;
-  recruitmentApplicantCount: number;
-  recruitmentCapacity: number;
-};
-
-type RecruitSearchParams = {
-  keyword: string;
-  startDate: string;
-  endDate: string;
-  isClosed: boolean;
-  content: boolean;
-  title: boolean;
-  pageSize: number;
-  pageNumber: number;
-};
-
-type PostRecruitmentParams = {
-  title: string;
-  startTime: string;
-  endTime: string;
-  deadline: string;
-  capacity: number;
-  content: string;
-  imageUrls: string[];
-};
-
-type AttendanceStatus = {
-  applicantId: number;
-  attendance: boolean;
-};
-
-type Gender = 'MALE' | 'FEMALE';
-type RecruitementStatus = 'PENDING' | 'REFUSED' | 'APPROVED';
+import {
+  ApplicantsApprovalRequest,
+  ApprovedRecruitmentApplicantsResponse,
+  RecruitementsResponse,
+  RecruitmentApplicantsResponse,
+  RecruitmentApplicantUpdateRequest,
+  RecruitmentCreateRequest,
+  RecruitmentsRequest,
+  RecruitmentUpdateRequest,
+} from '@/types/apis/recruitment';
 
 export const getShelterRecruitments = async (
-  recruitSearchParams: Partial<RecruitSearchParams>,
+  request: Partial<RecruitmentsRequest>,
 ) =>
-  axiosInstance.get<
-    {
-      pageInfo: PageInfo;
-      recruitments: Recruitment[];
-    },
-    RecruitSearchParams
-  >('/shelters/recruitments', {
-    params: recruitSearchParams,
-  });
-
-export const createShelterRecruitment = (
-  recruitmentParams: PostRecruitmentParams,
-) =>
-  axiosInstance.post<unknown, PostRecruitmentParams>(
-    `/shelters/recruitments`,
-    recruitmentParams,
+  axiosInstance.get<RecruitementsResponse, RecruitmentsRequest>(
+    '/shelters/recruitments',
+    { params: request },
   );
+
+export const createShelterRecruitment = (request: RecruitmentCreateRequest) =>
+  axiosInstance.post<
+    {
+      recruitmentId: number;
+    },
+    RecruitmentCreateRequest
+  >(`/shelters/recruitments`, request);
 
 export const updateShelterRecruitment = (
   recruitmentId: number,
-  recruitmentParams: PostRecruitmentParams,
+  request: RecruitmentUpdateRequest,
 ) =>
-  axiosInstance.patch<unknown, PostRecruitmentParams>(
+  axiosInstance.patch<unknown, RecruitmentUpdateRequest>(
     `/shelters/recruitments/${recruitmentId}`,
-    recruitmentParams,
+    request,
   );
 
 export const deleteShelterRecruitment = (recruitmentId: number) =>
-  axiosInstance.delete<unknown, unknown>(
-    `/shelters/recruitments/${recruitmentId}`,
-  );
+  axiosInstance.delete(`/shelters/recruitments/${recruitmentId}`);
 
 export const closeShelterRecruitment = (recruitmentId: number) =>
-  axiosInstance.patch<unknown, unknown>(
-    `/shelters/recruitments/${recruitmentId}/close`,
-  );
+  axiosInstance.patch(`/shelters/recruitments/${recruitmentId}/close`);
 
 export const getShelterRecruitmentApplicants = (recruitmentId: number) =>
-  axiosInstance.get<{
-    applicants: {
-      applicantId: number;
-      volunteerId: number;
-      volunteerName: string;
-      volunteerBirthDate: string;
-      volunteerGender: Gender;
-      completedVolunteerCount: number;
-      volunteerTemperature: number;
-      applicantStatus: RecruitementStatus;
-    }[];
-    recruitmentCapacity: number;
-  }>(`/shelters/recruitments/${recruitmentId}/applicants`);
+  axiosInstance.get<RecruitmentApplicantsResponse>(
+    `/shelters/recruitments/${recruitmentId}/applicants`,
+  );
 
 export const updateShelterRecruitmentApplicant = (
   recruitmentId: number,
   applicantId: number,
+  request: RecruitmentApplicantUpdateRequest,
 ) =>
-  axiosInstance.patch<
-    unknown,
-    {
-      status: RecruitementStatus;
-    }
-  >(`/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`);
+  axiosInstance.patch<unknown, RecruitmentApplicantUpdateRequest>(
+    `/shelters/recruitments/${recruitmentId}/applicants/${applicantId}`,
+    request,
+  );
 
 export const getShelterApprovedRecruitmentApplicants = (
   recruitmentId: number,
 ) =>
-  axiosInstance.get<{
-    applicants: {
-      volunteerId: number;
-      applicantId: number;
-      volunteerName: string;
-      volunteerBirthDate: string;
-      volunteerGender: Gender;
-      volunteerPhoneNumber: string;
-      volunteerAttendance: boolean;
-    }[];
-  }>(`/shelters/recruitments/${recruitmentId}/approval`);
+  axiosInstance.get<ApprovedRecruitmentApplicantsResponse>(
+    `/shelters/recruitments/${recruitmentId}/approval`,
+  );
 
-export const updatShelterApplicantsApproval = (
+export const updateAttendanceAPI = (
   recruitmentId: number,
-  applicants: AttendanceStatus[],
+  request: ApplicantsApprovalRequest,
 ) =>
-  axiosInstance.patch<
-    unknown,
-    {
-      applicants: AttendanceStatus[];
-    }
-  >(`/shelters/recruitments/${recruitmentId}/approval`, {
-    applicants,
-  });
+  axiosInstance.patch<unknown, ApplicantsApprovalRequest>(
+    `/shelters/recruitments/${recruitmentId}/approval`,
+    request,
+  );

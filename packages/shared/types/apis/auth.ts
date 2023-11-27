@@ -6,9 +6,14 @@ export type SigninRequestData = CheckDuplicatedEmailRequestData & {
   password: string;
 };
 
+export type ChangePasswordRequestData = {
+  newPassword: string;
+  oldPassword: string;
+};
+
 export type SigninResponseData = {
   accessToken: string;
-  useId: number;
+  userId: number;
   role: string;
 };
 

@@ -1,83 +1,98 @@
 import { Box } from '@chakra-ui/react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import useIntersect from 'shared/hooks/useIntersection';
+import { getDatesFromPeriod } from 'shared/utils/period';
 
 import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
-import FilterGroup from '@/pages/volunteers/search/_components/FilterGroup';
-import FilterSelect from '@/pages/volunteers/search/_components/FilterSelect';
-import {
-  PERIOD,
-  RECRUITMENT_STATUS,
-  SEARCH_TYPE,
-} from '@/pages/volunteers/search/_constants/filter';
-import { useVolunteerSearch } from '@/pages/volunteers/search/_hooks/useVolunteerSearch';
+import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
+import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
+import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecruitmentSearch';
+import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
+import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
-const DUMMY_RECRUITMENT = {
-  recruitmentId: 1,
-  recruitmentTitle: '봉사자를 모집합니다',
-  recruitmentStartTime: '2021-11-08T11:44:30.327959',
-  recruitmentEndTime: '2021-11-08T11:44:30.327959',
-  recruitmentDeadline: '2021-11-08T11:44:30.327959',
-  recruitmentIsClosed: false,
-  recruitmentApplicantCount: 15,
-  recruitmentCapacity: 15,
+const getVolunteerSearchRequestFilter = (
+  searchFilter: Partial<SearchFilter>,
+): Partial<RecruitmentSearchFilter> => {
+  const { keyword, period, recruitmentStatus, searchType } = searchFilter;
+  const { startDate, endDate } = getDatesFromPeriod(period);
+
+  return {
+    keyword,
+    startDate,
+    endDate,
+    closedFilter: recruitmentStatus,
+    keywordFilter: searchType,
+  };
 };
 
 export default function VolunteersSearchPage() {
   const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
-    useVolunteerSearch();
-  const { period, recruitmentStatus, searchType } = searchFilter;
+    useRecruitmentSearch();
 
-  // TODO: msw API 호출
-  const recruitmentList = Array.from({ length: 10 }, (_, index) => {
-    return { recruitmentId: index, DUMMY_RECRUITMENT };
+  const navigate = useNavigate();
+
+  const goToManageApplyPage = (postId: number) => {
+    navigate(`/manage/apply/${postId}`);
+  };
+  const goToManageAttendancePage = (postId: number) => {
+    navigate(`/manage/attendance/${postId}`);
+  };
+  const goToUpdatePage = (postId: number) => {
+    navigate(`/volunteers/write/${postId}`);
+  };
+
+  //TODO 삭제 버튼 눌렀을 때 기능 추가
+
+  //TODO recruit id 받아서 마감
+  const closeRecruit = () => {};
+
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
+    useInfiniteQuery(
+      recruitmentQueryOptions.search(
+        getVolunteerSearchRequestFilter(searchFilter),
+        isKeywordSearched,
+      ),
+    );
+
+  const recruitments = data?.pages.flatMap(({ data }) => data.recruitments);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
   });
 
   if (!isKeywordSearched) {
     return null;
   }
 
+  if (isLoading) {
+    return <p>로딩중</p>;
+  }
+
   return (
     <Box>
-      <FilterGroup>
-        <FilterSelect
-          name="period"
-          placeholder="봉사일"
-          value={period}
-          onChange={handleChangeSearchFilter}
-        >
-          {Object.entries(PERIOD).map(([key, value]) => (
-            <option key={key} value={key}>
-              {value}
-            </option>
-          ))}
-        </FilterSelect>
-        <FilterSelect
-          name="recruitmentStatus"
-          placeholder="모집"
-          value={recruitmentStatus}
-          onChange={handleChangeSearchFilter}
-        >
-          {Object.entries(RECRUITMENT_STATUS).map(([key, value]) => (
-            <option key={key} value={key}>
-              {value}
-            </option>
-          ))}
-        </FilterSelect>
-        <FilterSelect
-          name="searchType"
-          placeholder="전체"
-          value={searchType}
-          onChange={handleChangeSearchFilter}
-        >
-          {Object.entries(SEARCH_TYPE).map(([key, value]) => (
-            <option key={key} value={key}>
-              {value}
-            </option>
-          ))}
-        </FilterSelect>
-      </FilterGroup>
-      {recruitmentList?.map((recruitmentItem: any) => (
-        <RecruitItem key={recruitmentItem.recruitmentId} {...recruitmentItem} />
+      <RecruitmentsSearchFilter
+        searchFilter={searchFilter}
+        onChangeFilter={handleChangeSearchFilter}
+      />
+      {recruitments?.map((recruitment) => (
+        <RecruitItem
+          key={recruitment.recruitmentId}
+          {...recruitment}
+          onClickManageApplyButton={() =>
+            goToManageApplyPage(recruitment.recruitmentId)
+          }
+          onClickManageAttendanceButton={() =>
+            goToManageAttendancePage(recruitment.recruitmentId)
+          }
+          onClickCloseRecruitButton={closeRecruit}
+          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
+        />
       ))}
+      <div ref={ref} />
     </Box>
   );
 }
