@@ -1,10 +1,10 @@
 import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
 import { getDatesFromPeriod } from 'shared/utils/period';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
+import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
@@ -31,27 +31,14 @@ export default function VolunteersSearchPage() {
   const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
     useRecruitmentSearch();
 
-  const navigate = useNavigate();
-
-  const goVolunteersDetail = (recruitmentId: number) => {
-    navigate(`/volunteers/${recruitmentId}`);
-  };
-  const goManageApplyPage = (recruitmentId: number) => {
-    navigate(`/manage/apply/${recruitmentId}`);
-  };
-  const goManageAttendancePage = (recruitmentId: number) => {
-    navigate(`/manage/attendance/${recruitmentId}`);
-  };
-  const goUpdatePage = (recruitmentId: number) => {
-    navigate(`/volunteers/write/${recruitmentId}`);
-  };
-
-  const closeRecruit = (recruitmentId: number) => {
-    console.log(recruitmentId);
-  };
-  const deleteRecruit = (recruitmentId: number) => {
-    console.log(recruitmentId);
-  };
+  const {
+    goVolunteersDetail,
+    goManageApplyPage,
+    goManageAttendancePage,
+    goUpdatePage,
+    closeRecruitment,
+    deleteRecruitment,
+  } = useVolunteerRecruitItem();
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
     useInfiniteQuery(
@@ -90,12 +77,12 @@ export default function VolunteersSearchPage() {
         <VolunteerRecruitItem
           key={recruitment.id}
           recruitment={recruitment}
-          onClickItem={() => goVolunteersDetail(recruitment.id)}
-          onUpdateRecruitment={() => goUpdatePage(recruitment.id)}
-          onDeleteRecruitment={() => deleteRecruit(recruitment.id)}
-          onManageApplies={() => goManageApplyPage(recruitment.id)}
-          onManageAttendances={() => goManageAttendancePage(recruitment.id)}
-          onCloseRecruitment={() => closeRecruit(recruitment.id)}
+          onClickItem={goVolunteersDetail}
+          onUpdateRecruitment={goUpdatePage}
+          onDeleteRecruitment={deleteRecruitment}
+          onManageApplies={goManageApplyPage}
+          onManageAttendances={goManageAttendancePage}
+          onCloseRecruitment={closeRecruitment}
         />
       ))}
       <div ref={ref} />

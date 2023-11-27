@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
 
+import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
@@ -13,25 +14,14 @@ import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 function Recruitments() {
   const navigate = useNavigate();
 
-  const goVolunteersDetail = (recruitmentId: number) => {
-    navigate(`/volunteers/${recruitmentId}`);
-  };
-  const goManageApplyPage = (recruitmentId: number) => {
-    navigate(`/manage/apply/${recruitmentId}`);
-  };
-  const goManageAttendancePage = (recruitmentId: number) => {
-    navigate(`/manage/attendance/${recruitmentId}`);
-  };
-  const goUpdatePage = (recruitmentId: number) => {
-    navigate(`/volunteers/write/${recruitmentId}`);
-  };
-
-  const closeRecruit = (recruitmentId: number) => {
-    console.log(recruitmentId);
-  };
-  const deleteRecruit = (recruitmentId: number) => {
-    console.log(recruitmentId);
-  };
+  const {
+    goVolunteersDetail,
+    goManageApplyPage,
+    goManageAttendancePage,
+    goUpdatePage,
+    closeRecruitment,
+    deleteRecruitment,
+  } = useVolunteerRecruitItem();
 
   const goWritePage = () => navigate('/volunteers/write');
 
@@ -59,12 +49,12 @@ function Recruitments() {
         <VolunteerRecruitItem
           key={recruitment.id}
           recruitment={recruitment}
-          onClickItem={() => goVolunteersDetail(recruitment.id)}
-          onUpdateRecruitment={() => goUpdatePage(recruitment.id)}
-          onDeleteRecruitment={() => deleteRecruit(recruitment.id)}
-          onManageApplies={() => goManageApplyPage(recruitment.id)}
-          onManageAttendances={() => goManageAttendancePage(recruitment.id)}
-          onCloseRecruitment={() => closeRecruit(recruitment.id)}
+          onClickItem={goVolunteersDetail}
+          onUpdateRecruitment={goUpdatePage}
+          onDeleteRecruitment={deleteRecruitment}
+          onManageApplies={goManageApplyPage}
+          onManageAttendances={goManageAttendancePage}
+          onCloseRecruitment={closeRecruitment}
         />
       ))}
       <div ref={ref} />

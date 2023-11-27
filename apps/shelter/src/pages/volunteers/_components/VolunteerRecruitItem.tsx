@@ -23,12 +23,12 @@ type Recruitment = {
 
 type RecruitItemProps = {
   recruitment: Recruitment;
-  onClickItem: VoidFunction;
-  onUpdateRecruitment: VoidFunction;
-  onDeleteRecruitment: VoidFunction;
-  onManageApplies: VoidFunction;
-  onManageAttendances: VoidFunction;
-  onCloseRecruitment: VoidFunction;
+  onClickItem: (id: number) => void;
+  onUpdateRecruitment: (id: number) => void;
+  onDeleteRecruitment: (id: number) => void;
+  onManageApplies: (id: number) => void;
+  onManageAttendances: (id: number) => void;
+  onCloseRecruitment: (id: number) => void;
 };
 
 export default function VolunteerRecruitItem({
@@ -41,6 +41,7 @@ export default function VolunteerRecruitItem({
   onCloseRecruitment,
 }: RecruitItemProps) {
   const {
+    id,
     title,
     isRecruitmentClosed,
     volunteerDate,
@@ -65,7 +66,7 @@ export default function VolunteerRecruitItem({
           spacing={2}
           align="stretch"
           position="relative"
-          onClick={onClickItem}
+          onClick={() => onClickItem(id)}
         >
           {isRecruitmentClosed || volunteerDateDday < 0 ? (
             <Label type="GRAY" labelTitle="마감완료" />
@@ -103,7 +104,7 @@ export default function VolunteerRecruitItem({
         {isRecruitmentClosed ? (
           <VolunteerRecruitItemButton
             type="PRIMARY"
-            onClick={onManageAttendances}
+            onClick={() => onManageAttendances(id)}
           >
             출석 관리
           </VolunteerRecruitItemButton>
@@ -111,13 +112,13 @@ export default function VolunteerRecruitItem({
           <HStack justifyContent="space-between" spacing={5}>
             <VolunteerRecruitItemButton
               type="SECONDARY"
-              onClick={onManageApplies}
+              onClick={() => onManageApplies(id)}
             >
               신청현황
             </VolunteerRecruitItemButton>
             <VolunteerRecruitItemButton
               type="PRIMARY"
-              onClick={onCloseRecruitment}
+              onClick={() => onCloseRecruitment(id)}
             >
               마감하기
             </VolunteerRecruitItemButton>
@@ -125,8 +126,8 @@ export default function VolunteerRecruitItem({
         )}
       </VStack>
       <OptionMenu pos="absolute" w={5} h={5} top={4} right={4}>
-        <MenuItem onClick={onUpdateRecruitment}>수정하기</MenuItem>
-        <MenuItem onClick={onDeleteRecruitment}>삭제하기</MenuItem>
+        <MenuItem onClick={() => onUpdateRecruitment(id)}>수정하기</MenuItem>
+        <MenuItem onClick={() => onDeleteRecruitment(id)}>삭제하기</MenuItem>
       </OptionMenu>
     </Box>
   );
