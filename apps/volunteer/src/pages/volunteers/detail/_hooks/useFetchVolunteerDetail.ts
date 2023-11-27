@@ -5,10 +5,22 @@ import {
   createWeekDayLocalString,
 } from 'shared/utils/date';
 
-const useGetVolunteerDetail = (recruitmentId: number) => {
-  return useQuery({
-    queryKey: ['recruitment', recruitmentId],
-    queryFn: async () => (await getRecruitmentDetail(recruitmentId)).data,
+import { getSimpleShelterProfile } from '@/apis/shelter';
+
+const useFetchVolunteerDetail = (recruitmentId: number) =>
+  useQuery({
+    queryKey: ['volunteer', recruitmentId],
+    queryFn: async () => {
+      const { shelterId, ...recruitmentInfo } = (
+        await getRecruitmentDetail(recruitmentId)
+      ).data;
+      const shelterSimpleInfo = (await getSimpleShelterProfile(shelterId)).data;
+
+      return {
+        ...recruitmentInfo,
+        shelterInfo: { shelterId, ...shelterSimpleInfo },
+      };
+    },
     select: (data) => {
       const startDate = new Date(data.recruitmentStartTime);
       const endDate = new Date(data.recruitmentEndTime);
@@ -35,6 +47,7 @@ const useGetVolunteerDetail = (recruitmentId: number) => {
           new Date(data.recruitmentCreatedAt),
         ),
         recruitmentIsClosed: data.recruitmentIsClosed,
+        shelterInfo: data.shelterInfo,
       };
     },
     initialData: {
@@ -49,9 +62,13 @@ const useGetVolunteerDetail = (recruitmentId: number) => {
       recruitmentCreatedAt: '',
       recruitmentUpdatedAt: '',
       recruitmentImageUrls: [],
-      shelterId: 0,
+      shelterInfo: {
+        shelterId: 0,
+        shelterName: '',
+        shelterImageUrl: '',
+        shelterAddress: '',
+        shelterEmail: '',
+      },
     },
   });
-};
-
-export default useGetVolunteerDetail;
+export default useFetchVolunteerDetail;

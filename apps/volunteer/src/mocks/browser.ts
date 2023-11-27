@@ -2,6 +2,12 @@ import { setupWorker } from 'msw/browser';
 
 import { handlers as authHandlers } from './handlers/auth';
 import { handlers as recruitmentHandler } from './handlers/recruitment';
+import { handlers as shelterHandler } from './handlers/shelter';
 import { handlers as volunteerHandlers } from './handlers/volunteer';
 
-export const worker = setupWorker(...authHandlers, ...recruitmentHandler, ...volunteerHandlers );
+export const worker = setupWorker(
+  ...authHandlers,
+  ...recruitmentHandler,
+  ...shelterHandler,
+  ...volunteerHandlers,
+);
