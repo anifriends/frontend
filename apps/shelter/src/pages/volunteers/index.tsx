@@ -5,29 +5,35 @@ import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
 
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
+import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
 import PlusIcon from './_components/PlusIcon';
-import RecruitItem from './_components/RecruitItem';
+import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 
 function Recruitments() {
   const navigate = useNavigate();
 
-  const goToManageApplyPage = (postId: number) => {
-    navigate(`/manage/apply/${postId}`);
+  const goVolunteersDetail = (recruitmentId: number) => {
+    navigate(`/volunteers/${recruitmentId}`);
   };
-  const goToManageAttendancePage = (postId: number) => {
-    navigate(`/manage/attendance/${postId}`);
+  const goManageApplyPage = (recruitmentId: number) => {
+    navigate(`/manage/apply/${recruitmentId}`);
   };
-  const goToUpdatePage = (postId: number) => {
-    navigate(`/volunteers/write/${postId}`);
+  const goManageAttendancePage = (recruitmentId: number) => {
+    navigate(`/manage/attendance/${recruitmentId}`);
+  };
+  const goUpdatePage = (recruitmentId: number) => {
+    navigate(`/volunteers/write/${recruitmentId}`);
   };
 
-  //TODO 삭제 버튼 눌렀을 때 기능 추가
+  const closeRecruit = (recruitmentId: number) => {
+    console.log(recruitmentId);
+  };
+  const deleteRecruit = (recruitmentId: number) => {
+    console.log(recruitmentId);
+  };
 
-  //TODO recruit id 받아서 마감
-  const closeRecruit = () => {};
-
-  const goToWritePage = () => navigate('/volunteers/write');
+  const goWritePage = () => navigate('/volunteers/write');
 
   const {
     data: { pages },
@@ -36,7 +42,9 @@ function Recruitments() {
     fetchNextPage,
   } = useSuspenseInfiniteQuery(recruitmentQueryOptions.all());
 
-  const recruitments = pages.flatMap(({ data }) => data.recruitments);
+  const recruitments = pages
+    .flatMap(({ data }) => data.recruitments)
+    .map(createRecruitmentItem);
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
@@ -48,17 +56,15 @@ function Recruitments() {
   return (
     <>
       {recruitments.map((recruitment) => (
-        <RecruitItem
-          key={recruitment.recruitmentId}
-          {...recruitment}
-          onClickManageApplyButton={() =>
-            goToManageApplyPage(recruitment.recruitmentId)
-          }
-          onClickManageAttendanceButton={() =>
-            goToManageAttendancePage(recruitment.recruitmentId)
-          }
-          onClickCloseRecruitButton={closeRecruit}
-          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
+        <VolunteerRecruitItem
+          key={recruitment.id}
+          recruitment={recruitment}
+          onClickItem={() => goVolunteersDetail(recruitment.id)}
+          onUpdateRecruitment={() => goUpdatePage(recruitment.id)}
+          onDeleteRecruitment={() => deleteRecruit(recruitment.id)}
+          onManageApplies={() => goManageApplyPage(recruitment.id)}
+          onManageAttendances={() => goManageAttendancePage(recruitment.id)}
+          onCloseRecruitment={() => closeRecruit(recruitment.id)}
         />
       ))}
       <div ref={ref} />
@@ -72,7 +78,7 @@ function Recruitments() {
         borderRadius="full"
         bgColor="orange.400"
         color="white"
-        onClick={goToWritePage}
+        onClick={goWritePage}
         boxShadow="lg"
       />
     </>
