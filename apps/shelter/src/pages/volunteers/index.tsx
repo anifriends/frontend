@@ -11,7 +11,7 @@ import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 import PlusIcon from './_components/PlusIcon';
 import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 
-function Recruitments() {
+export default function VolunteersPage() {
   const navigate = useNavigate();
 
   const {
@@ -44,7 +44,7 @@ function Recruitments() {
   });
 
   return (
-    <>
+    <Suspense fallback={<p>글목록 로딩중...</p>}>
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
@@ -71,14 +71,6 @@ function Recruitments() {
         onClick={goWritePage}
         boxShadow="lg"
       />
-    </>
-  );
-}
-
-export default function VolunteersPage() {
-  return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
-      <Recruitments />
     </Suspense>
   );
 }
