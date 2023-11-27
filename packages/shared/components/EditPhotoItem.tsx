@@ -1,17 +1,14 @@
 import type { ImageProps } from '@chakra-ui/react';
 import { Box, Image } from '@chakra-ui/react';
-import { MouseEvent } from 'react';
 
 import BiX from '../assets/icon_BiX.svg';
 
 type UploadedPhotoItemProps = {
-  photoId: ImageProps['id'];
   photoSrc: ImageProps['src'];
-  onDeletePhoto: (event: MouseEvent<HTMLDivElement>) => void;
+  onDeletePhoto: VoidFunction;
 };
 
 export default function EditPhotoItem({
-  photoId,
   photoSrc,
   onDeletePhoto,
 }: UploadedPhotoItemProps) {
@@ -24,7 +21,6 @@ export default function EditPhotoItem({
       flexShrink={0}
     >
       <Box
-        id={photoId}
         w={5}
         h={5}
         pos="absolute"
