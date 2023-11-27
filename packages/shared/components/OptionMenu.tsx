@@ -20,7 +20,7 @@ export default function OptionMenu({ children, ...props }: OptionMenuProps) {
       <MenuButton {...props}>
         <Image src={MenuIcon} alt="Menu Icon" />
       </MenuButton>
-      <MenuList>{children}</MenuList>
+      <MenuList minW={32}>{children}</MenuList>
     </Menu>
   );
 }
