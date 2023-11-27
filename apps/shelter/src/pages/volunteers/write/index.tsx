@@ -11,13 +11,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import EditPhotoList from 'shared/components/EditPhotoList';
-
-const DUMMY_IMAGE = 'https://source.unsplash.com/random';
-const DUMMY_IMAGE_URLS = Array.from({ length: 2 }, () => DUMMY_IMAGE);
+import EditPhotoList, { Photo } from 'shared/components/EditPhotoList';
 
 export default function VolunteersWritePage() {
-  const [imageUrls, setImageUrls] = useState<string[]>(DUMMY_IMAGE_URLS);
+  const [imageUrls, setImageUrls] = useState<Photo[]>([]);
 
   return (
     <Box pt={6} px={4}>
@@ -54,7 +51,7 @@ export default function VolunteersWritePage() {
             <FormHelperText>글자수 0 / 100</FormHelperText>
           </Flex>
         </FormControl>
-        <EditPhotoList urls={imageUrls} setUrls={setImageUrls} />
+        <EditPhotoList photos={imageUrls} setUrls={setImageUrls} />
         <Button
           mt={10}
           pos="sticky"
