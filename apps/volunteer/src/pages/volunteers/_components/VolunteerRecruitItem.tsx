@@ -12,7 +12,7 @@ type Recruitment = {
   shelterProfileImage: string;
   isRecruitmentClosed: boolean;
   volunteerDate: string;
-  volunteerDateDday: string;
+  volunteerDateDday: number;
   applicantCount: number;
   recruitmentCapacity: number;
 };
