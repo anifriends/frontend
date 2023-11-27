@@ -9,3 +9,13 @@ export type ShelterInfo = {
   shelterSparePhoneNumber: string;
   shelterIsOpenedAddress: boolean;
 };
+
+export type UpdateShelterInfo = {
+  imageUrl?: string;
+  name: string;
+  address: string;
+  addressDetail: string;
+  phoneNumber: string;
+  sparePhoneNumber: string;
+  isOpenedAddress: boolean;
+};

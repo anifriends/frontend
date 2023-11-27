@@ -1,6 +1,5 @@
-import { createFormattedTime } from 'shared/utils/date';
-
-import { Period } from '@/pages/volunteers/search/_types/filter';
+import { Period } from '../types/period';
+import { createFormattedTime } from './date';
 
 const periodEndDate: Record<Period, (date: Date) => number> = {
   WITHIN_ONE_DAY: (date: Date) => date.getDate() + 1,

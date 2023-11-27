@@ -10,5 +10,6 @@
       "cache": false,
       "persistent": true
     }
-  }
+  },
+  "globalDotEnv": [".env"]
 }

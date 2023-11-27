@@ -13,7 +13,7 @@ export type ChangePasswordRequestData = {
 
 export type SigninResponseData = {
   accessToken: string;
-  useId: number;
+  userId: number;
   role: string;
 };
 

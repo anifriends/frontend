@@ -2,6 +2,7 @@ import { AspectRatio, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { MouseEvent } from 'react';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
 import InfoSubText from 'shared/components/InfoSubtext';
+import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 
 type Recruitment = {
@@ -9,8 +10,9 @@ type Recruitment = {
   title: string;
   shelterName: string;
   shelterProfileImage: string;
+  isRecruitmentClosed: boolean;
   volunteerDate: string;
-  volunteerDateDday: number;
+  volunteerDateDday: string;
   applicantCount: number;
   recruitmentCapacity: number;
 };
@@ -29,6 +31,7 @@ export default function VolunteerRecruitItem({
     title,
     shelterName,
     shelterProfileImage,
+    isRecruitmentClosed,
     volunteerDate,
     volunteerDateDday,
     applicantCount,
@@ -49,7 +52,15 @@ export default function VolunteerRecruitItem({
       </AspectRatio>
       <Box w="full" pos="relative">
         <VStack w="full" align="start" gap={1}>
-          <LabelText content={`D-${volunteerDateDday}`} labelTitle="모집중" />
+          {isRecruitmentClosed ? (
+            <Label type="GRAY" labelTitle="마감완료" />
+          ) : (
+            <LabelText
+              type="GREEN"
+              content={`D-${volunteerDateDday}`}
+              labelTitle="모집중"
+            />
+          )}
           <Text fontWeight="bold" lineHeight={6}>
             {title}
           </Text>

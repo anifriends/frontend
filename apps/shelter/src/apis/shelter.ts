@@ -1,6 +1,6 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-import { ShelterInfo } from '@/types/apis/shetler';
+import { ShelterInfo, UpdateShelterInfo } from '@/types/apis/shetler';
 
 type PasswordUpdateParams = {
   newPassword: string;
@@ -15,8 +15,8 @@ type PageParams = {
 export const getShelterInfoAPI = () =>
   axiosInstance.get<ShelterInfo>('/shelters/me');
 
-export const updateShelterInfo = (shelterInfo: ShelterInfo) =>
-  axiosInstance.patch<unknown, ShelterInfo>('/shelters/me', shelterInfo);
+export const updateShelterInfo = (shelterInfo: UpdateShelterInfo) =>
+  axiosInstance.patch<unknown, UpdateShelterInfo>('/shelters/me', shelterInfo);
 
 export const updatePassword = (passwordUpdateParams: PasswordUpdateParams) =>
   axiosInstance.patch<unknown, PasswordUpdateParams>(

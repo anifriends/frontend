@@ -13,11 +13,6 @@ const DUMMY_RECRUITMENT = {
   shelterImageUrl: 'https://source.unsplash.com/random',
 };
 
-const DUMMY_RECRUITMENT_LIST = Array.from(
-  { length: 4 },
-  () => DUMMY_RECRUITMENT,
-);
-
 export const handlers = [
   http.get('/recruitments', async () => {
     await delay(1000);
@@ -27,7 +22,11 @@ export const handlers = [
           totalElements: 100,
           hasNext: true,
         },
-        recruitments: DUMMY_RECRUITMENT_LIST,
+        recruitments: Array.from({ length: 4 }, () => ({
+          ...DUMMY_RECRUITMENT,
+          recruitmentId: Math.random(),
+          shelterId: Math.random(),
+        })),
       },
       { status: 200 },
     );

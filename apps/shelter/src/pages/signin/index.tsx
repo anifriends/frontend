@@ -22,6 +22,7 @@ import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
+import useAuthStore from 'shared/store/authStore';
 import { SigninRequestData } from 'shared/types/apis/auth';
 import * as z from 'zod';
 
@@ -42,6 +43,7 @@ export default function SigninPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const [isShow, toggleInputShow] = useToggle();
+  const { setUser } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -52,10 +54,12 @@ export default function SigninPage() {
   });
   const { mutate } = useMutation({
     mutationFn: (data: SigninRequestData) => signinShelter(data),
-    onSuccess: () => {
+    onSuccess: ({ data: { userId, accessToken } }) => {
+      setUser({ userId, accessToken });
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
+      setUser(null);
       toast({
         position: 'top',
         description: error.response?.data.message,

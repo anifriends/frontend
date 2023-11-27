@@ -3,38 +3,10 @@ import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
-import { Recruitment } from '@/types/apis/recruitment';
-
-const createRecruitmentItem = (recruitment: Recruitment) => {
-  const {
-    recruitmentId,
-    recruitmentTitle,
-    shelterName,
-    shelterImageUrl,
-    recruitmentApplicantCount,
-    recruitmentCapacity,
-    recruitmentStartTime,
-  } = recruitment;
-
-  // TODO: volunteerDateDday 계산하기 위해 recruitmentDeadline 필요
-  return {
-    id: recruitmentId,
-    title: recruitmentTitle,
-    shelterName: shelterName,
-    shelterProfileImage: shelterImageUrl,
-    volunteerDate: createFormattedTime(
-      new Date(recruitmentStartTime),
-      'YY.MM.DD',
-    ),
-    volunteerDateDday: 12,
-    applicantCount: recruitmentApplicantCount,
-    recruitmentCapacity: recruitmentCapacity,
-  };
-};
+import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
 function Recruitments() {
   const navigate = useNavigate();

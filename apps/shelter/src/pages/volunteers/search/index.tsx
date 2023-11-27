@@ -2,13 +2,13 @@ import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
+import { getDatesFromPeriod } from 'shared/utils/period';
 
 import RecruitItem from '@/pages/volunteers/_components/RecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
 import RecruitmentsSearchFilter from '@/pages/volunteers/search/_components/RecruitmentsSearchFilter';
 import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecruitmentSearch';
 import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
-import { getDatesFromPeriod } from '@/pages/volunteers/search/_utils/period';
 import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
 const getVolunteerSearchRequestFilter = (
