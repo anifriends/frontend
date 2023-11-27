@@ -39,12 +39,18 @@ const getLocalImageUrls = (formData: FormData): Promise<Photo[]> => {
 
 const getServerImageUrls = (formData: FormData) => {
   const uploadPromises = Array.from(formData).map(async ([key, file]) => {
-    const { data } = await uploadImage([file as File]);
-    const [imageUrl] = data.imageUrls;
+    try {
+      const { data } = await uploadImage([file as File]);
+      const [imageUrl] = data.imageUrls;
 
-    return new Promise<Photo>((resolve) => {
-      resolve({ id: key, url: imageUrl });
-    });
+      return new Promise<Photo>((resolve) => {
+        resolve({ id: key, url: imageUrl });
+      });
+    } catch (error) {
+      return new Promise<Photo>((resolve) => {
+        resolve({ id: key, url: 'upload-failed' });
+      });
+    }
   });
 
   return Promise.all(uploadPromises);
