@@ -13,10 +13,10 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
+import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
 import * as z from 'zod';
 
 import { createShelterRecruitment } from '@/apis/recruitment';
@@ -47,8 +47,7 @@ const recruitmentSchema = z
 
 type RecruitmentSchema = z.infer<typeof recruitmentSchema>;
 
-const DUMMY_IMAGE = 'https://source.unsplash.com/random';
-const DUMMY_IMAGE_URLS = Array.from({ length: 2 }, () => DUMMY_IMAGE);
+const UPLOAD_LIMIT = 5;
 
 export default function VolunteersWritePage() {
   const {
@@ -59,7 +58,9 @@ export default function VolunteersWritePage() {
   } = useForm<RecruitmentSchema>({
     resolver: zodResolver(recruitmentSchema),
   });
-  const [imageUrls, setImageUrls] = useState<string[]>(DUMMY_IMAGE_URLS);
+
+  const { photos, handleUploadPhoto, handleDeletePhoto } =
+    useUploadPhoto(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
 
@@ -154,7 +155,12 @@ export default function VolunteersWritePage() {
             )}
           </Flex>
         </FormControl>
-        <EditPhotoList urls={imageUrls} setUrls={setImageUrls} />
+        <EditPhotoList
+          photos={photos}
+          uploadLimit={UPLOAD_LIMIT}
+          onUploadPhoto={handleUploadPhoto}
+          onDeletePhoto={handleDeletePhoto}
+        />
         <Button
           mt={10}
           pos="sticky"
