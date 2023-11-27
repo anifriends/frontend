@@ -29,4 +29,13 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  http.post('/shelters/recruitments', async () => {
+    await delay(1000);
+    return HttpResponse.json({}, { status: 201 });
+  }),
+  http.patch('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
+    await delay(1000);
+    return HttpResponse.json({ status: 204 });
+  }),
 ];
