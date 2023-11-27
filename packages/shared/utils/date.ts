@@ -31,12 +31,12 @@ export const isSameDay = (a: Date, b: Date): boolean => {
   return Math.trunc(diff / MILISECONDS.DAY) === 0;
 };
 
-export const getDDay = (deadLine: string) => {
+export const getDDay = (deadLine: string): number => {
   const deadLineDate = new Date(deadLine).getTime();
   const currentDate = new Date().getTime();
   const diffDate = deadLineDate - currentDate;
 
-  return Math.floor(diffDate / (1000 * MILISECONDS.DAY)).toString();
+  return Math.floor(diffDate / (1000 * MILISECONDS.DAY));
 };
 
 export const getAge = (birthDate: string) => {
