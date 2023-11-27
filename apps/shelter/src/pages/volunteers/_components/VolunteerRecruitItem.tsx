@@ -1,9 +1,10 @@
-import { Box, Button, HStack, MenuItem, Text, VStack } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { Box, HStack, MenuItem, Text, VStack } from '@chakra-ui/react';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
 import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import OptionMenu from 'shared/components/OptionMenu';
+
+import VolunteerRecruitItemButton from '@/pages/volunteers/_components/VolunteerRecruitItemButton';
 
 import RecruitDateText from './RecruitDateText';
 
@@ -128,34 +129,5 @@ export default function VolunteerRecruitItem({
         <MenuItem onClick={onDeleteRecruitment}>삭제하기</MenuItem>
       </OptionMenu>
     </Box>
-  );
-}
-
-type RecruitItemButtonProps = {
-  type: 'PRIMARY' | 'SECONDARY';
-  onClick: VoidFunction;
-  children: ReactNode;
-};
-
-function VolunteerRecruitItemButton({
-  type,
-  onClick,
-  children,
-}: RecruitItemButtonProps) {
-  return (
-    <Button
-      w="100%"
-      h={30}
-      border="1px"
-      borderRadius={10}
-      color={type === 'PRIMARY' ? 'white' : 'orange.400'}
-      bgColor={type === 'PRIMARY' ? 'orange.400' : 'white'}
-      _hover={{ bg: undefined }}
-      _active={{ bg: undefined }}
-      fontSize="sm"
-      onClick={onClick}
-    >
-      {children}
-    </Button>
   );
 }
