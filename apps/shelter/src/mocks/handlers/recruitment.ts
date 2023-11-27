@@ -38,4 +38,17 @@ export const handlers = [
     await delay(1000);
     return HttpResponse.json({ status: 204 });
   }),
+  http.delete('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
+    await delay(1000);
+    return HttpResponse.json({ status: 204 });
+  }),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/close',
+    async ({ request }) => {
+      console.log(request);
+      await delay(1000);
+      return HttpResponse.json({ status: 204 });
+    },
+  ),
 ];
