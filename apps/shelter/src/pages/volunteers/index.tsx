@@ -2,6 +2,7 @@ import { IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AlertModal from 'shared/components/AlertModal';
 import useIntersect from 'shared/hooks/useIntersection';
 
 import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';
@@ -20,8 +21,11 @@ export default function VolunteersPage() {
     goManageApplyPage,
     goManageAttendancePage,
     goUpdatePage,
-    closeRecruitment,
-    deleteRecruitment,
+    confirmRecruitmentClose,
+    confirmRecruitmentDelete,
+    alertModalState,
+    isModalOpen,
+    onCloseModal,
   } = useVolunteerRecruitItem();
 
   const {
@@ -50,10 +54,10 @@ export default function VolunteersPage() {
           recruitment={recruitment}
           onClickItem={goVolunteersDetail}
           onUpdateRecruitment={goUpdatePage}
-          onDeleteRecruitment={deleteRecruitment}
+          onDeleteRecruitment={confirmRecruitmentDelete}
           onManageApplies={goManageApplyPage}
           onManageAttendances={goManageAttendancePage}
-          onCloseRecruitment={closeRecruitment}
+          onCloseRecruitment={confirmRecruitmentClose}
         />
       ))}
       <div ref={ref} />
@@ -69,6 +73,11 @@ export default function VolunteersPage() {
         color="white"
         onClick={goWritePage}
         boxShadow="lg"
+      />
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={onCloseModal}
+        {...alertModalState}
       />
     </Suspense>
   );

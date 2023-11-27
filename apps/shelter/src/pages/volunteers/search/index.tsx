@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import AlertModal from 'shared/components/AlertModal';
 import useIntersect from 'shared/hooks/useIntersection';
 import { getDatesFromPeriod } from 'shared/utils/period';
 
@@ -36,8 +37,11 @@ export default function VolunteersSearchPage() {
     goManageApplyPage,
     goManageAttendancePage,
     goUpdatePage,
-    closeRecruitment,
-    deleteRecruitment,
+    confirmRecruitmentClose,
+    confirmRecruitmentDelete,
+    alertModalState,
+    isModalOpen,
+    onCloseModal,
   } = useVolunteerRecruitItem();
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
@@ -79,13 +83,18 @@ export default function VolunteersSearchPage() {
           recruitment={recruitment}
           onClickItem={goVolunteersDetail}
           onUpdateRecruitment={goUpdatePage}
-          onDeleteRecruitment={deleteRecruitment}
+          onDeleteRecruitment={confirmRecruitmentDelete}
           onManageApplies={goManageApplyPage}
           onManageAttendances={goManageAttendancePage}
-          onCloseRecruitment={closeRecruitment}
+          onCloseRecruitment={confirmRecruitmentClose}
         />
       ))}
       <div ref={ref} />
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={onCloseModal}
+        {...alertModalState}
+      />
     </Box>
   );
 }
