@@ -13,6 +13,7 @@ import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 
 export default function VolunteersPage() {
   const navigate = useNavigate();
+  const goWritePage = () => navigate('/volunteers/write');
 
   const {
     goVolunteersDetail,
@@ -22,8 +23,6 @@ export default function VolunteersPage() {
     closeRecruitment,
     deleteRecruitment,
   } = useVolunteerRecruitItem();
-
-  const goWritePage = () => navigate('/volunteers/write');
 
   const {
     data: { pages },
