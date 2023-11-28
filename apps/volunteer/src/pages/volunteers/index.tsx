@@ -4,10 +4,11 @@ import { MouseEvent, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
 
-import RecruitSkeleton from '@/components/RecruitSkeleton';
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
+
+import RecruitSkeletonList from './_components/RecruitSkeletonList';
 
 function Recruitments() {
   const navigate = useNavigate();
@@ -47,23 +48,14 @@ function Recruitments() {
           onClickItem={goVolunteersDetail}
         />
       ))}
-      {isFetchingNextPage ? <VolunteersPageSkeleton /> : <div ref={ref} />}
+      {isFetchingNextPage ? <RecruitSkeletonList /> : <div ref={ref} />}
     </Box>
-  );
-}
-
-function VolunteersPageSkeleton() {
-  return (
-    <>
-      <RecruitSkeleton />
-      <RecruitSkeleton />
-    </>
   );
 }
 
 export default function VolunteersPage() {
   return (
-    <Suspense fallback={<VolunteersPageSkeleton />}>
+    <Suspense fallback={<RecruitSkeletonList />}>
       <Recruitments />
     </Suspense>
   );
