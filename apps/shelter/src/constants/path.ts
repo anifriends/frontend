@@ -2,7 +2,7 @@ const PATH = {
   VOLUNTEERS: {
     INDEX: 'volunteers',
     DETAIL: ':id',
-    PROFILE: 'profile',
+    PROFILE: 'profile/:id',
     SEARCH: 'search',
     WRITE: 'write',
     UPDATE: 'write/:id',
