@@ -23,6 +23,15 @@ const DUMMY_SHELTER_REVIEW = {
   ],
 };
 
+const DUMMY_SHELTER_RECRUITMENT = {
+  recruitmentId: 1,
+  recruitmentTitle: '봉사자 모집합니다!!',
+  recruitmentStartTime: '2021-11-08T11:44:30.327959',
+  recruitmentDeadline: '2023-12-18T18:00:00',
+  recruitmentApplicantCount: 2,
+  recruitmentCapacity: 6,
+};
+
 export const handlers = [
   http.get('/shelters/:shelterId/profile/simple', async () => {
     await delay(200);
@@ -60,9 +69,30 @@ export const handlers = [
           totalElements: 30,
           hasNext: page === '3' ? false : true,
         },
-        reviews: Array.from({ length: 10 }, (_, index) => ({
+        reviews: Array.from({ length: 10 }, () => ({
           ...DUMMY_SHELTER_REVIEW,
-          reviewId: index,
+          reviewId: Math.random(),
+        })),
+      },
+      {
+        status: 200,
+      },
+    );
+  }),
+  http.get('/shelters/:shelterId/recruitments', async ({ request }) => {
+    await delay(1000);
+    const url = new URL(request.url);
+    const page = url.searchParams.get('page');
+
+    return HttpResponse.json(
+      {
+        pageInfo: {
+          totalElements: 100,
+          hasNext: page === '3' ? false : true,
+        },
+        recruitments: Array.from({ length: 10 }, () => ({
+          ...DUMMY_SHELTER_RECRUITMENT,
+          recruitmentId: Math.random(),
         })),
       },
       {
