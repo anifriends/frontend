@@ -1,40 +1,50 @@
 import { Box, useToken } from '@chakra-ui/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import Label from 'shared/components/Label';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import Tabs from 'shared/components/Tabs';
 
-import VolunteerRecords from './_components/VolunteerRecords';
+import { getVolunteerProfile } from '@/apis/volunteers';
+
+import VolunteerRecruitments from './_components/VolunteerRecruitments';
 import VolunteerReviews from './_components/VolunteerReviews';
 
-const DUMMY_DATA = {
-  volunteerEmail: 'test@naver.com',
-  volunteerName: '김철수',
-  volunteerTemperate: 36,
-  volunteerImageUrl: 'www.aws.s3.com/asfqwe',
-  volunteerPhoneNumber: '010-8237-1847',
-};
-
 export default function VolunteersProfilePage() {
+  const { id } = useParams<{ id: string }>();
   const [gray200] = useToken('colors', ['gray.200']);
+
+  const {
+    data: {
+      volunteerEmail,
+      volunteerImageUrl,
+      volunteerName,
+      volunteerPhoneNumber,
+      volunteerTemperature,
+    },
+  } = useSuspenseQuery({
+    queryKey: ['volunteer', 'profile', id],
+    queryFn: () => getVolunteerProfile(Number(id)),
+    select: (data) => {
+      return { ...data.data };
+    },
+  });
 
   return (
     <Box h="100%">
       <Box borderBottom={`1px solid ${gray200}`}>
         <ProfileInfo
-          infoTitle={DUMMY_DATA.volunteerName}
-          infoImage={DUMMY_DATA.volunteerImageUrl}
-          infoTexts={[
-            DUMMY_DATA.volunteerEmail,
-            DUMMY_DATA.volunteerPhoneNumber,
-          ]}
+          infoTitle={volunteerName}
+          infoImage={volunteerImageUrl}
+          infoTexts={[volunteerEmail, volunteerPhoneNumber]}
         >
-          <Label labelTitle={Number(DUMMY_DATA.volunteerTemperate) + '°C'} />
+          <Label labelTitle={Number(volunteerTemperature) + '°C'} />
         </ProfileInfo>
       </Box>
       <Tabs
         tabs={[
-          ['봉사 후기', <VolunteerReviews key={1} />],
-          ['봉사 이력', <VolunteerRecords key={2} />],
+          ['봉사 후기', <VolunteerReviews id={Number(id)} key={1} />],
+          ['봉사 이력', <VolunteerRecruitments id={Number(id)} key={2} />],
         ]}
       />
     </Box>
