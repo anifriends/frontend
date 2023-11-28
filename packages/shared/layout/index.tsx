@@ -15,7 +15,7 @@ type LayoutProps = {
 export default function Layout({ appType }: LayoutProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { mutate, isPending } = useAccessTokenMutation();
+  const { isPending } = useAccessTokenMutation();
 
   useEffect(() => {
     if (pathname === '/') {
