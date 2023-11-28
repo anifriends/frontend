@@ -24,8 +24,8 @@ const PATH = {
   SHELTERS: {
     INDEX: 'shelters',
     PROFILE: 'profile/:id',
-    REVIEWS_WRITE: 'reviews/write',
-    REVIEWS_UPDATE: 'reviews/write/:id',
+    REVIEWS_WRITE: ':shelterId/reviews/applicants/:applicantId/write',
+    REVIEWS_UPDATE: ':shelterId/reviews/write/:reviewId',
   },
   NOTIFICATIONS: 'notifications',
   SIGNUP: 'signup',
