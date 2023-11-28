@@ -3,27 +3,19 @@ import Label from 'shared/components/Label';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import Tabs from 'shared/components/Tabs';
 
-const DUMMY_VOLUNTEER = {
-  volunteerId: 1,
-  volunteerEmail: 'asdf@naver.com',
-  volunteerName: '이름',
-  volunteerBirthDate: '2023-03-16',
-  volunteerPhoneNumber: '010-1234-5678',
-  volunteerTemperature: 36,
-  completedVolunteerCount: 3,
-  volunteerImageUrl: 'imageUrl',
-  volunteerGender: 'MALE',
-};
+import useFetchMyVolunteer from './_hooks/useFetchMyVolunteer';
 
 export default function MyPage() {
+  const { data } = useFetchMyVolunteer();
+
   return (
     <Box>
       <ProfileInfo
-        infoImage=""
-        infoTitle="김프롱"
-        infoTexts={['programmers@gmail.com', '010-1234-4567']}
+        infoImage={data.volunteerImageUrl}
+        infoTitle={data.volunteerName}
+        infoTexts={[data.volunteerEmail, data.volunteerPhoneNumber]}
       >
-        <Label labelTitle="32℃" />
+        <Label labelTitle={`${data.volunteerTemperature}℃`} />
       </ProfileInfo>
       <Divider />
       <Box
@@ -37,10 +29,10 @@ export default function MyPage() {
         py={3}
       >
         <Highlight
-          query="3회"
+          query={`${data.completedVolunteerCount}회`}
           styles={{ color: 'orange.400', fontWeight: 600 }}
         >
-          김프롱 님께서는 봉사를 3회 완료했어요!
+          {`김프롱 님께서는 봉사를 ${data.completedVolunteerCount}회 완료했어요!`}
         </Highlight>
       </Box>
       <Tabs
