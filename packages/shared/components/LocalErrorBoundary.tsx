@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,15 +22,17 @@ const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   };
 
   return (
-    <VStack justifyContent="center" alignItems="center" h="full" spacing="4">
-      <Heading as="h4" fontSize="lg" fontWeight="bold">
+    <VStack justifyContent="center" alignItems="center" h="full" spacing="6">
+      <Heading as="h4" fontSize="xl">
         {title}
       </Heading>
-      <Text color="gray.400">{content}</Text>
-      <Flex>
+      <Text color="gray.400" fontWeight="semi-bold">
+        {content}
+      </Text>
+      <HStack spacing={6}>
         {!isForbidden && <Button onClick={onClick}>{buttonMessage}</Button>}
         <Button onClick={() => navigate('/volunteers')}>홈으로</Button>
-      </Flex>
+      </HStack>
     </VStack>
   );
 };
