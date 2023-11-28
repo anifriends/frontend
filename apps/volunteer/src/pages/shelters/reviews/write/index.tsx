@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   Flex,
   FormControl,
@@ -16,6 +15,8 @@ import EditPhotoList from 'shared/components/EditPhotoList';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
 import { z } from 'zod';
+
+import ReviewSubmitButton from '@/pages/shelters/reviews/_components/ReviewSubmitButton';
 
 const DUMMY_SHELTER_INFO = {
   shelterName: '양천구 보호소',
@@ -33,6 +34,7 @@ const reviewSchema = z.object({
 type ReviewSchema = z.infer<typeof reviewSchema>;
 
 const UPLOAD_LIMIT = 5;
+const FORM_ID = 'shelterReview';
 
 export default function SheltersReviewsWritePage() {
   const { shelterId, applicantId } = useParams();
@@ -64,23 +66,20 @@ export default function SheltersReviewsWritePage() {
       <ProfileInfo infoTitle={shelterName} infoTexts={[email, address]} />
       <Divider />
       <VStack py={6} px={4} align="stretch">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id={FORM_ID} onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={!!errors.content}>
             <Textarea
               {...register('content')}
               placeholder="모집글 상세 내용을 입력해 주세요"
-              h="260px"
-              mb={2}
+              h={260}
             />
             <Flex justifyContent="end">
               {errors.content ? (
-                <FormErrorMessage m={0}>
+                <FormErrorMessage>
                   글자수 {contentLength} / 500
                 </FormErrorMessage>
               ) : (
-                <FormHelperText m={0}>
-                  글자수 {contentLength} / 500
-                </FormHelperText>
+                <FormHelperText>글자수 {contentLength} / 500</FormHelperText>
               )}
             </Flex>
           </FormControl>
@@ -92,30 +91,7 @@ export default function SheltersReviewsWritePage() {
           onDeletePhoto={handleDeletePhoto}
         />
       </VStack>
-      <VStack
-        maxW="container.sm"
-        mx="auto"
-        px={4}
-        bgColor="white"
-        pos="fixed"
-        bottom={0}
-        left={0}
-        right={0}
-        py={2}
-        zIndex={10}
-        align="stretch"
-      >
-        <Button
-          fontWeight="semibold"
-          bgColor="orange.400"
-          color="white"
-          type="submit"
-          _hover={{ bg: undefined }}
-          _active={{ bg: undefined }}
-        >
-          작성 완료
-        </Button>
-      </VStack>
+      <ReviewSubmitButton formId={FORM_ID} buttonText="작성완료" />
     </Box>
   );
 }
