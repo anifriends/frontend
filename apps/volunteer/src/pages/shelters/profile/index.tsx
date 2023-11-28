@@ -8,7 +8,7 @@ import Tabs from 'shared/components/Tabs';
 import { getShelterProfileDetail } from '@/apis/shelter';
 
 import ShelterRecruitments from './_components/ShelterRecruitments';
-import ShelterReviews from './_components/ShelterReviews';
+import ShelterReviewsTab from './_components/ShelterReviews';
 
 export default function SheltersProfilePage() {
   const { id } = useParams();
@@ -42,7 +42,7 @@ export default function SheltersProfilePage() {
       />
       <Tabs
         tabs={[
-          ['봉사후기', <ShelterReviews key={1} />],
+          ['봉사후기', <ShelterReviewsTab key={1} />],
           ['봉사모집글', <ShelterRecruitments key={2} />],
         ]}
       />
