@@ -1,13 +1,14 @@
-import { Button, VStack } from '@chakra-ui/react';
+import { Button, ButtonProps, VStack } from '@chakra-ui/react';
 
 type ReviewSubmitButton = {
   formId: string;
   buttonText: string;
-};
+} & ButtonProps;
 
 export default function ReviewSubmitButton({
   formId,
   buttonText,
+  isLoading,
 }: ReviewSubmitButton) {
   return (
     <VStack
@@ -29,6 +30,7 @@ export default function ReviewSubmitButton({
         color="white"
         type="submit"
         form={formId}
+        isLoading={isLoading}
         _hover={{ bg: undefined }}
         _active={{ bg: undefined }}
       >
