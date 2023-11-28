@@ -18,7 +18,7 @@ export const createVolunteerReview = (reqeust: ReviewCreateRequest) =>
   );
 
 export const updateVolunteerReview = (
-  reviewId: string,
+  reviewId: number,
   reqeust: ReviewUpdateRequest,
 ) =>
   axiosInstance.patch<unknown, ReviewUpdateRequest>(
