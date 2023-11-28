@@ -13,6 +13,8 @@ import { useRecruitmentSearch } from '@/pages/volunteers/search/_hooks/useRecrui
 import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
 import { RecruitmentSearchFilter } from '@/types/apis/recruitment';
 
+import RecruitSkeletonList from '../_components/RecruitSkeletonList';
+
 const getVolunteerSearchRequestFilter = (
   searchFilter: Partial<SearchFilter>,
 ): Partial<RecruitmentSearchFilter> => {
@@ -68,7 +70,7 @@ export default function VolunteersSearchPage() {
   }
 
   if (isLoading) {
-    return <p>로딩중</p>;
+    return <RecruitSkeletonList />;
   }
 
   return (
@@ -89,7 +91,7 @@ export default function VolunteersSearchPage() {
           onCloseRecruitment={confirmRecruitmentClose}
         />
       ))}
-      <div ref={ref} />
+      {isFetchingNextPage ? <RecruitSkeletonList /> : <div ref={ref} />}
       <AlertModal
         isOpen={isModalOpen}
         onClose={onCloseModal}

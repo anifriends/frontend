@@ -10,9 +10,10 @@ import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitmen
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
 import PlusIcon from './_components/PlusIcon';
+import RecruitSkeletonList from './_components/RecruitSkeletonList';
 import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 
-export default function VolunteersPage() {
+function Recruitments() {
   const navigate = useNavigate();
   const goWritePage = () => navigate('/volunteers/write');
 
@@ -47,7 +48,7 @@ export default function VolunteersPage() {
   });
 
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <>
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
@@ -60,7 +61,7 @@ export default function VolunteersPage() {
           onCloseRecruitment={confirmRecruitmentClose}
         />
       ))}
-      <div ref={ref} />
+      {isFetchingNextPage ? <RecruitSkeletonList /> : <div ref={ref} />}
       <IconButton
         size="lg"
         aria-label="Plus Button"
@@ -79,6 +80,14 @@ export default function VolunteersPage() {
         onClose={onCloseModal}
         {...alertModalState}
       />
+    </>
+  );
+}
+
+export default function VolunteersPage() {
+  return (
+    <Suspense fallback={<RecruitSkeletonList />}>
+      <Recruitments />
     </Suspense>
   );
 }
