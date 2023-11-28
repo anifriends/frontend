@@ -9,14 +9,16 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
 
+import { updateVolunteerReview } from '@/apis/review';
 import { getSimpleShelterProfile } from '@/apis/shelter';
+import PATH from '@/constants/path';
 import ReviewSubmitButton from '@/pages/shelters/reviews/_components/ReviewSubmitButton';
 import {
   FORM_ID,
@@ -27,12 +29,13 @@ import {
   ReviewSchema,
   reviewSchema,
 } from '@/pages/shelters/reviews/_schema/reviewSchema';
+import { ReviewUpdateRequest } from '@/types/apis/review';
 
 export default function SheltersReviewsUpdatePage() {
   const { shelterId, reviewId } = useParams();
   const navigate = useNavigate();
 
-  if (!shelterId) {
+  if (!shelterId || !reviewId) {
     // TODO: shelterId 또는 applicantId 가 없는 경우 예외처리
     navigate(-1);
   }
@@ -47,6 +50,19 @@ export default function SheltersReviewsUpdatePage() {
       shelterImageUrl: '',
       shelterAddress: '',
       shelterEmail: '',
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({
+      reviewId,
+      request,
+    }: {
+      reviewId: number;
+      request: ReviewUpdateRequest;
+    }) => updateVolunteerReview(reviewId, request),
+    onSuccess: () => {
+      navigate(`/${PATH.MYPAGE.INDEX}`);
     },
   });
 
@@ -67,8 +83,14 @@ export default function SheltersReviewsUpdatePage() {
   const contentLength = watch('content')?.length ?? 0;
 
   const onSubmit: SubmitHandler<ReviewSchema> = (data: ReviewSchema) => {
-    // TODO: review 작성 API 호출
-    console.log(data, reviewId);
+    const { content } = data;
+
+    const request: ReviewUpdateRequest = {
+      content,
+      imageUrls: [],
+    };
+
+    mutate({ reviewId: Number(reviewId), request });
   };
 
   return (
@@ -107,7 +129,11 @@ export default function SheltersReviewsUpdatePage() {
           onDeletePhoto={handleDeletePhoto}
         />
       </VStack>
-      <ReviewSubmitButton formId={FORM_ID} buttonText="작성완료" />
+      <ReviewSubmitButton
+        formId={FORM_ID}
+        buttonText="작성완료"
+        isLoading={isPending}
+      />
     </Box>
   );
 }
