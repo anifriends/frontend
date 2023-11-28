@@ -1,5 +1,5 @@
 import { Box, Container } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import useAccessTokenMutation from '../hooks/useAccessTokenMutation';
@@ -16,10 +16,10 @@ export default function Layout({ appType }: LayoutProps) {
   const { pathname } = useLocation();
   const { mutate, isPending } = useAccessTokenMutation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     mutate(undefined, {
       onSuccess: () => {
-        if (appType === 'SHELTER_APP' && pathname === '/') {
+        if (pathname === '/') {
           navigate('/volunteers');
         }
       },
@@ -28,9 +28,13 @@ export default function Layout({ appType }: LayoutProps) {
         if (appType === 'SHELTER_APP') {
           navigate('/signin');
         }
+        if (appType === 'VOLUNTEER_APP' && pathname === '/') {
+          navigate('/volunteers');
+        }
       },
     });
-  }, [mutate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isPending) {
     return <p>...로딩중</p>;
