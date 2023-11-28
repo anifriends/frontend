@@ -1,76 +1,39 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type NewReviewParams = {
-  applicantId: number;
-  content: string;
-  imageUrls: string[];
-};
-
-type UpdatedReviewParams = {
-  content: string;
-  imageUrls: string[];
-};
+import {
+  ReviewCreateRequest,
+  ReviewDetailResponse,
+  ReviewOnShelterResponse,
+  ReviewsOnShelterRequest,
+  ReviewUpdateRequest,
+} from '@/types/apis/review';
 
 export const getVolunteerReviewDetail = (reviewId: number) =>
-  axiosInstance.get<{
-    reviewId: number;
-    content: string;
-    imageUrls: string[];
-  }>(`/reviews/${reviewId}`);
+  axiosInstance.get<ReviewDetailResponse>(`/reviews/${reviewId}`);
 
-export const createVolunteerNewReview = (newReviewParams: NewReviewParams) =>
-  axiosInstance.post<unknown, NewReviewParams>(
+export const createVolunteerReview = (reqeust: ReviewCreateRequest) =>
+  axiosInstance.post<unknown, ReviewCreateRequest>(
     '/volunteers/reviews',
-    newReviewParams,
+    reqeust,
   );
 
 export const updateVolunteerReview = (
   reviewId: string,
-  updatedReviewParams: UpdatedReviewParams,
+  reqeust: ReviewUpdateRequest,
 ) =>
-  axiosInstance.patch<unknown, UpdatedReviewParams>(
+  axiosInstance.patch<unknown, ReviewUpdateRequest>(
     `/volunteers/reviews/${reviewId}`,
-    updatedReviewParams,
+    reqeust,
   );
 
 export const deleteVolunteerReview = (reviewId: string) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
-type ReviewOnShelterParams = {
-  pageNumber: number;
-  pageSize: number;
-};
-
-type Review = {
-  reviewId: number;
-  volunteerEmail: string;
-  volunteerTemperature: number;
-  reviewCreatedAt: string;
-  reviewComtent: string;
-  reviewImageUrls: string[];
-};
-
-type PageInfo = {
-  totalElements: number;
-  hasNext: boolean;
-};
-
-type ReviewOnShelterResponse = {
-  pageInfo: PageInfo;
-  reviews: Review[];
-};
-
 export const getVolunteerReviewsOnShelter = (
   shelterId: number,
-  pageNumber: number,
-  pageSize: number,
+  request: ReviewsOnShelterRequest,
 ) =>
-  axiosInstance.get<ReviewOnShelterResponse, ReviewOnShelterParams>(
+  axiosInstance.get<ReviewOnShelterResponse, ReviewsOnShelterRequest>(
     `/shelters/${shelterId}/reviews`,
-    {
-      params: {
-        pageNumber,
-        pageSize,
-      },
-    },
+    { params: { ...request } },
   );
