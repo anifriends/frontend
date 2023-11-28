@@ -4,6 +4,7 @@ import { MouseEvent, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useIntersect from 'shared/hooks/useIntersection';
 
+import RecruitSkeleton from '@/components/RecruitSkeleton';
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
@@ -46,14 +47,23 @@ function Recruitments() {
           onClickItem={goVolunteersDetail}
         />
       ))}
-      <div ref={ref} />
+      {isFetchingNextPage ? <VolunteersPageSkeleton /> : <div ref={ref} />}
     </Box>
+  );
+}
+
+function VolunteersPageSkeleton() {
+  return (
+    <>
+      <RecruitSkeleton />
+      <RecruitSkeleton />
+    </>
   );
 }
 
 export default function VolunteersPage() {
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <Suspense fallback={<VolunteersPageSkeleton />}>
       <Recruitments />
     </Suspense>
   );
