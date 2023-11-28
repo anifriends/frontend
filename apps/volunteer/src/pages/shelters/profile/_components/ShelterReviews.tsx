@@ -6,6 +6,7 @@ import InfoSubtext from 'shared/components/InfoSubtext';
 import Label from 'shared/components/Label';
 import ReviewItem from 'shared/components/ReviewItem';
 import useIntersect from 'shared/hooks/useIntersection';
+import { createFormattedTime } from 'shared/utils/date';
 
 import { getVolunteerReviewsOnShelter } from '@/apis/review';
 
@@ -57,7 +58,10 @@ function ShelterReviews() {
                   <Text fontWeight={600}>{email}</Text>
                   <Label labelTitle={`${temperature}℃`} />
                 </HStack>
-                <InfoSubtext title="작성일" content={createdAt} />
+                <InfoSubtext
+                  title="작성일"
+                  content={createFormattedTime(new Date(createdAt), 'YY.MM.DD')}
+                />
               </Box>
             </ReviewItem>
           );
