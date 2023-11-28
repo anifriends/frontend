@@ -48,7 +48,7 @@ function Recruitments() {
   });
 
   return (
-    <Suspense fallback={<RecruitSkeletonList />}>
+    <>
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
@@ -80,7 +80,7 @@ function Recruitments() {
         onClose={onCloseModal}
         {...alertModalState}
       />
-    </Suspense>
+    </>
   );
 }
 
