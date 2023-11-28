@@ -14,27 +14,22 @@ import { useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
-import { z } from 'zod';
 
 import ReviewSubmitButton from '@/pages/shelters/reviews/_components/ReviewSubmitButton';
+import {
+  FORM_ID,
+  UPLOAD_LIMIT,
+} from '@/pages/shelters/reviews/_constants/reviews';
+import {
+  ReviewSchema,
+  reviewSchema,
+} from '@/pages/shelters/reviews/_schema/reviewSchema';
 
 const DUMMY_SHELTER_INFO = {
   shelterName: '양천구 보호소',
   email: 'shelter@gmail.com',
   address: '서울특별시 양천구',
 };
-
-const reviewSchema = z.object({
-  content: z
-    .string()
-    .optional()
-    .refine((val) => val?.length && val.length < 500, '에러입니다'),
-});
-
-type ReviewSchema = z.infer<typeof reviewSchema>;
-
-const UPLOAD_LIMIT = 5;
-const FORM_ID = 'shelterReview';
 
 export default function SheltersReviewsWritePage() {
   const { shelterId, applicantId } = useParams();
