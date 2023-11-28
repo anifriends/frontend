@@ -23,7 +23,7 @@ function ShelterReviews() {
     queryKey: ['shelter', 'reviews', shelterId],
     queryFn: async ({ pageParam }) =>
       (await getVolunteerReviewsOnShelter(shelterId, pageParam, 10)).data,
-    initialPageParam: 0,
+    initialPageParam: 1,
     getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
       pageInfo.hasNext ? lastPageParam + 1 : null,
   });
@@ -40,27 +40,27 @@ function ShelterReviews() {
   return (
     <Box>
       <Heading fontWeight={600} fontSize="md" py={4}>
-        보호소의 후기 {pages[0]?.pageInfo.totalElements}개
+        보호소의 후기 {pages[0].pageInfo.totalElements}개
       </Heading>
       <VStack spacing={2}>
-        {reviews.map((review, index) => {
-          const {
-            reviewContent,
-            reviewImageUrls: images,
-            volunteerEmail: email,
-            volunteerTemperature: temperature,
-            reviewCreatedAt: createdAt,
-          } = review;
+        {reviews.map((review) => {
           return (
-            <ReviewItem key={index} content={reviewContent} images={images}>
+            <ReviewItem
+              key={review.reviewId}
+              content={review.reviewContent}
+              images={review.reviewImageUrls}
+            >
               <Box>
                 <HStack mb={1}>
-                  <Text fontWeight={600}>{email}</Text>
-                  <Label labelTitle={`${temperature}℃`} />
+                  <Text fontWeight={600}>{review.volunteerEmail}</Text>
+                  <Label labelTitle={`${review.volunteerTemperature}℃`} />
                 </HStack>
                 <InfoSubtext
                   title="작성일"
-                  content={createFormattedTime(new Date(createdAt), 'YY.MM.DD')}
+                  content={createFormattedTime(
+                    new Date(review.reviewCreatedAt),
+                    'YY.MM.DD',
+                  )}
                 />
               </Box>
             </ReviewItem>
