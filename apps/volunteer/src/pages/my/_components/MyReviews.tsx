@@ -1,31 +1,75 @@
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import InfoSubtext from 'shared/components/InfoSubtext';
 import ReviewItem from 'shared/components/ReviewItem';
+import useIntersect from 'shared/hooks/useIntersection';
+import { createFormattedTime } from 'shared/utils/date';
+
+import { getMyReviewsAPI } from '@/apis/volunteer';
 
 function MyReviews() {
+  const {
+    data: { pages },
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useSuspenseInfiniteQuery({
+    queryKey: ['myreviews'],
+    queryFn: async ({ pageParam }) =>
+      (await getMyReviewsAPI(pageParam, 10)).data,
+    initialPageParam: 1,
+    getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
+      pageInfo.hasNext ? lastPageParam + 1 : null,
+  });
+
+  const reviews = pages.flatMap((item) => item.reviews);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
+
   return (
     <Box minH={500}>
       <Heading fontWeight={600} fontSize="md" py={4}>
-        작성한 후기 {5}개
+        작성한 후기 {pages[0].pageInfo.totalElements}개
       </Heading>
       <VStack spacing={2}>
-        <ReviewItem showMenuButton={true} content="hello" images={[]}>
-          <Box>
-            <Text fontWeight={600} mb={2}>
-              남양주 보호소
-            </Text>
-            <InfoSubtext title="작성일" content="23.12.07" />
-          </Box>
-        </ReviewItem>
+        {reviews.map((review) => {
+          return (
+            <ReviewItem
+              key={review.reviewId}
+              showMenuButton={true}
+              content={review.reviewContent}
+              images={review.reviewImageUrls}
+            >
+              <Box>
+                <Text fontWeight={600} mb={2}>
+                  {review.shelterName}
+                </Text>
+                <InfoSubtext
+                  title="작성일"
+                  content={createFormattedTime(
+                    new Date(review.reviewCreatedAt),
+                    'YY.MM.DD',
+                  )}
+                />
+              </Box>
+            </ReviewItem>
+          );
+        })}
       </VStack>
+      <div ref={ref} />
     </Box>
   );
 }
 
 export default function MyReviewsTab() {
   return (
-    <Suspense>
+    <Suspense fallback={<p>'로딩 중 입니다..'</p>}>
       <MyReviews />
     </Suspense>
   );
