@@ -11,6 +11,29 @@ const DUMMY_RECRUITMENT = {
   recruitmentCapacity: 15,
 };
 
+// eslint-disable-next-line
+// @ts-ignore
+const DUMMY_RECRUITMENT_LIST = Array.from(
+  { length: 4 },
+  () => DUMMY_RECRUITMENT,
+);
+
+export const DUMMY_APPLICANT = {
+  applicantId: 10,
+  volunteerId: 1,
+  volunteerName: '김철수',
+  volunteerBirthDate: '1997-11-05',
+  volunteerGender: 'MALE',
+  completedVolunteerCount: 3,
+  volunteerTemperature: 33,
+  applicantStatus: 'APPROVED',
+};
+
+export const DUMMY_APPLICANT_LIST = Array.from(
+  { length: 9 },
+  () => DUMMY_APPLICANT,
+);
+
 export const handlers = [
   http.get('/shelters/recruitments', async () => {
     await delay(1000);
@@ -29,6 +52,20 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/applicants/:applicantId',
+    async () => {
+      await delay(200);
+      return HttpResponse.json({}, { status: 200 });
+    },
+  ),
+  http.get('/shelters/recruitments/:recruitmentId/applicants', async () => {
+    await delay(200);
+    return HttpResponse.json({
+      applicants: DUMMY_APPLICANT_LIST,
+      recruitmentCapacity: 15,
+    });
+  }),
   http.post('/shelters/recruitments', async () => {
     await delay(1000);
     return HttpResponse.json({}, { status: 201 });
@@ -38,4 +75,17 @@ export const handlers = [
     await delay(1000);
     return HttpResponse.json({ status: 204 });
   }),
+  http.delete('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
+    await delay(1000);
+    return HttpResponse.json({ status: 204 });
+  }),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/close',
+    async ({ request }) => {
+      console.log(request);
+      await delay(1000);
+      return HttpResponse.json({ status: 204 });
+    },
+  ),
 ];

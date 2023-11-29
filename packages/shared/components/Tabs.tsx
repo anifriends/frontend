@@ -4,7 +4,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs as ChakraTabs,
-  useToken,
 } from '@chakra-ui/react';
 import { type ReactNode, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -21,7 +20,6 @@ export default function Tabs({ tabs }: TabsProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabId = Number(searchParams.get('tab'));
   const [tabIndex, setTabIndex] = useState(tabId);
-  const [space3] = useToken('space', [3]);
 
   const handleTabsChange = (index: number) => setTabIndex(index);
 
@@ -34,10 +32,9 @@ export default function Tabs({ tabs }: TabsProps) {
       variant="unstyled"
       onChange={handleTabsChange}
       index={tabIndex}
-      h={`calc(100% - ${space3})`}
       bgColor="gray.50"
     >
-      <TabList bgColor="white">
+      <TabList bgColor="white" pos="sticky" top={0} zIndex={10}>
         {tabs.map((tab, index) => (
           <Tab
             color="gray.400"

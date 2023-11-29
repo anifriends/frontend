@@ -8,11 +8,43 @@ import {
   HStack,
   Input,
   Switch,
+  useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { updateShelterInfo } from '@/apis/shelter';
+import { UpdateShelterInfo } from '@/types/apis/shetler';
+
+import useFetchShelterAccount from './_hooks/useFetchShelterAccount';
 
 export default function SettingsAccountPage() {
+  const toast = useToast();
   const [imgFile, setImgFile] = useState<string>('');
+  const { data } = useFetchShelterAccount();
+  const { mutate: updateShelter } = useMutation({
+    mutationFn: (data: UpdateShelterInfo) => updateShelterInfo(data),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '계정 정보가 수정되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
+
+  const { register, handleSubmit, reset, watch } = useForm<UpdateShelterInfo>();
+
+  useEffect(() => {
+    reset(data);
+    setImgFile(data.imageUrl);
+  }, [data]);
+
+  const onSubmit = handleSubmit((newData) => {
+    updateShelter(newData);
+  });
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -24,7 +56,7 @@ export default function SettingsAccountPage() {
 
   return (
     <Box px={4} pb={193}>
-      <form>
+      <form onSubmit={onSubmit}>
         <Center py={30}>
           <FormLabel htmlFor="fileInput" cursor="pointer" fontWeight={400} />
           <Avatar
@@ -39,7 +71,7 @@ export default function SettingsAccountPage() {
             type="file"
             accept="image/*"
             display="none"
-            onChange={uploadImgFile}
+            {...register('imageUrl', { onChange: uploadImgFile })}
           />
         </Center>
 
@@ -50,17 +82,21 @@ export default function SettingsAccountPage() {
             bgColor="gray.100"
             color="gray.500"
             _hover={{ border: 'none' }}
+            value={data.email}
           />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 이름</FormLabel>
-          <Input placeholder="이름을 입력하세요" />
+          <Input placeholder="이름을 입력하세요" {...register('name')} />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 주소</FormLabel>
-          <Input placeholder="보호소 주소를 입력해주세요" />
+          <Input
+            placeholder="보호소 주소를 입력해주세요"
+            {...register('address')}
+          />
         </FormControl>
 
         <FormControl mb={5} isRequired>
@@ -78,20 +114,35 @@ export default function SettingsAccountPage() {
               >
                 상세주소 공개
               </FormLabel>
-              <Switch colorScheme="orange" />
+              <Switch
+                colorScheme="orange"
+                isChecked={watch('isOpenedAddress')}
+                {...register('isOpenedAddress')}
+              />
             </FormControl>
           </HStack>
-          <Input placeholder="보호소 상세 주소를 입력해주세요" />
+          <Input
+            placeholder="보호소 상세 주소를 입력해주세요"
+            {...register('addressDetail')}
+          />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 전화번호</FormLabel>
-          <Input type="tel" placeholder="전화번호를 입력하세요" />
+          <Input
+            type="tel"
+            placeholder="전화번호를 입력하세요"
+            {...register('phoneNumber')}
+          />
         </FormControl>
 
         <FormControl mb={5} isRequired>
           <FormLabel fontWeight={400}>보호소 임시 전화번호</FormLabel>
-          <Input type="tel" placeholder="전화번호를 입력하세요" />
+          <Input
+            type="tel"
+            placeholder="전화번호를 입력하세요"
+            {...register('sparePhoneNumber')}
+          />
         </FormControl>
         <Center>
           <Button
@@ -102,6 +153,8 @@ export default function SettingsAccountPage() {
             bottom={21}
             bgColor="orange.400"
             color="white"
+            _active={{ bg: undefined }}
+            _hover={{ bg: undefined }}
           >
             수정완료
           </Button>

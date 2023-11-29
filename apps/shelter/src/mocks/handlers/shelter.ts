@@ -22,7 +22,7 @@ export const handlers = [
         shelterId: 1,
         shelterEmail: 'Shelter1234@gmail.com',
         shelterName: '양천구 보호소',
-        imageUrl: null,
+        shelterImageUrl: 'https://source.unsplash.com/random/?animal',
         shelterAddress: '서울특별시 양천구',
         shelterAddressDetail: '서울특별시 양천구 신월동 동자빌딩',
         shelterPhoneNumber: '010-1234-5678',
@@ -48,5 +48,9 @@ export const handlers = [
       },
       { status: 200 },
     );
+  }),
+  http.patch('/shelters/me', async () => {
+    await delay(200);
+    return new HttpResponse(null, { status: 204 });
   }),
 ];

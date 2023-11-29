@@ -8,6 +8,8 @@ import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecrui
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';
 import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
+import RecruitSkeletonList from './_components/RecruitSkeletonList';
+
 function Recruitments() {
   const navigate = useNavigate();
 
@@ -46,14 +48,14 @@ function Recruitments() {
           onClickItem={goVolunteersDetail}
         />
       ))}
-      <div ref={ref} />
+      {isFetchingNextPage ? <RecruitSkeletonList /> : <div ref={ref} />}
     </Box>
   );
 }
 
 export default function VolunteersPage() {
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <Suspense fallback={<RecruitSkeletonList />}>
       <Recruitments />
     </Suspense>
   );

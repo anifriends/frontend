@@ -1,6 +1,6 @@
 import axiosInstance from '../axiosInstance';
 
-type RecruitmentDetailResponse = {
+export type RecruitmentDetailResponse = {
   recruitmentTitle: string;
   recruitmentApplicantCount: number;
   recruitmentCapacity: number;
@@ -12,6 +12,7 @@ type RecruitmentDetailResponse = {
   recruitmentCreatedAt: string;
   recruitmentUpdatedAt: string;
   recruitmentImageUrls: string[];
+  shelterId: number;
 };
 
 export const getRecruitmentDetail = (recruitmentId: number) =>

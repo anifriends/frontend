@@ -20,7 +20,7 @@ export const password = z.string().min(1, '비밀번호 정보는 필수입니�
 export const passwordConfirm = z
   .string()
   .min(1, '비밀번호 확인 정보는 필수입니다');
-export const oldPassword = z.string().min(1, '기본 비밀번호 정보는 필수입니다');
+export const oldPassword = z.string().min(1, '기존 비밀번호 정보는 필수입니다');
 export const newPassword = z.string().min(1, '변경 비밀번호 정보는 필수입니다');
 // TODO 나중에 추가 예정
 //

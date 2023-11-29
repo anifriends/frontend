@@ -15,7 +15,7 @@ export default function ApprovedCountBox({
       as={Box}
       alignItems="center"
       pos="fixed"
-      bottom={50}
+      bottom={5}
       right={6}
       rightIcon={<CkCheck />}
       bgColor="orange.400"

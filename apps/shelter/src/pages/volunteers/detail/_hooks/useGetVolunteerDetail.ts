@@ -1,56 +1,59 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRecruitmentDetail } from 'shared/apis/common/Recruitments';
 import {
-  createFormattedTime,
-  createWeekDayLocalString,
-} from 'shared/utils/date';
+  getRecruitmentDetail,
+  RecruitmentDetailResponse,
+} from 'shared/apis/common/Recruitments';
 
-const useGetVolunteerDetail = (recruitmentId: number) => {
-  return useQuery({
-    queryKey: ['recruitment', recruitmentId],
-    queryFn: async () => (await getRecruitmentDetail(recruitmentId)).data,
-    select: (data) => {
-      const startDate = new Date(data.recruitmentStartTime);
-      const endDate = new Date(data.recruitmentEndTime);
-      const deadLine = new Date(data.recruitmentDeadline);
+const createRecruitmentDetail = (recruitment: RecruitmentDetailResponse) => {
+  const {
+    recruitmentTitle: title,
+    recruitmentContent: content,
+    recruitmentApplicantCount: applicant,
+    recruitmentCapacity: capacity,
+    recruitmentStartTime: startTime,
+    recruitmentEndTime: endTime,
+    recruitmentDeadline: deadline,
+    recruitmentCreatedAt: createdAt,
+    recruitmentUpdatedAt: updatedAt,
+    recruitmentImageUrls: imageUrls,
+    recruitmentIsClosed: isClosed,
+  } = recruitment;
 
-      return {
-        imageUrls: data.recruitmentImageUrls,
-        title: data.recruitmentTitle,
-        content: data.recruitmentContent,
-        applicant: data.recruitmentApplicantCount,
-        capacity: data.recruitmentCapacity,
-        volunteerDay: `${createFormattedTime(
-          startDate,
-        )}(${createWeekDayLocalString(startDate)})`,
-        recruitmentDeadline: `${createFormattedTime(
-          deadLine,
-        )}(${createWeekDayLocalString(deadLine)}) ${createFormattedTime(
-          deadLine,
-          'hh:mm',
-        )}`,
-        volunteerStartTime: createFormattedTime(startDate, 'hh:mm'),
-        volunteerEndTime: createFormattedTime(endDate, 'hh:mm'),
-        recruitmentCreatedAt: createFormattedTime(
-          new Date(data.recruitmentCreatedAt),
-        ),
-        recruitmentIsClosed: data.recruitmentIsClosed,
-      };
+  return {
+    title,
+    content,
+    applicant,
+    capacity,
+    startTime,
+    endTime,
+    deadline,
+    createdAt,
+    updatedAt,
+    imageUrls,
+    isClosed,
+  };
+};
+
+const useGetVolunteerDetail = (recruitmentId: number) =>
+  useQuery({
+    queryKey: ['recruitment', 'detail', recruitmentId],
+    queryFn: async () => {
+      const response = (await getRecruitmentDetail(recruitmentId)).data;
+      return createRecruitmentDetail(response);
     },
     initialData: {
-      recruitmentTitle: '',
-      recruitmentApplicantCount: 0,
-      recruitmentCapacity: 0,
-      recruitmentContent: '',
-      recruitmentStartTime: '',
-      recruitmentEndTime: '',
-      recruitmentIsClosed: false,
-      recruitmentDeadline: '',
-      recruitmentCreatedAt: '',
-      recruitmentUpdatedAt: '',
-      recruitmentImageUrls: [],
+      title: '',
+      content: '',
+      applicant: 0,
+      capacity: 0,
+      startTime: '',
+      endTime: '',
+      deadline: '',
+      createdAt: '',
+      updatedAt: '',
+      imageUrls: [],
+      isClosed: false,
     },
   });
-};
 
 export default useGetVolunteerDetail;

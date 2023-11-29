@@ -10,7 +10,7 @@ import {
   ModalProps,
 } from '@chakra-ui/react';
 
-type AlertModalProps = {
+export type AlertModalProps = {
   modalTitle: string;
   modalContent: string;
   btnTitle: string;
