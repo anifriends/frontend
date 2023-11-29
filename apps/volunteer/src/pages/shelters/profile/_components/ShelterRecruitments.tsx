@@ -53,7 +53,7 @@ function ShelterRecruitmentItem({
 }
 
 export default function ShelterRecruitments() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const shelterId = Number(id);
 
   const {

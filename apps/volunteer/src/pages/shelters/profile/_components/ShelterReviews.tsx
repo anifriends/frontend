@@ -11,7 +11,7 @@ import { createFormattedTime } from 'shared/utils/date';
 import { getVolunteerReviewsOnShelter } from '@/apis/review';
 
 function ShelterReviews() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const shelterId = Number(id);
 
   const {
