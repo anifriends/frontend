@@ -54,7 +54,7 @@ export default function SheltersReviewsUpdatePage() {
     },
   });
 
-  const { data: reviewDetail, isSuccess } = useQuery({
+  const { data: reviewDetail } = useQuery({
     queryKey: ['review', 'detail', Number(reviewId)],
     queryFn: async () => {
       return (await getVolunteerReviewDetail(Number(reviewId))).data;
