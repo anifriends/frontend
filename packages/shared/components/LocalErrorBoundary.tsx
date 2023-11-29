@@ -23,7 +23,7 @@ const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   };
 
   return (
-    <VStack justifyContent="center" alignItems="center" h="full" spacing="6">
+    <VStack justify="center" align="center" h="full" spacing="6">
       <Heading as="h4" fontSize="xl">
         {title}
       </Heading>

@@ -18,12 +18,10 @@ export default function Layout({ appType }: LayoutProps) {
   const { isPending } = useAccessTokenMutation();
 
   useEffect(() => {
-    if (pathname === '/') {
-      if (appType === 'VOLUNTEER_APP') {
-        navigate('/volunteers');
-      } else {
-        navigate('/signin');
-      }
+    if (appType === 'VOLUNTEER_APP' && pathname === '/') {
+      navigate('/volunteers');
+    } else if (appType === 'SHELTER_APP') {
+      navigate('/signin');
     }
 
     //TODO 액세스 토큰 갱신 api 정상화 되면 연결
