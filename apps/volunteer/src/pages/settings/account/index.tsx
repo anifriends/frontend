@@ -19,13 +19,12 @@ import {
   UpdateUserInfoParams,
   updateVolunteerUserInfo,
 } from '@/apis/volunteer';
-
-import useFetchAccount from './_hooks/useFetchAccount';
+import useFetchMyVolunteer from '@/pages/my/_hooks/useFetchMyVolunteer';
 
 export default function SettingsAccountPage() {
   const toast = useToast();
   const [imgFile, setImgFile] = useState<string>('');
-  const { data } = useFetchAccount();
+  const { data } = useFetchMyVolunteer();
   const { mutate: updateAccount } = useMutation({
     mutationFn: (data: UpdateUserInfoParams) => updateVolunteerUserInfo(data),
     onSuccess: () => {
@@ -42,13 +41,13 @@ export default function SettingsAccountPage() {
 
   useEffect(() => {
     reset({
-      name: data.name,
-      imageUrl: data.imageUrl,
-      birthDate: data.birthDate,
-      phoneNumber: data.phoneNumber,
-      gender: data.gender,
+      name: data.volunteerName,
+      imageUrl: data.volunteerImageUrl,
+      birthDate: data.volunteerBirthDate,
+      phoneNumber: data.volunteerPhoneNumber,
+      gender: data.volunteerGender,
     });
-    setImgFile(data.imageUrl);
+    setImgFile(data.volunteerImageUrl);
   }, [data, reset]);
 
   const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,8 +60,8 @@ export default function SettingsAccountPage() {
 
   const onSubmit = handleSubmit((newData) => {
     updateAccount(newData);
-    // console.log(newData);
   });
+
   return (
     <Box px={4} pb={208}>
       <form onSubmit={onSubmit}>
@@ -90,7 +89,7 @@ export default function SettingsAccountPage() {
             bgColor="gray.100"
             color="gray.500"
             _hover={{ border: `none` }}
-            value={data.email}
+            value={data.volunteerEmail}
           />
         </FormControl>
         <FormControl mb={5} isRequired>
