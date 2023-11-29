@@ -50,8 +50,12 @@ class AxiosService {
     return this.axiosInstance.get<Response>(url, config);
   }
 
-  post<Response = unknown, Request = unknown>(url: string, data?: Request) {
-    return this.axiosInstance.post<Response>(url, data);
+  post<Response = unknown, Request = unknown>(
+    url: string,
+    data?: Request,
+    config?: AxiosRequestConfig<Request>,
+  ) {
+    return this.axiosInstance.post<Response>(url, data, config);
   }
 
   delete<Response = unknown, Request = unknown>(
