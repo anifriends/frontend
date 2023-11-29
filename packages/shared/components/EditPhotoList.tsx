@@ -1,83 +1,41 @@
-import type { UseToastOptions } from '@chakra-ui/react';
-import {
-  Box,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-import type { ChangeEvent, Dispatch, MouseEvent, SetStateAction } from 'react';
+import { Box, Flex, HStack, Image, Input, Text } from '@chakra-ui/react';
+import { type ChangeEvent } from 'react';
 
 import IoIosCamera from '../assets/icon_IoCamera.svg';
 import EditPhotoItem from './EditPhotoItem';
 
+export type Photo = {
+  id: string;
+  url: string;
+};
+
 type EditPhotoListProps = {
-  urls: string[];
-  setUrls: Dispatch<SetStateAction<string[]>>;
+  photos: Photo[];
+  uploadLimit?: number;
+  onUploadPhoto: (files: FileList | null) => void;
+  onDeletePhoto: (photoIndex: number) => void;
 };
 
 type UploadPhotoItemProps = {
-  urlsCount: number;
+  photoCount: number;
+  uploadLimit: number;
   onUploadPhoto: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function EditPhotoList({ urls, setUrls }: EditPhotoListProps) {
-  const toast = useToast();
-
-  const afterUploadToast = (
-    description: string,
-    status: UseToastOptions['status'],
-  ) => {
-    toast({
-      description,
-      position: 'top',
-      status,
-      duration: 1500,
-      isClosable: true,
-    });
+export default function EditPhotoList({
+  photos,
+  uploadLimit = 5,
+  onUploadPhoto,
+  onDeletePhoto,
+}: EditPhotoListProps) {
+  const handleDeletePhoto = (photoIndex: number) => {
+    onDeletePhoto(photoIndex);
   };
 
-  const deletePhoto = (event: MouseEvent<HTMLDivElement>) => {
-    const { id } = event.currentTarget;
-    const newUrls = urls.filter((url) => url !== id);
-
-    setUrls(newUrls);
-  };
-
-  const uploadPhoto = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (urls.length === 5) {
-      afterUploadToast('사진을 더이상 추가할 수 없습니다', 'error');
-
-      return;
-    }
-
-    const formData = new FormData();
-    const { files } = event.currentTarget;
-    const uploadPhotoCount = (files?.length ?? 0) + urls.length;
-
-    if (uploadPhotoCount > 5) {
-      afterUploadToast(`${5 - urls.length}개 더 등록이 가능합니다`, 'error');
-
-      return;
-    }
-
-    if (files) {
-      Array.from(files).forEach((file) => {
-        formData.append('images', file);
-      });
-    }
-
-    // 아래는 api 함수로 받아왔다는 이미지들을 url 형식들로 받아왔다는 가정하에 진행하는 로직입니다
-
-    if (files) {
-      const imageUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-      );
-
-      setUrls((prevUrls) => [...imageUrls, ...prevUrls]);
-    }
+  const handleUploadPhoto = async (event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    onUploadPhoto(files);
+    event.target.value = '';
   };
 
   return (
@@ -91,20 +49,27 @@ export default function EditPhotoList({ urls, setUrls }: EditPhotoListProps) {
         },
       }}
     >
-      <UploadPhotoItem onUploadPhoto={uploadPhoto} urlsCount={urls.length} />
-      {urls.map((url, index) => (
+      <UploadPhotoButton
+        photoCount={photos.length}
+        uploadLimit={uploadLimit}
+        onUploadPhoto={handleUploadPhoto}
+      />
+      {photos.map(({ id, url }, index) => (
         <EditPhotoItem
-          key={index}
-          photoId={url}
+          key={id}
           photoSrc={url}
-          onDeletePhoto={deletePhoto}
+          onDeletePhoto={() => handleDeletePhoto(index)}
         />
       ))}
     </HStack>
   );
 }
 
-function UploadPhotoItem({ urlsCount, onUploadPhoto }: UploadPhotoItemProps) {
+function UploadPhotoButton({
+  photoCount,
+  uploadLimit,
+  onUploadPhoto,
+}: UploadPhotoItemProps) {
   return (
     <Box as="label">
       <Input
@@ -127,11 +92,14 @@ function UploadPhotoItem({ urlsCount, onUploadPhoto }: UploadPhotoItemProps) {
         <Flex flexDir="column" color="gray.400" justify="center">
           <Image src={IoIosCamera} />
           <Text display="flex" justifyContent="space-evenly" fontSize="14px">
-            <Text as="span" color={urlsCount === 0 ? 'gray.400' : 'orange.400'}>
-              {urlsCount}
+            <Text
+              as="span"
+              color={photoCount === 0 ? 'gray.400' : 'orange.400'}
+            >
+              {photoCount}
             </Text>
             <Text as="span">/</Text>
-            <Text as="span">5</Text>
+            <Text as="span">{uploadLimit}</Text>
           </Text>
         </Flex>
       </Flex>

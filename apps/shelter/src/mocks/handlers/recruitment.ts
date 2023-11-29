@@ -41,7 +41,11 @@ export const handlers = [
           totalElements: 100,
           hasNext: true,
         },
-        recruitments: DUMMY_RECRUITMENT_LIST,
+        recruitments: Array.from({ length: 4 }, () => ({
+          ...DUMMY_RECRUITMENT,
+          recruitmentId: Math.random(),
+          shelterId: Math.random(),
+        })),
       },
       { status: 200 },
     );
@@ -60,4 +64,26 @@ export const handlers = [
       recruitmentCapacity: 15,
     });
   }),
+  http.post('/shelters/recruitments', async () => {
+    await delay(1000);
+    return HttpResponse.json({}, { status: 201 });
+  }),
+  http.patch('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
+    await delay(1000);
+    return HttpResponse.json({ status: 204 });
+  }),
+  http.delete('/shelters/recruitments/:recruitmentId', async ({ request }) => {
+    console.log(request);
+    await delay(1000);
+    return HttpResponse.json({ status: 204 });
+  }),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/close',
+    async ({ request }) => {
+      console.log(request);
+      await delay(1000);
+      return HttpResponse.json({ status: 204 });
+    },
+  ),
 ];

@@ -2,32 +2,32 @@ import { IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AlertModal from 'shared/components/AlertModal';
 import useIntersect from 'shared/hooks/useIntersection';
 
+import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';
+import { createRecruitmentItem } from '@/pages/volunteers/_utils/recruitment';
 
 import PlusIcon from './_components/PlusIcon';
-import RecruitItem from './_components/RecruitItem';
+import RecruitSkeletonList from './_components/RecruitSkeletonList';
+import VolunteerRecruitItem from './_components/VolunteerRecruitItem';
 
 function Recruitments() {
   const navigate = useNavigate();
+  const goWritePage = () => navigate('/volunteers/write');
 
-  const goToManageApplyPage = (postId: number) => {
-    navigate(`/manage/apply/${postId}`);
-  };
-  const goToManageAttendancePage = (postId: number) => {
-    navigate(`/manage/attendance/${postId}`);
-  };
-  const goToUpdatePage = (postId: number) => {
-    navigate(`/volunteers/write/${postId}`);
-  };
-
-  //TODO 삭제 버튼 눌렀을 때 기능 추가
-
-  //TODO recruit id 받아서 마감
-  const closeRecruit = () => {};
-
-  const goToWritePage = () => navigate('/volunteers/write');
+  const {
+    goVolunteersDetail,
+    goManageApplyPage,
+    goManageAttendancePage,
+    goUpdatePage,
+    confirmRecruitmentClose,
+    confirmRecruitmentDelete,
+    alertModalState,
+    isModalOpen,
+    onCloseModal,
+  } = useVolunteerRecruitItem();
 
   const {
     data: { pages },
@@ -36,7 +36,9 @@ function Recruitments() {
     fetchNextPage,
   } = useSuspenseInfiniteQuery(recruitmentQueryOptions.all());
 
-  const recruitments = pages.flatMap(({ data }) => data.recruitments);
+  const recruitments = pages
+    .flatMap(({ data }) => data.recruitments)
+    .map(createRecruitmentItem);
 
   const ref = useIntersect(async (entry, observer) => {
     observer.unobserve(entry.target);
@@ -48,20 +50,18 @@ function Recruitments() {
   return (
     <>
       {recruitments.map((recruitment) => (
-        <RecruitItem
-          key={recruitment.recruitmentId}
-          {...recruitment}
-          onClickManageApplyButton={() =>
-            goToManageApplyPage(recruitment.recruitmentId)
-          }
-          onClickManageAttendanceButton={() =>
-            goToManageAttendancePage(recruitment.recruitmentId)
-          }
-          onClickCloseRecruitButton={closeRecruit}
-          onUpdate={() => goToUpdatePage(recruitment.recruitmentId)}
+        <VolunteerRecruitItem
+          key={recruitment.id}
+          recruitment={recruitment}
+          onClickItem={goVolunteersDetail}
+          onUpdateRecruitment={goUpdatePage}
+          onDeleteRecruitment={confirmRecruitmentDelete}
+          onManageApplies={goManageApplyPage}
+          onManageAttendances={goManageAttendancePage}
+          onCloseRecruitment={confirmRecruitmentClose}
         />
       ))}
-      <div ref={ref} />
+      {isFetchingNextPage ? <RecruitSkeletonList /> : <div ref={ref} />}
       <IconButton
         size="lg"
         aria-label="Plus Button"
@@ -72,8 +72,13 @@ function Recruitments() {
         borderRadius="full"
         bgColor="orange.400"
         color="white"
-        onClick={goToWritePage}
+        onClick={goWritePage}
         boxShadow="lg"
+      />
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={onCloseModal}
+        {...alertModalState}
       />
     </>
   );
@@ -81,7 +86,7 @@ function Recruitments() {
 
 export default function VolunteersPage() {
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <Suspense fallback={<RecruitSkeletonList />}>
       <Recruitments />
     </Suspense>
   );

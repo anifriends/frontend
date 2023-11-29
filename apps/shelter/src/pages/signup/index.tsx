@@ -26,6 +26,18 @@ import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
 import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
+import {
+  address,
+  addressDetail,
+  email,
+  isEmailDuplicated,
+  isOpenedAddress,
+  name,
+  password,
+  passwordConfirm,
+  phoneNumber,
+  sparePhoneNumber,
+} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { checkDuplicatedShelterEmail, signupShelter } from '@/apis/auth';
@@ -36,43 +48,20 @@ type Schema = z.infer<typeof schema>;
 
 const schema = z
   .object({
-    email: z
-      .string()
-      .min(1, '이메일은 필수 정보입니다')
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        '이메일 형식에 맞게 적어주세요',
-      ),
-    isEmailDuplicated: z.boolean(),
-    password: z.string().min(1, '비밀번호는 필수 정보입니다'),
-    // TODO 나중에 추가 예정
-    //
-    // .regex(
-    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    //   '비밀번호는 필수 정보입니다(8자 이상)',
-    // ),
-    passwordConfirm: z.string().min(1, '비밀번호 확인 정보는 필수입니다'),
-    name: z.string().min(1, '보호소 이름 정보는 필수입니다'),
-    address: z.string().min(1, '보호소 주소 정보는 필수입니다'),
-    addressDetail: z.string().min(1, '보호소 상세주소 정보는 필수입니다'),
-    isOpenedAddress: z.boolean(),
-    phoneNumber: z
-      .string()
-      .min(1, '보호소 전화번호 정보는 필수입니다')
-      .refine(
-        (val) => !Number.isNaN(Number(val)),
-        '전화번호 형식은 숫자입니다',
-      ),
-    sparePhoneNumber: z
-      .string()
-      .refine(
-        (val) => !Number.isNaN(Number(val)) || val === '',
-        '전화번호 형식은 숫자입니다',
-      ),
+    email,
+    isEmailDuplicated,
+    password,
+    passwordConfirm,
+    name,
+    address,
+    addressDetail,
+    isOpenedAddress,
+    phoneNumber,
+    sparePhoneNumber,
   })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: '비밀번호가 일치하지 않습니다',
     path: ['passwordConfirm'],
+    message: '비밀번호가 일치하지 않습니다',
   });
 
 export default function SignupPage() {

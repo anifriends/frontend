@@ -22,7 +22,9 @@ import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import useToggle from 'shared/hooks/useToggle';
+import useAuthStore from 'shared/store/authStore';
 import { SigninRequestData } from 'shared/types/apis/auth';
+import { email, password } from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { signinShelter } from '@/apis/auth';
@@ -31,17 +33,15 @@ import PATH from '@/constants/path';
 type Schema = z.infer<typeof schema>;
 
 const schema = z.object({
-  email: z
-    .string()
-    .min(1, '이메일이 입려되지 않았습니다')
-    .email('유효하지 않은 이메일입니다'),
-  password: z.string().min(1, '비밀번호가 입력되지 않았습니다'),
+  email,
+  password,
 });
 
 export default function SigninPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const [isShow, toggleInputShow] = useToggle();
+  const { setUser } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -52,10 +52,12 @@ export default function SigninPage() {
   });
   const { mutate } = useMutation({
     mutationFn: (data: SigninRequestData) => signinShelter(data),
-    onSuccess: () => {
+    onSuccess: ({ data: { userId, accessToken } }) => {
+      setUser({ userId, accessToken });
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
+      setUser(null);
       toast({
         position: 'top',
         description: error.response?.data.message,

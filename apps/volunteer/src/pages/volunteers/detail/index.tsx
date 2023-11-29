@@ -17,38 +17,20 @@ import LabelText from 'shared/components/LabelText';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import { getDDay } from 'shared/utils/date';
 
-const DUMMY_DATA = {
-  imageUrls: [
-    'https://source.unsplash.com/random/?animal',
-    'https://source.unsplash.com/random/300X500',
-  ],
-  title: '강아지 봉사자를 모집합니다',
-  content: '강아지 목욕봉사입니다.',
-  applicant: 5,
-  capacity: 10,
-  volunteerDay: '2023.12.24',
-  recruitmentDeadline: '2023.12.03',
-  volunteerStartTime: '14:00',
-  volunteerEndTime: '16:00',
-  recruitmentCreatedAt: '2023.11.25',
-  recruitmentIsClosed: true,
-};
-
-const DUMMY_SHELTERINFO = {
-  name: '양천구 보호소',
-  profileImage: 'https://source.unsplash.com/random/?animal',
-  address: '경기도 남양주시',
-  email: 'asdf@naver.com',
-};
+import useFetchVolunteerDetail from './_hooks/useFetchVolunteerDetail';
 
 export default function VolunteersDetailPage() {
   const navigate = useNavigate();
-  const { id: recruitmentId } = useParams();
+  const { id } = useParams();
+  const recruitmentId = Number(id);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [label, setLabel] = useState<LabelProps>({
     labelTitle: '모집중',
     type: 'GREEN',
   });
+
+  const { data } = useFetchVolunteerDetail(3);
+
   const {
     imageUrls,
     title,
@@ -61,9 +43,10 @@ export default function VolunteersDetailPage() {
     volunteerEndTime,
     recruitmentCreatedAt,
     recruitmentIsClosed,
-  } = DUMMY_DATA;
-
-  const { name, profileImage, address, email } = DUMMY_SHELTERINFO;
+    shelterInfo,
+  } = data;
+  const { shelterName, shelterImageUrl, shelterAddress, shelterEmail } =
+    shelterInfo;
 
   useEffect(() => {
     if (recruitmentIsClosed) {
@@ -78,6 +61,7 @@ export default function VolunteersDetailPage() {
 
   const onApplyRecruitment = () => {
     onClose();
+    //TODO 봉사신청 API
     //TODO 봉사신청완료 toast
   };
 
@@ -115,9 +99,9 @@ export default function VolunteersDetailPage() {
       </Text>
       <Divider />
       <ProfileInfo
-        infoImage={profileImage}
-        infoTitle={name}
-        infoTexts={[email, address]}
+        infoImage={shelterImageUrl}
+        infoTitle={shelterName}
+        infoTexts={[shelterEmail, shelterAddress]}
       />
       <Divider />
 

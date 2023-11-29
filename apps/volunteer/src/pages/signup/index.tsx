@@ -26,6 +26,16 @@ import RadioGroup from 'shared/components/RadioGroup';
 import useToggle from 'shared/hooks/useToggle';
 import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
 import { PersonGenderEng, PersonGenderKor } from 'shared/types/gender';
+import {
+  birthDate,
+  email,
+  gender,
+  isEmailDuplicated,
+  name,
+  password,
+  passwordConfirm,
+  phoneNumber,
+} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';
@@ -36,46 +46,18 @@ type Schema = z.infer<typeof schema>;
 
 const schema = z
   .object({
-    email: z
-      .string()
-      .min(1, '이메일은 필수 정보입니다')
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        '이메일 형식에 맞게 적어주세요',
-      ),
-    isEmailDuplicated: z.boolean(),
-    password: z.string(),
-    // TODO 나중에 추가 예정
-    //
-    // .regex(
-    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    //   '비밀번호는 필수 정보입니다(8자 이상)',
-    // ),
-    passwordConfirm: z.string().min(1, '비밀번호 확인 정보는 필수입니다'),
-    name: z.string().min(1, '이름 정보는 필수입니다'),
-    birthDate: z
-      .string()
-      .min(1, '생년월일 정보는 필수입니다')
-      .refine(
-        (val) => new Date(val) < new Date(),
-        `${new Date()
-          .toLocaleDateString('ko-KR')
-          .split('')
-          .filter((v) => v !== ' ')
-          .join('')} 이전으로 선택해주세요`,
-      ),
-    phoneNumber: z
-      .string()
-      .min(1, '전화번호 정보는 필수입니다')
-      .refine(
-        (val) => !Number.isNaN(Number(val)),
-        '전화번호 형식은 숫자입니다',
-      ),
-    gender: z.enum(['FEMALE', 'MALE']),
+    email,
+    isEmailDuplicated,
+    password,
+    passwordConfirm,
+    name,
+    birthDate,
+    phoneNumber,
+    gender,
   })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: '비밀번호가 일치하지 않습니다',
     path: ['passwordConfirm'],
+    message: '비밀번호가 일치하지 않습니다',
   });
 
 export default function SignupPage() {

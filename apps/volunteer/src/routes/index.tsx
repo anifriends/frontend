@@ -3,6 +3,7 @@ import APP_TYPE from 'shared/constants/appType';
 import PAGE_TYPE from 'shared/constants/pageType';
 import Layout from 'shared/layout';
 
+import WithLogin from '@/components/WithLogin';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';
@@ -82,21 +83,41 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
       {
         id: PAGE_TYPE.MYPAGE,
         path: PATH.MYPAGE.INDEX,
-        element: <MyPage />,
+        element: (
+          <WithLogin>
+            <MyPage />
+          </WithLogin>
+        ),
       },
       {
         path: PATH.SETTINGS.INDEX,
         children: [
-          { id: PAGE_TYPE.SETTINGS, index: true, element: <SettingsPage /> },
+          {
+            id: PAGE_TYPE.SETTINGS,
+            index: true,
+            element: (
+              <WithLogin>
+                <SettingsPage />
+              </WithLogin>
+            ),
+          },
           {
             id: PAGE_TYPE.SETTINGS_ACCOUNT,
             path: PATH.SETTINGS.ACCOUNT,
-            element: <SettingsAccountPage />,
+            element: (
+              <WithLogin>
+                <SettingsAccountPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.SETTINGS_PASSWORD,
             path: PATH.SETTINGS.PASSWORD,
-            element: <SettingsPasswordPage />,
+            element: (
+              <WithLogin>
+                <SettingsPasswordPage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -111,12 +132,20 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.SHELTERS_REVIEWS_WRITE,
             path: PATH.SHELTERS.REVIEWS_WRITE,
-            element: <SheltersReviewsWritePage />,
+            element: (
+              <WithLogin>
+                <SheltersReviewsWritePage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.SHELTERS_REVIEWS_UPDATE,
             path: PATH.SHELTERS.REVIEWS_UPDATE,
-            element: <SheltersReviewsUpdatePage />,
+            element: (
+              <WithLogin>
+                <SheltersReviewsUpdatePage />
+              </WithLogin>
+            ),
           },
         ],
       },

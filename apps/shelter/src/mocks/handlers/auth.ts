@@ -79,4 +79,15 @@ export const handlers = [
     await delay(200);
     return HttpResponse.json({}, { status: 200 });
   }),
+  http.post('/auth/refresh', async () => {
+    await delay(500);
+    return HttpResponse.json(
+      {
+        accessToken: 'access token',
+        userId: 1,
+        role: 'role',
+      },
+      { status: 200 },
+    );
+  }),
 ];

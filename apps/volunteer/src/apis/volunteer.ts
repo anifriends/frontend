@@ -1,15 +1,15 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
-type MyInfoResponse = {
-  volunteerId: string;
+export type MyInfoResponse = {
+  volunteerId: number;
   volunteerEmail: string;
   volunteerName: string;
   volunteerBirthDate: string;
   volunteerPhoneNumber: string;
-  volunteerTemperture: number;
-  volunteerCount: number;
+  volunteerTemperature: number;
+  completedVolunteerCount: number;
   volunteerImageUrl: string;
-  volunteerGender: 'FEMAIL' | 'MALE';
+  volunteerGender: 'FEMALE' | 'MALE';
 };
 
 export const getMyVolunteerInfo = () =>
@@ -29,10 +29,10 @@ export const updateVolunteerPassword = (
   );
 };
 
-type UpdateUserInfoParams = {
+export type UpdateUserInfoParams = {
   name: string;
-  gender: string;
-  birthData: string;
+  gender: 'FEMALE' | 'MALE';
+  birthDate: string;
   phoneNumber: string;
   imageUrl: string;
 };

@@ -19,6 +19,11 @@ import IoEyeSharp from 'shared/assets/IoEyeSharp';
 import LogoImageBox from 'shared/components/LogoImageBox';
 import useToggle from 'shared/hooks/useToggle';
 import { ChangePasswordRequestData } from 'shared/types/apis/auth';
+import {
+  newPassword,
+  newPasswordConfirm,
+  oldPassword,
+} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { changeVolunteerPassword } from '@/apis/auth';
@@ -27,17 +32,9 @@ type Schema = z.infer<typeof schema>;
 
 const schema = z
   .object({
-    oldPassword: z.string().min(1, '기본 비밀번호 정보는 필수입니다'),
-    newPassword: z.string().min(1, '변경 비밀번호 정보는 필수입니다'),
-    // TODO
-    //
-    // .regex(
-    //   /^(?=.*[!@#$%^&*()\-_=+[\]\\|{};:'",<.>/?]+)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    //   '비밀번호는 필수 정보입니다(8자 이상)',
-    // ),
-    newPasswordConfirm: z
-      .string()
-      .min(1, '변경 비밀번호 확인 정보는 필수입니다'),
+    oldPassword,
+    newPassword,
+    newPasswordConfirm,
   })
   .refine(
     ({ newPassword, newPasswordConfirm }) => newPassword === newPasswordConfirm,

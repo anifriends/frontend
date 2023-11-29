@@ -37,8 +37,8 @@ export const deleteVolunteerReview = (reviewId: string) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 type ReviewOnShelterParams = {
-  pageNumber: number;
-  pageSize: number;
+  page: number;
+  size: number;
 };
 
 type Review = {
@@ -46,7 +46,7 @@ type Review = {
   volunteerEmail: string;
   volunteerTemperature: number;
   reviewCreatedAt: string;
-  reviewComtent: string;
+  reviewContent: string;
   reviewImageUrls: string[];
 };
 
@@ -62,15 +62,15 @@ type ReviewOnShelterResponse = {
 
 export const getVolunteerReviewsOnShelter = (
   shelterId: number,
-  pageNumber: number,
-  pageSize: number,
+  page: number,
+  size: number,
 ) =>
   axiosInstance.get<ReviewOnShelterResponse, ReviewOnShelterParams>(
     `/shelters/${shelterId}/reviews`,
     {
       params: {
-        pageNumber,
-        pageSize,
+        page,
+        size,
       },
     },
   );
