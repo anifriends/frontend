@@ -79,7 +79,7 @@ type MyReview = {
   reviewImageUrls: string[];
 };
 
-type MyReviewsResponse = {
+export type MyReviewsResponse = {
   pageInfo: PageInfo;
   reviews: MyReview[];
 };
