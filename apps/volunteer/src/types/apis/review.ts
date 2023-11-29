@@ -32,7 +32,7 @@ export type VolunteerReview = {
   volunteerEmail: string;
   volunteerTemperature: number;
   reviewCreatedAt: string;
-  reviewComtent: string;
+  reviewContent: string;
   reviewImageUrls: string[];
 };
 
