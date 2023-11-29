@@ -87,7 +87,9 @@ export default function SheltersReviewsUpdatePage() {
 
     const request: ReviewUpdateRequest = {
       content,
-      imageUrls: [],
+      imageUrls: photos
+        .filter(({ url }) => url !== 'upload-failed')
+        .map(({ url }) => url),
     };
 
     mutate({ reviewId: Number(reviewId), request });

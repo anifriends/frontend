@@ -82,7 +82,9 @@ export default function SheltersReviewsWritePage() {
     const request: ReviewCreateRequest = {
       applicantId: Number(applicantId),
       content,
-      imageUrls: [],
+      imageUrls: photos
+        .filter(({ url }) => url !== 'upload-failed')
+        .map(({ url }) => url),
     };
 
     mutate(request);
