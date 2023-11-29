@@ -1,6 +1,7 @@
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InfoSubtext from 'shared/components/InfoSubtext';
 import ReviewItem from 'shared/components/ReviewItem';
 import useIntersect from 'shared/hooks/useIntersection';
@@ -9,6 +10,8 @@ import { createFormattedTime } from 'shared/utils/date';
 import { getMyReviewsAPI } from '@/apis/volunteer';
 
 function MyReviews() {
+  const navigate = useNavigate();
+
   const {
     data: { pages },
     hasNextPage,
@@ -39,12 +42,16 @@ function MyReviews() {
       </Heading>
       <VStack spacing={2}>
         {reviews.map((review) => {
+          const { reviewId, shelterId } = review;
           return (
             <ReviewItem
-              key={review.reviewId}
+              key={reviewId}
               showMenuButton={true}
               content={review.reviewContent}
               images={review.reviewImageUrls}
+              onUpdate={() =>
+                navigate(`/shelters/${shelterId}/reviews/write/${reviewId}`)
+              }
             >
               <Box>
                 <Text fontWeight={600} mb={2}>
