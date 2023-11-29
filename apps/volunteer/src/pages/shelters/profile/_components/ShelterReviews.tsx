@@ -22,7 +22,12 @@ function ShelterReviews() {
   } = useSuspenseInfiniteQuery({
     queryKey: ['shelter', shelterId, 'reviews'],
     queryFn: async ({ pageParam }) =>
-      (await getVolunteerReviewsOnShelter(shelterId, pageParam, 10)).data,
+      (
+        await getVolunteerReviewsOnShelter(shelterId, {
+          pageNumber: pageParam,
+          pageSize: 10,
+        })
+      ).data,
     initialPageParam: 1,
     getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
       pageInfo.hasNext ? lastPageParam + 1 : null,

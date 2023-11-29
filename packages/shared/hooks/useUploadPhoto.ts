@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { uploadImage } from '../apis/common/Image';
 import { Photo } from '../components/EditPhotoList';
 
+type ImageFile = { id: string; image: File };
+
 const toastOption = (
   description: string,
   status: UseToastOptions['status'],
@@ -21,34 +23,37 @@ const getRandomId = (): string => {
   return String(Math.random()).slice(2);
 };
 
-const getLocalImageUrls = (formData: FormData): Promise<Photo[]> => {
-  const getLocalImageUrl = Array.from(formData).map(([key, file]) => {
+const getLocalImageUrls = (imageFiles: ImageFile[]): Promise<Photo[]> => {
+  const getLocalImageUrl = imageFiles.map(({ id, image }) => {
     const reader = new FileReader();
 
     return new Promise<Photo>((resolve) => {
       reader.onloadend = () => {
         const imageFileUrl = String(reader.result);
-        resolve({ id: key, url: imageFileUrl });
+        resolve({ id, url: imageFileUrl });
       };
-      reader.readAsDataURL(file as File);
+      reader.readAsDataURL(image as File);
     });
   });
 
   return Promise.all(getLocalImageUrl);
 };
 
-const getServerImageUrls = (formData: FormData) => {
-  const uploadPromises = Array.from(formData).map(async ([key, file]) => {
+const getServerImageUrls = (imageFiles: ImageFile[]) => {
+  const uploadPromises = imageFiles.map(async ({ id, image }) => {
     try {
-      const { data } = await uploadImage([file as File]);
+      const formData = new FormData();
+      formData.append('images', image);
+
+      const { data } = await uploadImage(formData);
       const [imageUrl] = data.imageUrls;
 
       return new Promise<Photo>((resolve) => {
-        resolve({ id: key, url: imageUrl });
+        resolve({ id, url: imageUrl });
       });
     } catch (error) {
       return new Promise<Photo>((resolve) => {
-        resolve({ id: key, url: 'upload-failed' });
+        resolve({ id, url: 'upload-failed' });
       });
     }
   });
@@ -66,7 +71,7 @@ export const useUploadPhoto = (uploadLimit: number) => {
       return;
     }
 
-    if (photos.length + files.length >= uploadLimit) {
+    if (photos.length + files.length > uploadLimit) {
       toast(
         toastOption(
           `이미지는 최대 ${uploadLimit}개 까지 추가할 수 있어요.`,
@@ -77,14 +82,16 @@ export const useUploadPhoto = (uploadLimit: number) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append(getRandomId(), files[0]);
+    const imageFiles: ImageFile[] = Array.from(files).map((file) => ({
+      id: getRandomId(),
+      image: file,
+    }));
 
-    getLocalImageUrls(formData).then((newPhotos) => {
+    getLocalImageUrls(imageFiles).then((newPhotos) => {
       setPhotos((prevPhotos) => [...newPhotos, ...prevPhotos]);
     });
 
-    getServerImageUrls(formData).then((newPhotos) => {
+    getServerImageUrls(imageFiles).then((newPhotos) => {
       newPhotos.forEach((newPhoto) => {
         setPhotos((prevPhotos) =>
           prevPhotos.map((photo) =>

@@ -1,24 +1,26 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
+export type SimpleShelterProfile = {
+  shelterName: string;
+  shelterImageUrl: string;
+  shelterAddress: string;
+  shelterEmail: string;
+};
+
+export type ShelterProfile = {
+  shelterId: number;
+  shelterAddressDetail: string;
+  shelterPhoneNumber: string;
+  shelterSparePhoneNumber: string;
+} & SimpleShelterProfile;
+
 export const getSimpleShelterProfile = (shelterId: number) =>
-  axiosInstance.get<{
-    shelterName: string;
-    shelterImageUrl: string;
-    shelterAddress: string;
-    shelterEmail: string;
-  }>(`/shelters/${shelterId}/profile/simple`);
+  axiosInstance.get<SimpleShelterProfile>(
+    `/shelters/${shelterId}/profile/simple`,
+  );
 
 export const getShelterProfileDetail = (shelterId: number) =>
-  axiosInstance.get<{
-    shelterId: number;
-    shelterName: string;
-    shelterEmail: string;
-    shelterImageUrl: string;
-    shelterAddress: string;
-    shelterAddressDetail: string;
-    shelterPhoneNumber: string;
-    shelterSparePhoneNumber: string;
-  }>(`/shelters/${shelterId}/profile`);
+  axiosInstance.get<ShelterProfile>(`/shelters/${shelterId}/profile`);
 
 export type RecruitmentOfShleter = {
   recruitmentId: number;
