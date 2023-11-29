@@ -9,7 +9,7 @@ import {
 } from '@/types/apis/review';
 
 export const getVolunteerReviewDetail = (reviewId: number) =>
-  axiosInstance.get<ReviewDetailResponse>(`/reviews/${reviewId}`);
+  axiosInstance.get<ReviewDetailResponse>(`/volunteers/reviews/${reviewId}`);
 
 export const createVolunteerReview = (reqeust: ReviewCreateRequest) =>
   axiosInstance.post<unknown, ReviewCreateRequest>(
