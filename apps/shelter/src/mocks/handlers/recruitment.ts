@@ -11,6 +11,8 @@ const DUMMY_RECRUITMENT = {
   recruitmentCapacity: 15,
 };
 
+// eslint-disable-next-line
+// @ts-ignore
 const DUMMY_RECRUITMENT_LIST = Array.from(
   { length: 4 },
   () => DUMMY_RECRUITMENT,
