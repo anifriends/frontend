@@ -1,44 +1,80 @@
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { useParams } from 'react-router-dom';
 import InfoSubtext from 'shared/components/InfoSubtext';
 import Label from 'shared/components/Label';
 import ReviewItem from 'shared/components/ReviewItem';
+import useIntersect from 'shared/hooks/useIntersection';
+import { createFormattedTime } from 'shared/utils/date';
 
-const DUMMY_REVIEW = {
-  volunteerId: 'abc***',
-  temperature: 38,
-  createdAt: '23.11.24',
-  content: '아이들이 너무 귀여워서 봉사하는 시간이 즐거웠습니다~!',
-  images: [
-    'https://source.unsplash.com/random',
-    'https://source.unsplash.com/random',
-    'https://source.unsplash.com/random',
-  ],
-};
+import { getVolunteerReviewsOnShelter } from '@/apis/review';
 
-export default function ShelterReviews() {
-  //TODO 보호소에 후기 리스트 조회 API 연결
+function ShelterReviews() {
+  const { id } = useParams<{ id: string }>();
+  const shelterId = Number(id);
+
+  const {
+    data: { pages },
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useSuspenseInfiniteQuery({
+    queryKey: ['shelter', shelterId, 'reviews'],
+    queryFn: async ({ pageParam }) =>
+      (await getVolunteerReviewsOnShelter(shelterId, pageParam, 10)).data,
+    initialPageParam: 1,
+    getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
+      pageInfo.hasNext ? lastPageParam + 1 : null,
+  });
+
+  const reviews = pages.flatMap((item) => item.reviews);
+
+  const ref = useIntersect(async (entry, observer) => {
+    observer.unobserve(entry.target);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  });
+
   return (
     <Box>
       <Heading fontWeight={600} fontSize="md" py={4}>
-        보호소의 후기 12개
+        보호소의 후기 {pages[0].pageInfo.totalElements}개
       </Heading>
       <VStack spacing={2}>
-        {Array.from({ length: 5 }, () => DUMMY_REVIEW).map((review, index) => {
-          const { content, images, volunteerId, temperature, createdAt } =
-            review;
+        {reviews.map((review) => {
           return (
-            <ReviewItem key={index} content={content} images={images}>
+            <ReviewItem
+              key={review.reviewId}
+              content={review.reviewContent}
+              images={review.reviewImageUrls}
+            >
               <Box>
                 <HStack mb={1}>
-                  <Text fontWeight={600}>{volunteerId}</Text>
-                  <Label labelTitle={`${temperature}℃`} />
+                  <Text fontWeight={600}>{review.volunteerEmail}</Text>
+                  <Label labelTitle={`${review.volunteerTemperature}℃`} />
                 </HStack>
-                <InfoSubtext title="작성일" content={createdAt} />
+                <InfoSubtext
+                  title="작성일"
+                  content={createFormattedTime(
+                    new Date(review.reviewCreatedAt),
+                    'YY.MM.DD',
+                  )}
+                />
               </Box>
             </ReviewItem>
           );
         })}
       </VStack>
+      <div ref={ref} />
     </Box>
+  );
+}
+export default function ShelterReviewsTab() {
+  return (
+    <Suspense fallback={<p>봉사 후기 로딩중...</p>}>
+      <ShelterReviews />
+    </Suspense>
   );
 }

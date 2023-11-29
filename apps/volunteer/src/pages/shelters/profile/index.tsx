@@ -1,32 +1,54 @@
 import { Box, Divider } from '@chakra-ui/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { useParams } from 'react-router-dom';
 import InfoTextList from 'shared/components/InfoTextList';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import Tabs from 'shared/components/Tabs';
 
+import { getShelterProfileDetail } from '@/apis/shelter';
+
 import ShelterRecruitments from './_components/ShelterRecruitments';
-import ShelterReviews from './_components/ShelterReviews';
+import ShelterReviewsTab from './_components/ShelterReviews';
 
 export default function SheltersProfilePage() {
+  const { id } = useParams<{ id: string }>();
+  const shelterId = Number(id);
+
+  const { data } = useSuspenseQuery({
+    queryKey: ['shelter', 'profile', shelterId],
+    queryFn: async () => (await getShelterProfileDetail(shelterId)).data,
+  });
+
   return (
-    <Box>
-      <ProfileInfo
-        infoTitle="양천구 보호소"
-        infoTexts={['shelter@gmail.com', '비공개']}
-      />
-      <Divider />
-      <InfoTextList
-        infoTextItems={[
-          { title: '전화번호', content: '010-1234-5678' },
-          { title: '전화번호(임시)', content: '02-123-4567' },
-          { title: '상세주소', content: '비공개' },
-        ]}
-      />
-      <Tabs
-        tabs={[
-          ['봉사후기', <ShelterReviews key={1} />],
-          ['봉사모집글', <ShelterRecruitments key={2} />],
-        ]}
-      />
-    </Box>
+    <Suspense fallback={<p>보호소 프로필 정도 로딩 중...</p>}>
+      <Box>
+        <ProfileInfo
+          infoImage={data.shelterImageUrl}
+          infoTitle={data.shelterName}
+          infoTexts={[data.shelterEmail, data.shelterAddress]}
+        />
+        <Divider />
+        <InfoTextList
+          infoTextItems={[
+            { title: '전화번호', content: data.shelterPhoneNumber },
+            {
+              title: '전화번호(임시)',
+              content: data.shelterSparePhoneNumber,
+            },
+            {
+              title: '상세주소',
+              content: data.shelterAddressDetail,
+            },
+          ]}
+        />
+        <Tabs
+          tabs={[
+            ['봉사후기', <ShelterReviewsTab key={1} />],
+            ['봉사모집글', <ShelterRecruitments key={2} />],
+          ]}
+        />
+      </Box>
+    </Suspense>
   );
 }
