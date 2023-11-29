@@ -10,13 +10,14 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
 
-import { updateVolunteerReview } from '@/apis/review';
+import { getVolunteerReviewDetail, updateVolunteerReview } from '@/apis/review';
 import { getSimpleShelterProfile } from '@/apis/shelter';
 import PATH from '@/constants/path';
 import ReviewSubmitButton from '@/pages/shelters/reviews/_components/ReviewSubmitButton';
@@ -40,7 +41,7 @@ export default function SheltersReviewsUpdatePage() {
     navigate(-1);
   }
 
-  const { data } = useQuery({
+  const { data: shelterInfo } = useQuery({
     queryKey: ['shelterProfile', Number(shelterId)],
     queryFn: async () => {
       return (await getSimpleShelterProfile(Number(shelterId))).data;
@@ -50,6 +51,18 @@ export default function SheltersReviewsUpdatePage() {
       shelterImageUrl: '',
       shelterAddress: '',
       shelterEmail: '',
+    },
+  });
+
+  const { data: reviewDetail, isSuccess } = useQuery({
+    queryKey: ['review', 'detail', Number(reviewId)],
+    queryFn: async () => {
+      return (await getVolunteerReviewDetail(Number(reviewId))).data;
+    },
+    initialData: {
+      reviewId: 0,
+      reviewContent: '',
+      reviewImageUrls: [],
     },
   });
 
@@ -66,21 +79,38 @@ export default function SheltersReviewsUpdatePage() {
     },
   });
 
-  const { shelterName, shelterImageUrl, shelterAddress, shelterEmail } = data;
+  const { shelterName, shelterImageUrl, shelterAddress, shelterEmail } =
+    shelterInfo;
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
+    setFocus,
     formState: { errors },
   } = useForm<ReviewSchema>({
     resolver: zodResolver(reviewSchema),
   });
 
-  const { photos, handleUploadPhoto, handleDeletePhoto } =
+  const { photos, setImageUrls, handleUploadPhoto, handleDeletePhoto } =
     useUploadPhoto(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
+
+  const setReviewFormvalues = useCallback(
+    (content: string, imageUrls: string[]) => {
+      setValue('content', content);
+      setImageUrls(imageUrls);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const { reviewContent, reviewImageUrls } = reviewDetail;
+    setReviewFormvalues(reviewContent, reviewImageUrls);
+    setFocus('content');
+  }, [reviewDetail, setReviewFormvalues, setFocus]);
 
   const onSubmit: SubmitHandler<ReviewSchema> = (data: ReviewSchema) => {
     const { content } = data;
