@@ -1,4 +1,5 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,8 +51,12 @@ export default function LocalErrorBoundary({
   children: React.ReactNode;
 }) {
   return (
-    <ErrorBoundary FallbackComponent={FallbackComponent}>
-      {children}
-    </ErrorBoundary>
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary FallbackComponent={FallbackComponent} onReset={reset}>
+          {children}
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
   );
 }
