@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 import { getShelterRecruitmentApplicants } from '@/apis/recruitment';
@@ -10,10 +10,17 @@ import ApprovedCountBox from './_components/ApprovedCountBox';
 import ManageApplyItem from './_components/ManageApplyItem';
 
 export default function ManageApplyPage() {
-  const { id } = useParams<{ id: string }>();
-  const { data } = useQuery({
-    queryKey: ['recruitment', 'manage', 'apply', id],
-    queryFn: () => getShelterRecruitmentApplicants(Number(id)),
+  const { id: recruitmentId } = useParams<{ id: string }>();
+  const {
+    data: {
+      currentRecruitmentCount,
+      recruitmentCapacity,
+      applicants,
+      approvedCount,
+    },
+  } = useSuspenseQuery({
+    queryKey: ['recruitment', 'manage', 'apply', Number(recruitmentId)],
+    queryFn: () => getShelterRecruitmentApplicants(Number(recruitmentId)),
     select: ({ data: { applicants, recruitmentCapacity } }) => {
       return {
         applicants,
@@ -30,13 +37,17 @@ export default function ManageApplyPage() {
   return (
     <Box pb={20}>
       <ApplyInfoItem
-        currentRecuritmentCount={data?.currentRecruitmentCount ?? 0}
-        recruitmentCapacity={data?.recruitmentCapacity ?? 0}
+        currentRecuritmentCount={currentRecruitmentCount}
+        recruitmentCapacity={recruitmentCapacity}
       />
-      {data?.applicants.map((applicant) => (
-        <ManageApplyItem key={applicant.applicantId} applicant={applicant} />
+      {applicants.map((applicant) => (
+        <ManageApplyItem
+          key={applicant.applicantId}
+          recruitmentId={Number(recruitmentId)}
+          applicant={applicant}
+        />
       ))}
-      <ApprovedCountBox approvedCount={data?.approvedCount ?? 0} />
+      <ApprovedCountBox approvedCount={approvedCount} />
     </Box>
   );
 }
