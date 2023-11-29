@@ -17,14 +17,15 @@ import type {
 } from '@/types/apis/recruitment';
 
 type ManageApplyItemProps = {
+  recruitmentId: number;
   applicant: ShelterRecruitmentApplicant;
 };
 
 export default function ManageApplyItem({
+  recruitmentId,
   applicant: {
     applicantId,
     applicantStatus,
-    volunteerId,
     volunteerBirthDate,
     volunteerGender,
     volunteerName,
@@ -36,10 +37,10 @@ export default function ManageApplyItem({
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (data: RecruitmentApplicantUpdateRequest) =>
-      updateShelterRecruitmentApplicant(applicantId, volunteerId, data),
+      updateShelterRecruitmentApplicant(recruitmentId, applicantId, data),
     onSuccess: async (_, { isApproved }) => {
       await queryClient.invalidateQueries({
-        queryKey: ['recruitment', 'manage', 'apply', volunteerId],
+        queryKey: ['recruitment', 'manage', 'apply', recruitmentId],
       });
 
       const descriptionStatus = isApproved
@@ -48,7 +49,7 @@ export default function ManageApplyItem({
 
       toast({
         position: 'top',
-        description: `${volunteerName}님의 봉사신청을 ${descriptionStatus}했습니다 `,
+        description: `${volunteerName}님의 봉사신청을 ${descriptionStatus}했습니다`,
         status: 'success',
         duration: 1000,
         isClosable: true,
