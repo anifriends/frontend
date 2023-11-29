@@ -82,14 +82,15 @@ export default function VolunteersWritePage() {
     // alert(JSON.stringify(data));
     const { startTime, endTime, deadline } = data;
 
-    const request = {
+    mutate({
       ...data,
       startTime: String(startTime),
       endTime: String(endTime),
       deadline: String(deadline),
-    };
-
-    mutate(request);
+      imageUrls: photos
+        .filter(({ url }) => url !== 'upload-failed')
+        .map(({ url }) => url),
+    });
   };
 
   return (
