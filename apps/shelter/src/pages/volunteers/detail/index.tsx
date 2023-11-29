@@ -15,7 +15,11 @@ import InfoTextList from 'shared/components/InfoTextList';
 import { LabelProps } from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import useDetailHeaderStore from 'shared/store/detailHeaderStore';
-import { getDDay } from 'shared/utils/date';
+import {
+  createFormattedTime,
+  createWeekDayLocalString,
+  getDDay,
+} from 'shared/utils/date';
 
 import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
 
@@ -39,19 +43,18 @@ export default function VolunteersDetailPage() {
   const { id: recruitmentId } = useParams();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    imageUrls,
-    title,
-    content,
-    applicant,
-    capacity,
-    volunteerDay,
-    recruitmentDeadline,
-    volunteerStartTime,
-    volunteerEndTime,
-    recruitmentCreatedAt,
-    recruitmentIsClosed,
-  } = useGetVolunteerDetail(100).data;
+
+  const { data: recruitment } = useGetVolunteerDetail(Number(recruitmentId));
+
+  const startDate = new Date(recruitment.startTime);
+  const deadline = new Date(recruitment.deadline);
+  const createdAt = new Date(recruitment.createdAt);
+
+  const volunteerDate = createFormattedTime(startDate);
+  const volunteerDay = createWeekDayLocalString(startDate);
+
+  const deadlineDate = createFormattedTime(deadline);
+  const deadlineDay = createWeekDayLocalString(deadline);
 
   const [label, setLabel] = useState<LabelProps>({
     labelTitle: '모집중',
@@ -60,11 +63,11 @@ export default function VolunteersDetailPage() {
   const [isClosed, setIsClosed] = useState(false);
 
   useEffect(() => {
-    if (recruitmentIsClosed) {
+    if (recruitment.isClosed) {
       setIsClosed(true);
       setLabel({ labelTitle: '마감완료', type: 'GRAY' });
     }
-  }, [recruitmentIsClosed]);
+  }, [recruitment.isClosed]);
 
   const goManageApply = () => navigate(`/manage/apply/${recruitmentId}`);
   const goManageAttendance = () =>
@@ -77,36 +80,42 @@ export default function VolunteersDetailPage() {
 
   return (
     <Box>
-      <ImageCarousel imageUrls={imageUrls} />
+      <ImageCarousel imageUrls={recruitment.imageUrls} />
       <VStack spacing="5px" align="flex-start" p={4}>
         <LabelText
           labelTitle={label.labelTitle}
           type={label.type}
-          content={`D-${getDDay(recruitmentDeadline)}`}
+          content={`D-${getDDay(recruitment.deadline)}`}
         />
         <Text fontSize="xl" fontWeight="semibold">
-          {title}
+          {recruitment.title}
         </Text>
         <Text fontSize="sm" fontWeight="normal" color="gray.500">
-          작성일 | {recruitmentCreatedAt}(수정됨)
+          작성일 | {createFormattedTime(createdAt)}(수정됨)
         </Text>
       </VStack>
       <Divider />
 
       <InfoTextList
         infoTextItems={[
-          { title: '모집 인원', content: `${applicant}명 / ${capacity}명` },
-          { title: '봉사일', content: volunteerDay },
+          {
+            title: '모집 인원',
+            content: `${recruitment.applicant}명 / ${recruitment.capacity}명`,
+          },
+          { title: '봉사일', content: volunteerDate + `(${volunteerDay})` },
           {
             title: '봉사 시간',
-            content: `${volunteerStartTime}~${volunteerEndTime}`,
+            content: `${createFormattedTime(
+              startDate,
+              'hh:mm',
+            )}~${createFormattedTime(new Date(recruitment.endTime), 'hh:mm')}`,
           },
-          { title: '마감일', content: recruitmentDeadline },
+          { title: '마감일', content: deadlineDate + `(${deadlineDay})` },
         ]}
       />
       <Divider />
       <Text fontWeight="medium" px={4} pt={6} mb="68px" wordBreak="keep-all">
-        {content}
+        {recruitment.content}
       </Text>
 
       <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
