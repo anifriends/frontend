@@ -53,4 +53,7 @@ export const handlers = [
       },
     );
   }),
+  http.delete('/volunteers/reviews/:reviewId', async () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
 ];
