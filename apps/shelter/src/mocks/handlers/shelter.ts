@@ -37,7 +37,7 @@ export const handlers = [
     return HttpResponse.json({ status: 200 });
   }),
   http.get('/shelters/me/reviews', async () => {
-    await delay(200);
+    await delay(3000);
     return HttpResponse.json(
       {
         pageInfo: {

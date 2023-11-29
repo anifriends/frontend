@@ -1,6 +1,7 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import ReviewItem from 'shared/components/ReviewItem';
+import ReviewItemSkeletonList from 'shared/components/ReviewItemSkeletonList';
 import useIntersect from 'shared/hooks/useIntersection';
 import { createFormattedTime } from 'shared/utils/date';
 
@@ -62,14 +63,14 @@ function Reviews() {
           </ReviewItem>
         ))}
       </VStack>
-      <Box ref={ref} />
+      {isFetchingNextPage ? <ReviewItemSkeletonList /> : <Box ref={ref} />}
     </Box>
   );
 }
 
 export default function MyReviewsPage() {
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <Suspense fallback={<ReviewItemSkeletonList showTitle />}>
       <Reviews />
     </Suspense>
   );
