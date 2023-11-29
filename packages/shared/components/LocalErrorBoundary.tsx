@@ -1,20 +1,46 @@
-import { Button, Heading, Text, VStack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import { useNavigate } from 'react-router-dom';
 
-const RetryErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
+import { getErrorMessage } from '../utils/errorMessage';
+
+const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
+  const navigate = useNavigate();
+  const status = error?.response?.status;
+  const { title, content } = getErrorMessage(status);
+
+  const isNotAuthorized = status === 401;
+  const isForbidden = status === 403;
+  const buttonMessage = isNotAuthorized ? '로그인' : '다시 시도';
+
+  const onClick = () => {
+    if (isNotAuthorized) {
+      navigate('/login');
+    } else {
+      resetErrorBoundary();
+    }
+  };
+
   return (
-    <VStack justifyContent="center" alignItems="center" h="full" spacing="4">
-      <Heading as="h4" fontSize="lg" fontWeight="bold">
-        잠시 연결이 늦어지고 있습니다
+    <VStack justify="center" align="center" h="full" spacing="6">
+      <Heading as="h4" fontSize="xl">
+        {title}
       </Heading>
-      <Text color="gray.400">다시 한번 시도해 주세요</Text>
-      <Button onClick={resetErrorBoundary}>다시 시도</Button>
+      <Text color="gray.400" fontWeight="semi-bold">
+        {content}
+      </Text>
+      <HStack spacing={6}>
+        {!isForbidden && <Button onClick={onClick}>{buttonMessage}</Button>}
+        <Button onClick={() => navigate('/volunteers')}>홈으로</Button>
+      </HStack>
     </VStack>
   );
 };
 
 const FallbackComponent = (props: FallbackProps) => {
-  // 만약 api erro가 발생하면 throw props.error
+  // TODO accessToken 갱신 api가 정상화되면
+  //만약 401, 403, 404 혹은 그 외 에러가 발생하면 throw props.error
 
   return <RetryErrorFallback {...props} />;
 };
@@ -25,8 +51,12 @@ export default function LocalErrorBoundary({
   children: React.ReactNode;
 }) {
   return (
-    <ErrorBoundary FallbackComponent={FallbackComponent}>
-      {children}
-    </ErrorBoundary>
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary FallbackComponent={FallbackComponent} onReset={reset}>
+          {children}
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
   );
 }
