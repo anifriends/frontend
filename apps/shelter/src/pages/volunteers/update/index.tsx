@@ -117,9 +117,9 @@ export default function VolunteersUpdatePage() {
 
   useEffect(() => {
     setValue('title', recruitment.title);
-    setValue('startTime', new Date(recruitment.volunteerStartTime));
-    setValue('endTime', new Date(recruitment.volunteerEndTime));
-    setValue('deadline', new Date(recruitment.recruitmentDeadline));
+    setValue('startTime', new Date(recruitment.startTime));
+    setValue('endTime', new Date(recruitment.endTime));
+    setValue('deadline', new Date(recruitment.deadline));
     setValue('capacity', recruitment.capacity);
     setValue('content', recruitment?.content ?? '');
     setFocus('title');

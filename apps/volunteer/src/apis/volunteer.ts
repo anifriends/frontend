@@ -6,8 +6,8 @@ export type MyInfoResponse = {
   volunteerName: string;
   volunteerBirthDate: string;
   volunteerPhoneNumber: string;
-  volunteerTemperture: number;
-  volunteerCount: number;
+  volunteerTemperature: number;
+  completedVolunteerCount: number;
   volunteerImageUrl: string;
   volunteerGender: 'FEMALE' | 'MALE';
 };

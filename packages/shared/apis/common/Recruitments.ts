@@ -1,6 +1,6 @@
 import axiosInstance from '../axiosInstance';
 
-type RecruitmentDetailResponse = {
+export type RecruitmentDetailResponse = {
   recruitmentTitle: string;
   recruitmentApplicantCount: number;
   recruitmentCapacity: number;

@@ -15,7 +15,7 @@ const DUMMY_RECRUITMENT = {
 
 export const handlers = [
   http.get('/recruitments', async () => {
-    await delay(1000);
+    await delay(3000);
     return HttpResponse.json(
       {
         pageInfo: {
