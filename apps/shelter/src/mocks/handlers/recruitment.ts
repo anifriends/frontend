@@ -46,11 +46,14 @@ export const handlers = [
       { status: 200 },
     );
   }),
-  http.patch('/shelters/recruitments/10/applicants/1', async () => {
-    await delay(200);
-    return HttpResponse.json({}, { status: 200 });
-  }),
-  http.get('/shelters/recruitments/10/applicants', async () => {
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/applicants/:applicantId',
+    async () => {
+      await delay(200);
+      return HttpResponse.json({}, { status: 200 });
+    },
+  ),
+  http.get('/shelters/recruitments/:recruitmentId/applicants', async () => {
     await delay(200);
     return HttpResponse.json({
       applicants: DUMMY_APPLICANT_LIST,
