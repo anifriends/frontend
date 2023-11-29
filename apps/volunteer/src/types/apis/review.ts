@@ -10,8 +10,8 @@ export type Pagination = {
 
 export type ReviewDetailResponse = {
   reviewId: number;
-  content: string;
-  imageUrls: string[];
+  reviewContent: string;
+  reviewImageUrls: string[];
 };
 
 export type ReviewCreateRequest = {
