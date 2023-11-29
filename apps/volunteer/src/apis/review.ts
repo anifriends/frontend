@@ -33,7 +33,7 @@ export const updateVolunteerReview = (
     updatedReviewParams,
   );
 
-export const deleteVolunteerReview = (reviewId: string) =>
+export const deleteVolunteerReview = (reviewId: number) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 type ReviewOnShelterParams = {
