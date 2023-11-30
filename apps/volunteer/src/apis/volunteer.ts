@@ -1,6 +1,10 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
 import { PageInfo } from '@/types/apis/recruitment';
+import {
+  PagenationRequestParams,
+  VolunteerApplicantsResponseData,
+} from '@/types/apis/volunteer';
 
 export type MyInfoResponse = {
   volunteerId: number;
@@ -16,20 +20,6 @@ export type MyInfoResponse = {
 
 export const getMyVolunteerInfo = () =>
   axiosInstance.get<MyInfoResponse>('/volunteers/me');
-
-type PasswordUpdateParams = {
-  newPassword: string;
-  oldPassword: string;
-};
-
-export const updateVolunteerPassword = (
-  passwordUpdateParams: PasswordUpdateParams,
-) => {
-  return axiosInstance.patch<unknown, PasswordUpdateParams>(
-    '/volunteers/me/password',
-    passwordUpdateParams,
-  );
-};
 
 export type UpdateUserInfoParams = {
   name: string;
@@ -47,23 +37,11 @@ export const updateVolunteerUserInfo = (
     updateUserInfoParams,
   );
 
-type Applicant = {
-  recruitmentId: number;
-  recruitmentTitle: string;
-  recruitmentStartTime: string;
-  shelterName: string;
-  applicantId: number;
-  applicantStatus: string;
-  applicantIsWritedReview: boolean;
-};
-
-type ApplicantsResponse = {
-  applicants: Applicant[];
-};
-
 //봉사자가 신청한 봉사 리스트 조회
-export const getVolunteerApplicantList = () =>
-  axiosInstance.get<ApplicantsResponse>('/volunteers/applicants');
+export const getVolunteerApplicants = (params: PagenationRequestParams) =>
+  axiosInstance.get<VolunteerApplicantsResponseData>('/volunteers/applicants', {
+    params,
+  });
 
 type Pagination = {
   pageSize: number;

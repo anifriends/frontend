@@ -1,5 +1,32 @@
 import { delay, http, HttpResponse } from 'msw';
 
+import { Applicant } from '@/types/apis/volunteer';
+
+const DUMMY_APPLY_RECRUITMENT_DATA: Applicant[] = Array.from(
+  { length: 6 },
+  (_, i) => {
+    return {
+      shelterId: i + 1,
+      recruitmentId: i + 1,
+      applicantId: i + 1,
+      recruitmentTitle: '봉사자 모집합니다' + i,
+      shelterName: '양천구 보호소',
+      applicantStatus:
+        i === 0
+          ? 'PENDING'
+          : i === 1
+          ? 'REFUSED'
+          : i === 2
+          ? 'ATTENDANCE'
+          : i === 3 || i === 4
+          ? 'APPROVED'
+          : 'NOSHOW',
+      applicantIsWritedReview: i === 4 ? true : false,
+      recruitmentStartTime: '2023-12-29T22:24:04.565688',
+    };
+  },
+);
+
 const DUMMY_MYREVIEW = {
   reviewId: 32,
   shelterName: '해피퍼피',
@@ -31,6 +58,16 @@ export const handlers = [
     const updateVolunteer = await request.json();
     console.log(updateVolunteer);
     return new HttpResponse(null, { status: 204 });
+  }),
+  http.get('/volunteers/applicants', async () => {
+    await delay(200);
+    return HttpResponse.json({
+      pageInfo: {
+        hasNext: true,
+        totalElements: 20,
+      },
+      applicants: DUMMY_APPLY_RECRUITMENT_DATA,
+    });
   }),
   http.get('/volunteers/me/reviews', async ({ request }) => {
     await delay(1000);
