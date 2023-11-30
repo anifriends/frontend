@@ -44,8 +44,8 @@ export const getVolunteerApplicants = (params: PagenationRequestParams) =>
   });
 
 type Pagination = {
-  pageSize: number;
-  pageNumber: number;
+  page: number;
+  size: number;
 };
 
 type MyReview = {
