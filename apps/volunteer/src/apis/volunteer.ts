@@ -1,5 +1,7 @@
 import axiosInstance from 'shared/apis/axiosInstance';
 
+import { PageInfo } from '@/types/apis/recruitment';
+
 export type MyInfoResponse = {
   volunteerId: number;
   volunteerEmail: string;
@@ -63,4 +65,29 @@ type ApplicantsResponse = {
 export const getVolunteerApplicantList = () =>
   axiosInstance.get<ApplicantsResponse>('/volunteers/applicants');
 
-//TODO 봉사자가 작성한 후기 리스트 조회
+type Pagination = {
+  pageSize: number;
+  pageNumber: number;
+};
+
+type MyReview = {
+  reviewId: number;
+  shelterId: number;
+  shelterName: string;
+  reviewCreatedAt: string;
+  reviewContent: string;
+  reviewImageUrls: string[];
+};
+
+export type MyReviewsResponse = {
+  pageInfo: PageInfo;
+  reviews: MyReview[];
+};
+
+export const getMyReviewsAPI = (page: number, size: number) =>
+  axiosInstance.get<MyReviewsResponse, Pagination>('/volunteers/me/reviews', {
+    params: {
+      page,
+      size,
+    },
+  });

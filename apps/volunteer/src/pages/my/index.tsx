@@ -3,6 +3,7 @@ import Label from 'shared/components/Label';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import Tabs from 'shared/components/Tabs';
 
+import MyReviewsTab from './_components/MyReviews';
 import useFetchMyVolunteer from './_hooks/useFetchMyVolunteer';
 
 export default function MyPage() {
@@ -38,7 +39,7 @@ export default function MyPage() {
       <Tabs
         tabs={[
           ['신청한 봉사 목록', <Box key={1} minH={500} />],
-          ['작성한 봉사 후기', <Box key={2} minH={500} />],
+          ['작성한 봉사 후기', <MyReviewsTab key={2} />],
         ]}
       />
     </Box>

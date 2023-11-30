@@ -26,7 +26,7 @@ export const updateVolunteerReview = (
     reqeust,
   );
 
-export const deleteVolunteerReview = (reviewId: string) =>
+export const deleteVolunteerReview = (reviewId: number) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 export const getVolunteerReviewsOnShelter = (
