@@ -5,8 +5,10 @@ import {
   HStack,
   Text,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
@@ -20,10 +22,13 @@ import {
   getDDay,
 } from 'shared/utils/date';
 
+import { applyRecruitments } from '@/apis/recruitment';
+
 import useFetchVolunteerDetail from './_hooks/useFetchRecruitmentDetail';
 import useFetchSimpleShelterInfo from './_hooks/useFetchSimpleShelterInfo';
 
 export default function VolunteersDetailPage() {
+  const toast = useToast();
   const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
@@ -40,6 +45,18 @@ export default function VolunteersDetailPage() {
 
   const { data: shelter } = useFetchSimpleShelterInfo(data.shelterId);
 
+  const { mutate: applyRecruitment } = useMutation({
+    mutationFn: async () => await applyRecruitments(recruitmentId),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '봉사 신청이 완료되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
+
   const goChatting = () => {
     //TODO 채팅방 생성 API
     navigate(`/chattings/${recruitmentId}`);
@@ -47,8 +64,7 @@ export default function VolunteersDetailPage() {
 
   const onApplyRecruitment = () => {
     onClose();
-    //TODO 봉사신청 API
-    //TODO 봉사신청완료 toast
+    applyRecruitment();
   };
 
   return (
