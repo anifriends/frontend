@@ -66,6 +66,16 @@ export const useUploadPhoto = (uploadLimit: number) => {
 
   const toast = useToast();
 
+  const setImageUrls = (imageUrls: string[]) => {
+    const newPhotos: Photo[] =
+      imageUrls.map((url) => ({
+        id: getRandomId(),
+        url,
+      })) || [];
+
+    setPhotos(newPhotos);
+  };
+
   const handleUploadPhoto = (files: FileList | null) => {
     if (!files) {
       return;
@@ -110,6 +120,7 @@ export const useUploadPhoto = (uploadLimit: number) => {
 
   return {
     photos,
+    setImageUrls,
     handleUploadPhoto,
     handleDeletePhoto,
   };

@@ -4,7 +4,23 @@ import {
   RecruitmentDetailResponse,
 } from 'shared/apis/common/Recruitments';
 
-const createRecruitmentDetail = (recruitment: RecruitmentDetailResponse) => {
+export type RecruitmentDetail = {
+  title: string;
+  content: string;
+  applicant: number;
+  capacity: number;
+  startTime: string;
+  endTime: string;
+  deadline: string;
+  createdAt: string;
+  updatedAt: string;
+  imageUrls: string[];
+  isClosed: boolean;
+};
+
+const createRecruitmentDetail = (
+  recruitment: RecruitmentDetailResponse,
+): RecruitmentDetail => {
   const {
     recruitmentTitle: title,
     recruitmentContent: content,

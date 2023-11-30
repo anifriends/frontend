@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
@@ -23,7 +23,9 @@ import * as z from 'zod';
 import { updateShelterRecruitment } from '@/apis/recruitment';
 import type { RecruitmentUpdateRequest } from '@/types/apis/recruitment';
 
-import useGetVolunteerDetail from '../detail/_hooks/useGetVolunteerDetail';
+import useGetVolunteerDetail, {
+  RecruitmentDetail,
+} from '../detail/_hooks/useGetVolunteerDetail';
 
 const recruitmentSchema = z
   .object({
@@ -74,7 +76,7 @@ export default function VolunteersUpdatePage() {
   } = useForm<RecruitmentSchema>({
     resolver: zodResolver(recruitmentSchema),
   });
-  const { photos, handleUploadPhoto, handleDeletePhoto } =
+  const { photos, setImageUrls, handleUploadPhoto, handleDeletePhoto } =
     useUploadPhoto(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
@@ -118,15 +120,23 @@ export default function VolunteersUpdatePage() {
     });
   };
 
+  const setVolunteersRecruitmentFormvalues = useCallback(
+    (recruitment: RecruitmentDetail) => {
+      setValue('title', recruitment.title);
+      setValue('startTime', new Date(recruitment.startTime));
+      setValue('endTime', new Date(recruitment.endTime));
+      setValue('deadline', new Date(recruitment.deadline));
+      setValue('capacity', recruitment.capacity);
+      setValue('content', recruitment?.content ?? '');
+      setImageUrls(recruitment.imageUrls);
+    },
+    [],
+  );
+
   useEffect(() => {
-    setValue('title', recruitment.title);
-    setValue('startTime', new Date(recruitment.startTime));
-    setValue('endTime', new Date(recruitment.endTime));
-    setValue('deadline', new Date(recruitment.deadline));
-    setValue('capacity', recruitment.capacity);
-    setValue('content', recruitment?.content ?? '');
     setFocus('title');
-  }, [recruitment, setFocus, setValue]);
+    setVolunteersRecruitmentFormvalues(recruitment);
+  }, [recruitment, setVolunteersRecruitmentFormvalues, setFocus]);
 
   if (isRecruitFetchLoading) {
     return <p>...로딩중</p>;

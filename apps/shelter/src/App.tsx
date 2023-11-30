@@ -7,7 +7,13 @@ import theme from 'shared/theme';
 
 import { router } from '@/routes';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 50000,
+    },
+  },
+});
 
 export default function App() {
   return (

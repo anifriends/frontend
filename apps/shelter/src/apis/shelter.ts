@@ -47,6 +47,7 @@ export const getShelterReviewList = (pageParams: PageParams) =>
       volunteerTemperature: number;
       volunteerReviewCount: number;
       volunteerImageUrl: string;
+      volunteerId: number;
     }[];
   }>(`/shelters/me/reviews`, {
     params: pageParams,

@@ -12,6 +12,10 @@ export default function MyPage() {
   const navigate = useNavigate();
   const { shelterProfile, isAddressPublic, updateAddressStatus } = useMyPage();
 
+  if (!shelterProfile) {
+    return null;
+  }
+
   const { shelterName, email, phoneNumber, sparePhoneNumber, shelterAddress } =
     shelterProfile;
 
@@ -33,6 +37,7 @@ export default function MyPage() {
         <InfoItem title="상세주소 공개">
           <Switch
             size="sm"
+            colorScheme="orange"
             isChecked={isAddressPublic}
             onChange={updateAddressStatus}
           />

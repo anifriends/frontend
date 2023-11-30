@@ -9,7 +9,7 @@ import {
 } from '@/types/apis/review';
 
 export const getVolunteerReviewDetail = (reviewId: number) =>
-  axiosInstance.get<ReviewDetailResponse>(`/reviews/${reviewId}`);
+  axiosInstance.get<ReviewDetailResponse>(`/volunteers/reviews/${reviewId}`);
 
 export const createVolunteerReview = (reqeust: ReviewCreateRequest) =>
   axiosInstance.post<unknown, ReviewCreateRequest>(
@@ -26,7 +26,7 @@ export const updateVolunteerReview = (
     reqeust,
   );
 
-export const deleteVolunteerReview = (reviewId: string) =>
+export const deleteVolunteerReview = (reviewId: number) =>
   axiosInstance.delete(`/volunteers/reviews/${reviewId}`);
 
 export const getVolunteerReviewsOnShelter = (
