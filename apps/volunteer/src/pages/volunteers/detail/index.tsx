@@ -7,52 +7,38 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
 import InfoTextList from 'shared/components/InfoTextList';
-import { LabelProps } from 'shared/components/Label';
+import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import ProfileInfo from 'shared/components/ProfileInfo';
-import { getDDay } from 'shared/utils/date';
+import {
+  createFormattedTime,
+  createWeekDayLocalString,
+  getDDay,
+} from 'shared/utils/date';
 
-import useFetchVolunteerDetail from './_hooks/useFetchVolunteerDetail';
+import useFetchVolunteerDetail from './_hooks/useFetchRecruitmentDetail';
+import useFetchSimpleShelterInfo from './_hooks/useFetchSimpleShelterInfo';
 
 export default function VolunteersDetailPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
+
+  const { id } = useParams<{ id: string }>();
   const recruitmentId = Number(id);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [label, setLabel] = useState<LabelProps>({
-    labelTitle: '모집중',
-    type: 'GREEN',
-  });
 
-  const { data } = useFetchVolunteerDetail(3);
+  const { data } = useFetchVolunteerDetail(recruitmentId);
 
-  const {
-    imageUrls,
-    title,
-    content,
-    applicant,
-    capacity,
-    volunteerDay,
-    recruitmentDeadline,
-    volunteerStartTime,
-    volunteerEndTime,
-    recruitmentCreatedAt,
-    recruitmentIsClosed,
-    shelterInfo,
-  } = data;
-  const { shelterName, shelterImageUrl, shelterAddress, shelterEmail } =
-    shelterInfo;
+  const volunteerDay = new Date(data.recruitmentStartTime);
+  const deadline = new Date(data.recruitmentDeadline);
+  const createdAt = new Date(data.recruitmentCreatedAt);
+  const updatedAt = new Date(data.recruitmentUpdatedAt);
 
-  useEffect(() => {
-    if (recruitmentIsClosed) {
-      setLabel({ labelTitle: '마감완료', type: 'GRAY' });
-    }
-  }, [recruitmentIsClosed]);
+  const { data: shelter } = useFetchSimpleShelterInfo(data.shelterId);
 
   const goChatting = () => {
     //TODO 채팅방 생성 API
@@ -67,41 +53,67 @@ export default function VolunteersDetailPage() {
 
   return (
     <Box pb={118}>
-      <ImageCarousel imageUrls={imageUrls} />
+      <ImageCarousel imageUrls={data.recruitmentImageUrls} />
       <VStack spacing="5px" align="flex-start" p={4}>
-        <LabelText
-          labelTitle={label.labelTitle}
-          type={label.type}
-          content={`D-${getDDay(recruitmentDeadline)}`}
-        />
+        {data.recruitmentIsClosed ? (
+          <Label labelTitle="마감완료" type="GRAY" />
+        ) : (
+          <LabelText
+            labelTitle="모집중"
+            content={`D-${getDDay(data.recruitmentDeadline)}`}
+          />
+        )}
         <Text fontSize="xl" fontWeight="semibold">
-          {title}
+          {data.recruitmentTitle}
         </Text>
         <Text fontSize="sm" fontWeight="normal" color="gray.500">
-          작성일 | {recruitmentCreatedAt}(수정됨)
+          작성일 |{' '}
+          {updatedAt
+            ? `${createFormattedTime(updatedAt)} (수정됨)`
+            : createFormattedTime(createdAt)}
         </Text>
       </VStack>
 
       <InfoTextList
         infoTextItems={[
-          { title: '모집 인원', content: `${applicant}명 / ${capacity}명` },
-          { title: '봉사일', content: volunteerDay },
+          {
+            title: '모집 인원',
+            content: `${data.recruitmentApplicantCount}명 / ${data.recruitmentCapacity}명`,
+          },
+          {
+            title: '봉사일',
+            content:
+              createFormattedTime(volunteerDay, 'YY.MM.DD') +
+              `(${createWeekDayLocalString(volunteerDay)})`,
+          },
           {
             title: '봉사 시간',
-            content: `${volunteerStartTime}~${volunteerEndTime}`,
+            content: `${createFormattedTime(
+              volunteerDay,
+              'hh:mm',
+            )} ~ ${createFormattedTime(
+              new Date(data.recruitmentEndTime),
+              'hh:mm',
+            )}`,
           },
-          { title: '마감일', content: recruitmentDeadline },
+          {
+            title: '마감일',
+            content:
+              createFormattedTime(deadline) +
+              `(${createWeekDayLocalString(deadline)})` +
+              createFormattedTime(deadline, 'hh:mm'),
+          },
         ]}
       />
 
       <Text fontWeight="medium" px={4} py={6} wordBreak="keep-all">
-        {content}
+        {data.recruitmentContent}
       </Text>
       <Divider />
       <ProfileInfo
-        infoImage={shelterImageUrl}
-        infoTitle={shelterName}
-        infoTexts={[shelterEmail, shelterAddress]}
+        infoImage={shelter.shelterImageUrl}
+        infoTitle={shelter.shelterName}
+        infoTexts={[shelter.shelterEmail, shelter.shelterAddress]}
       />
       <Divider />
 
