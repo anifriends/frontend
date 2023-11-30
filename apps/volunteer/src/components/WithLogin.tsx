@@ -6,7 +6,7 @@ export default function WithLogin({ children }: { children: ReactNode }) {
   const { user } = useAuthStore();
 
   if (user) {
-    children;
+    return children;
   }
 
   return <Navigate to="/signin" />;
