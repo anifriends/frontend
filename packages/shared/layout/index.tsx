@@ -21,6 +21,9 @@ export default function Layout({ appType }: LayoutProps) {
     if (appType === 'VOLUNTEER_APP' && pathname === '/') {
       navigate('/volunteers');
     } else if (appType === 'SHELTER_APP') {
+      if (pathname === '/signup' || pathname === '/signin') {
+        return;
+      }
       navigate('/signin');
     }
 
