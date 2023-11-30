@@ -40,12 +40,12 @@ export const isOpenedAddress = z.boolean();
 export const phoneNumber = z
   .string()
   .min(1, '보호소 전화번호 정보는 필수입니다')
-  .regex(/^\d{2,3}\d{3,4}\d{4}$/, '전화번호 형식이 올바르지 않습니다');
+  .regex(/^\d{2,3}-\d{3,4}-\d{4}$/, '전화번호 형식이 올바르지 않습니다');
 export const sparePhoneNumber = z.union([
   z.literal(''),
   z
     .string()
-    .regex(/^\d{2,3}\d{3,4}\d{4}$/, '전화번호 형식이 올바르지 않습니다'),
+    .regex(/^\d{2,3}-\d{3,4}-\d{4}$/, '전화번호 형식이 올바르지 않습니다'),
 ]);
 export const gender = z.enum(['FEMALE', 'MALE']);
 export const birthDate = z
