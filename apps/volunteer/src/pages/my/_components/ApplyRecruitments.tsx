@@ -109,7 +109,7 @@ function ApplyRecruitmentItem({
               _active={{ bgColor: undefined }}
               onClick={() =>
                 navigate(
-                  `/shelters/${shelterId}/applicants/${applicantId}/reviews/write`,
+                  `/shelters/${shelterId}/reviews/applicants/${applicantId}/write`,
                 )
               }
             >
