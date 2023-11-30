@@ -1,5 +1,10 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +12,7 @@ import {
   closeShelterRecruitment,
   deleteShelterRecruitment,
 } from '@/apis/recruitment';
+import { RecruitementsResponse, Recruitment } from '@/types/apis/recruitment';
 
 export const useVolunteerRecruitItem = () => {
   const navigate = useNavigate();
@@ -19,10 +25,41 @@ export const useVolunteerRecruitItem = () => {
     onClick: () => {},
   });
 
+  const queryClient = useQueryClient();
+
+  const getNewPages = (
+    data: InfiniteData<AxiosResponse<RecruitementsResponse>>,
+    processRecruitments: (recruitments: Recruitment[]) => Recruitment[],
+  ) =>
+    data.pages.map((page) => ({
+      ...page,
+      data: {
+        pageInfo: page.data.pageInfo,
+        recruitments: processRecruitments(page.data.recruitments),
+      },
+    }));
+
   const closeRecruitment = useMutation({
     mutationFn: async (recruitmentId: number) => {
       await closeShelterRecruitment(recruitmentId);
       onClose();
+    },
+    onSuccess: (_, recruitmentId) => {
+      queryClient.setQueryData(
+        ['recruitments'],
+        (data: InfiniteData<AxiosResponse<RecruitementsResponse>>) => {
+          return {
+            pages: getNewPages(data, (recruitments) =>
+              recruitments.map((recruitment) =>
+                recruitment.recruitmentId === recruitmentId
+                  ? { ...recruitment, recruitmentIsClosed: true }
+                  : recruitment,
+              ),
+            ),
+            pageParams: data.pageParams,
+          };
+        },
+      );
     },
   });
 
@@ -30,6 +67,21 @@ export const useVolunteerRecruitItem = () => {
     mutationFn: async (recruitmentId: number) => {
       await deleteShelterRecruitment(recruitmentId);
       onClose();
+    },
+    onSuccess: (_, recruitmentId) => {
+      queryClient.setQueryData(
+        ['recruitments'],
+        (data: InfiniteData<AxiosResponse<RecruitementsResponse>>) => {
+          return {
+            pages: getNewPages(data, (recruitments) =>
+              recruitments.filter(
+                (recruitment) => recruitment.recruitmentId !== recruitmentId,
+              ),
+            ),
+            pageParams: data.pageParams,
+          };
+        },
+      );
     },
   });
 
