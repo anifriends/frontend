@@ -54,4 +54,9 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  http.post('/volunteers/recruitments/:recruitmentId/apply', async () => {
+    return new HttpResponse(null, {
+      status: 204,
+    });
+  }),
 ];
