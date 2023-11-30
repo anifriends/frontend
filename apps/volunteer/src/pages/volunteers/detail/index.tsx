@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
@@ -28,7 +28,7 @@ import { applyRecruitments } from '@/apis/recruitment';
 import useFetchVolunteerDetail from './_hooks/useFetchRecruitmentDetail';
 import useFetchSimpleShelterInfo from './_hooks/useFetchSimpleShelterInfo';
 
-export default function VolunteersDetailPage() {
+function VolunteersDetail() {
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -181,5 +181,13 @@ export default function VolunteersDetailPage() {
         onClick={onApplyRecruitment}
       />
     </Box>
+  );
+}
+
+export default function VolunteersDetailPage() {
+  return (
+    <Suspense fallback={<p>봉사 상세 페이지 로딩 중...</p>}>
+      <VolunteersDetail />
+    </Suspense>
   );
 }
