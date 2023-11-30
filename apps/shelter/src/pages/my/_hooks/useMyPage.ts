@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { getShelterInfoAPI, updateAddressStatusAPI } from '@/apis/shelter';
 import { ShelterInfo } from '@/types/apis/shetler';
@@ -33,34 +33,40 @@ const createProfile = (response: ShelterInfo): ShelterProfile => {
 };
 
 export const useMyPage = () => {
-  const [isAddressPublic, setIsAddressPublic] = useState(false);
+  const queryClient = useQueryClient();
 
-  const updateAddressStatus = async () => {
-    try {
-      await updateAddressStatusAPI(!isAddressPublic);
-      setIsAddressPublic(!isAddressPublic);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { mutate: updateAddressStatus } = useMutation({
+    mutationFn: async (event: ChangeEvent<HTMLInputElement>) => {
+      updateAddressStatusAPI(!event.target.checked);
+    },
+    onSuccess: () => {
+      const isOpenedAddress = !isAddressPublic;
+      setIsAddressPublic(isOpenedAddress);
+      queryClient.setQueryData(['shelterProfile'], (data: ShelterProfile) => ({
+        ...data,
+        isAddressPublic: isOpenedAddress,
+      }));
+    },
+  });
 
   const { data } = useQuery({
     queryKey: ['shelterProfile'],
     queryFn: async () => {
       const response = (await getShelterInfoAPI()).data;
-      setIsAddressPublic(response.shelterIsOpenedAddress);
-
       return createProfile(response);
     },
-    initialData: {
-      shelterName: '',
-      email: '',
-      phoneNumber: '',
-      sparePhoneNumber: '',
-      shelterAddress: '',
-      isAddressPublic: false,
-    },
   });
+
+  const [isAddressPublic, setIsAddressPublic] = useState(
+    data?.isAddressPublic ?? false,
+  );
+
+  useEffect(() => {
+    if (data) {
+      const { isAddressPublic } = data;
+      setIsAddressPublic(isAddressPublic);
+    }
+  }, [data]);
 
   return { shelterProfile: data, isAddressPublic, updateAddressStatus };
 };
