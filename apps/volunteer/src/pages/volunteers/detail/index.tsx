@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
@@ -38,6 +39,10 @@ export default function VolunteersDetailPage() {
 
   const { data } = useFetchVolunteerDetail(recruitmentId);
 
+  const [isRecruitmentClosed, setIsRecruitmentClosed] = useState(
+    data.recruitmentIsClosed,
+  );
+
   const volunteerDay = new Date(data.recruitmentStartTime);
   const deadline = new Date(data.recruitmentDeadline);
   const createdAt = new Date(data.recruitmentCreatedAt);
@@ -55,6 +60,17 @@ export default function VolunteersDetailPage() {
         duration: 1500,
       });
     },
+    onError: (error) => {
+      if (error.response?.status === 409) {
+        toast({
+          position: 'top',
+          description: '봉사 모집이 마감되었습니다.',
+          status: 'error',
+          duration: 1500,
+        });
+        setIsRecruitmentClosed(!isRecruitmentClosed);
+      }
+    },
   });
 
   const goShelterProfilePage = () => {
@@ -70,7 +86,7 @@ export default function VolunteersDetailPage() {
     <Box pb={118}>
       <ImageCarousel imageUrls={data.recruitmentImageUrls} />
       <VStack spacing="5px" align="flex-start" p={4}>
-        {data.recruitmentIsClosed ? (
+        {isRecruitmentClosed ? (
           <Label labelTitle="마감완료" type="GRAY" />
         ) : (
           <LabelText
@@ -134,7 +150,15 @@ export default function VolunteersDetailPage() {
       </Box>
       <Divider />
 
-      <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
+      <HStack
+        px={4}
+        w="100%"
+        pos="absolute"
+        bottom="10px"
+        left={0}
+        spacing={5}
+        backgroundColor="white"
+      >
         <Button
           onClick={onOpen}
           size="md"
@@ -143,6 +167,7 @@ export default function VolunteersDetailPage() {
           w="100%"
           _active={{ bg: undefined }}
           _hover={{ bg: undefined }}
+          isDisabled={isRecruitmentClosed}
         >
           신청하기
         </Button>
