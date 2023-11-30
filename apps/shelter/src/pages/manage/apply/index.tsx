@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getShelterRecruitmentApplicants } from '@/apis/recruitment';
@@ -9,7 +10,7 @@ import ApplyInfoItem from './_components/ApplyInfoItem';
 import ApprovedCountBox from './_components/ApprovedCountBox';
 import ManageApplyItem from './_components/ManageApplyItem';
 
-export default function ManageApplyPage() {
+function ManageApply() {
   const { id: recruitmentId } = useParams<{ id: string }>();
   const {
     data: {
@@ -49,5 +50,13 @@ export default function ManageApplyPage() {
       ))}
       <ApprovedCountBox approvedCount={approvedCount} />
     </Box>
+  );
+}
+
+export default function ManageApplyPage() {
+  return (
+    <Suspense fallback={<p>봉사 신청 현황 페이지 로딩 중...</p>}>
+      <ManageApply />
+    </Suspense>
   );
 }
