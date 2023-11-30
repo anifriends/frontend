@@ -1,22 +1,25 @@
 import { delay, http, HttpResponse } from 'msw';
 
-const DUMMY_RECRUITMENT = {
-  recruitmentId: 1,
-  recruitmentTitle: '봉사자를 모집합니다',
-  recruitmentStartTime: '2021-11-08T11:44:30.327959',
-  recruitmentEndTime: '2021-11-08T11:44:30.327959',
-  recruitmentDeadline: '2023-11-20T11:44:30.327959',
-  recruitmentIsClosed: false,
-  recruitmentApplicantCount: 15,
-  recruitmentCapacity: 15,
-};
+const randomDate = (start: Date, end: Date) =>
+  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
-// eslint-disable-next-line
-// @ts-ignore
-const DUMMY_RECRUITMENT_LIST = Array.from(
-  { length: 4 },
-  () => DUMMY_RECRUITMENT,
-);
+const currentDate = new Date();
+const startDate = new Date(currentDate);
+const endDate = new Date(currentDate);
+startDate.setDate(currentDate.getDate() - 30);
+endDate.setDate(endDate.getDate() + 30);
+
+const getRandomDummyRecruitment = () => ({
+  recruitmentId: Number(String(Math.random()).slice(2)),
+  shelterId: Number(String(Math.random()).slice(2)),
+  recruitmentTitle: '봉사자를 모집합니다',
+  recruitmentStartTime: randomDate(startDate, endDate),
+  recruitmentEndTime: randomDate(startDate, endDate),
+  recruitmentDeadline: randomDate(startDate, endDate),
+  recruitmentIsClosed: Boolean(Math.floor(Math.random() * 2)),
+  recruitmentApplicantCount: Math.floor(Math.random() * 15),
+  recruitmentCapacity: 20,
+});
 
 export const DUMMY_APPLICANT = {
   applicantId: 10,
@@ -44,9 +47,7 @@ export const handlers = [
           hasNext: true,
         },
         recruitments: Array.from({ length: 4 }, () => ({
-          ...DUMMY_RECRUITMENT,
-          recruitmentId: Math.random(),
-          shelterId: Math.random(),
+          ...getRandomDummyRecruitment(),
         })),
       },
       { status: 200 },
