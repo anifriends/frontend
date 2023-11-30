@@ -4,9 +4,10 @@ import useAuthStore from 'shared/store/authStore';
 
 export default function WithLogin({ children }: { children: ReactNode }) {
   const { user } = useAuthStore();
+  console.log(user);
 
   if (user) {
-    children;
+    return children;
   }
 
   return <Navigate to="/signin" />;
