@@ -57,6 +57,10 @@ export default function VolunteersDetailPage() {
     },
   });
 
+  const goShelterProfilePage = () => {
+    navigate(`/shelters/profile/${data.shelterId}`);
+  };
+
   const onApplyRecruitment = () => {
     onClose();
     applyRecruitment();
@@ -121,11 +125,13 @@ export default function VolunteersDetailPage() {
         {data.recruitmentContent}
       </Text>
       <Divider />
-      <ProfileInfo
-        infoImage={shelter.shelterImageUrl}
-        infoTitle={shelter.shelterName}
-        infoTexts={[shelter.shelterEmail, shelter.shelterAddress]}
-      />
+      <Box cursor="pointer" onClick={goShelterProfilePage}>
+        <ProfileInfo
+          infoImage={shelter.shelterImageUrl}
+          infoTitle={shelter.shelterName}
+          infoTexts={[shelter.shelterEmail, shelter.shelterAddress]}
+        />
+      </Box>
       <Divider />
 
       <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
