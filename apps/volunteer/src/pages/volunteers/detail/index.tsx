@@ -57,11 +57,6 @@ export default function VolunteersDetailPage() {
     },
   });
 
-  const goChatting = () => {
-    //TODO 채팅방 생성 API
-    navigate(`/chattings/${recruitmentId}`);
-  };
-
   const onApplyRecruitment = () => {
     onClose();
     applyRecruitment();
@@ -134,19 +129,6 @@ export default function VolunteersDetailPage() {
       <Divider />
 
       <HStack px={4} w="100%" pos="absolute" bottom="10px" left={0} spacing={5}>
-        <Button
-          onClick={goChatting}
-          size="md"
-          color="orange.400"
-          bgColor="white"
-          border="1.5px solid"
-          borderColor="orange.400"
-          w="100%"
-          _active={{ bg: undefined }}
-          _hover={{ bg: undefined }}
-        >
-          채팅하기
-        </Button>
         <Button
           onClick={onOpen}
           size="md"
