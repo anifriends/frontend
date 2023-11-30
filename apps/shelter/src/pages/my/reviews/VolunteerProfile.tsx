@@ -9,6 +9,7 @@ type VolunteerProfileprops = {
   volunteerReviewCount: number;
   volunteerImageUrl: string;
   reviewCreatedAt: string;
+  onClickNextButton: VoidFunction;
 };
 
 export default function VolunteerProfile({
@@ -17,6 +18,7 @@ export default function VolunteerProfile({
   volunteerReviewCount,
   volunteerImageUrl,
   reviewCreatedAt,
+  onClickNextButton,
 }: VolunteerProfileprops) {
   return (
     <HStack spacing={2.5}>
@@ -26,7 +28,7 @@ export default function VolunteerProfile({
           <Text fontWeight="semibold" lineHeight="tall">
             {volunteerName}
           </Text>
-          <Box as="button" boxSize={6} minW={6}>
+          <Box as="button" boxSize={6} minW={6} onClick={onClickNextButton}>
             <Image src={NextIcon} w="full" h="full" />
           </Box>
           <InfoSubtext title="리뷰" content={volunteerReviewCount.toString()} />

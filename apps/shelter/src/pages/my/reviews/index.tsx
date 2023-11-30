@@ -1,6 +1,8 @@
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReviewItem from 'shared/components/ReviewItem';
+import ReviewItemSkeletonList from 'shared/components/ReviewItemSkeletonList';
 import useIntersect from 'shared/hooks/useIntersection';
 import { createFormattedTime } from 'shared/utils/date';
 
@@ -10,7 +12,7 @@ import VolunteerProfile from './VolunteerProfile';
 const PAGE_SIZE = 10;
 
 function Reviews() {
-  //TODO 봉사자 옆에 화살표 버튼 클릭시 봉사자 프로필 페이지로 가는 기능추가
+  const navigate = useNavigate();
 
   const {
     data: { pages },
@@ -27,6 +29,10 @@ function Reviews() {
       fetchNextPage();
     }
   });
+
+  const goVolunteerProfile = (id: number) => {
+    navigate(`/volunteers/profile/${id}`);
+  };
 
   return (
     <Box px={4}>
@@ -54,6 +60,7 @@ function Reviews() {
               volunteerTempature={review.volunteerTemperature}
               volunteerReviewCount={review.volunteerReviewCount}
               volunteerImageUrl={review.volunteerImageUrl}
+              onClickNextButton={() => goVolunteerProfile(review.volunteerId)}
               reviewCreatedAt={createFormattedTime(
                 new Date(review.reviewCreatedAt),
                 'YY.MM.DD.',
@@ -62,14 +69,14 @@ function Reviews() {
           </ReviewItem>
         ))}
       </VStack>
-      <Box ref={ref} />
+      {isFetchingNextPage ? <ReviewItemSkeletonList /> : <Box ref={ref} />}
     </Box>
   );
 }
 
 export default function MyReviewsPage() {
   return (
-    <Suspense fallback={<p>글목록 로딩중...</p>}>
+    <Suspense fallback={<ReviewItemSkeletonList showTitle />}>
       <Reviews />
     </Suspense>
   );
