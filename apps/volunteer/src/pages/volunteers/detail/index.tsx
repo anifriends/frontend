@@ -71,15 +71,16 @@ function VolunteersDetail() {
     },
   ] = useFetchVolunteerDetail(recruitmentId);
 
-  const [isRecruitmentClosed, setIsRecruitmentClosed] = useState(
-    data.recruitmentIsClosed,
-  );
-
   const [isApplied, setIsApplied] = useState(isAppliedRecruitment);
 
   const volunteerDay = new Date(data.recruitmentStartTime);
   const deadline = new Date(data.recruitmentDeadline);
   const createdAt = new Date(data.recruitmentCreatedAt);
+  const volunteerDateDay = getDDay(data.recruitmentDeadline);
+
+  const [isRecruitmentClosed, setIsRecruitmentClosed] = useState(
+    data.recruitmentIsClosed || volunteerDateDay < 0,
+  );
 
   const queryClient = useQueryClient();
 
@@ -134,7 +135,7 @@ function VolunteersDetail() {
         ) : (
           <LabelText
             labelTitle="모집중"
-            content={`D-${getDDay(data.recruitmentDeadline)}`}
+            content={`D-${volunteerDateDay === 0 ? 'Day' : volunteerDateDay}`}
           />
         )}
         <Text fontSize="xl" fontWeight="semibold">
@@ -172,7 +173,7 @@ function VolunteersDetail() {
             title: '마감일',
             content:
               createFormattedTime(deadline) +
-              `(${createWeekDayLocalString(deadline)})` +
+              `(${createWeekDayLocalString(deadline)}) ` +
               createFormattedTime(deadline, 'hh:mm'),
           },
         ]}
