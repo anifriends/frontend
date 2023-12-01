@@ -3,7 +3,10 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
+import APP_TYPE from '../constants/appType';
+import { AppType } from '../types/app';
 import { getErrorMessage } from '../utils/errorMessage';
+import { removeItemFromStorage } from '../utils/localStorage';
 
 const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const navigate = useNavigate();
@@ -13,6 +16,11 @@ const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const isNotAuthorized = status === 401;
   const isForbidden = status === 403;
   const buttonMessage = isNotAuthorized ? '로그인' : '다시 시도';
+
+  if (isNotAuthorized) {
+    removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
+    removeItemFromStorage(APP_TYPE.SHELTER_APP);
+  }
 
   const onClick = () => {
     if (isNotAuthorized) {
@@ -49,7 +57,7 @@ export default function LocalErrorBoundary({
   children,
 }: {
   children: React.ReactNode;
-}) {
+} & { appType: AppType }) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (

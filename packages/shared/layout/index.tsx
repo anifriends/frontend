@@ -32,15 +32,6 @@ export default function Layout({ appType }: LayoutProps) {
     } catch (error) {
       setUser(null);
       removeItemFromStorage('token');
-      /*
-       *
-       * 로그인 실패시
-       * 1. 봉사자 어플 그대로 있음...?
-       *
-       * 2. 보호소 어플 무조건 로그인
-       *
-       *
-       */
 
       if (pathname === '/') {
         navigate('/signin');
@@ -72,7 +63,7 @@ export default function Layout({ appType }: LayoutProps) {
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
       <Header appType={appType} />
       <Box overflowY="scroll" width="100%" height="100%" as="main">
-        <LocalErrorBoundary>
+        <LocalErrorBoundary appType={appType}>
           <Outlet />
         </LocalErrorBoundary>
       </Box>
