@@ -68,7 +68,8 @@ export default function SigninPage() {
       removeItemFromStorage(APP_TYPE.SHELTER_APP);
       toast({
         position: 'top',
-        description: error.response?.data.message,
+        description:
+          error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
         status: 'error',
         duration: 1500,
       });
