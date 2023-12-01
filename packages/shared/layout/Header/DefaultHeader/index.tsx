@@ -6,13 +6,13 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import AlertModal from 'components/AlertModal';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuthStore from 'store/authStore';
 
 import NotificationsIcon from '../../../assets/icon_notifications.svg';
 import SearchIcon from '../../../assets/icon_search.svg';
 import SettingsIcon from '../../../assets/icon_settings.svg';
+import AlertModal from '../../../components/AlertModal';
+import useAuthStore from '../../../store/authStore';
 import { HeaderProps } from '../index';
 import { useDefaultHeader } from './useDefaultHeader';
 
