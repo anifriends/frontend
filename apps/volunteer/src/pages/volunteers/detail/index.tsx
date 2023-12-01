@@ -8,8 +8,8 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
@@ -17,6 +17,7 @@ import InfoTextList from 'shared/components/InfoTextList';
 import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import ProfileInfo from 'shared/components/ProfileInfo';
+import useAuthStore from 'shared/store/authStore';
 import {
   createFormattedTime,
   createWeekDayLocalString,
@@ -28,31 +29,69 @@ import { applyRecruitments } from '@/apis/recruitment';
 import useFetchVolunteerDetail from './_hooks/useFetchRecruitmentDetail';
 import useFetchSimpleShelterInfo from './_hooks/useFetchSimpleShelterInfo';
 
-export default function VolunteersDetailPage() {
-  const toast = useToast();
+function VolunteersDetail() {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const { id } = useParams<{ id: string }>();
   const recruitmentId = Number(id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
-  const { data } = useFetchVolunteerDetail(recruitmentId);
+  const [alertModalState, setAlertModalState] = useState({
+    modalTitle: '',
+    modalContent: '',
+    btnTitle: '',
+    onClick: () => {},
+  });
+
+  useEffect(() => {
+    if (!user) {
+      setAlertModalState({
+        modalTitle: '로그인 하기',
+        modalContent: '로그인 하시겠습니까?',
+        btnTitle: '로그인 하기',
+        onClick: goLogInPage,
+      });
+    } else {
+      setAlertModalState({
+        modalTitle: '봉사 신청',
+        modalContent: '봉사를 신청하시겠습니까?',
+        btnTitle: '신청하기',
+        onClick: onApplyRecruitment,
+      });
+    }
+  }, [user]);
+
+  const [
+    { data },
+    {
+      data: { isAppliedRecruitment },
+    },
+  ] = useFetchVolunteerDetail(recruitmentId);
 
   const [isRecruitmentClosed, setIsRecruitmentClosed] = useState(
     data.recruitmentIsClosed,
   );
 
+  const [isApplied, setIsApplied] = useState(isAppliedRecruitment);
+
   const volunteerDay = new Date(data.recruitmentStartTime);
   const deadline = new Date(data.recruitmentDeadline);
   const createdAt = new Date(data.recruitmentCreatedAt);
-  const updatedAt = new Date(data.recruitmentUpdatedAt);
+
+  const queryClient = useQueryClient();
 
   const { data: shelter } = useFetchSimpleShelterInfo(data.shelterId);
 
   const { mutate: applyRecruitment } = useMutation({
     mutationFn: async () => await applyRecruitments(recruitmentId),
     onSuccess: () => {
+      queryClient.setQueryData(['recruitment', recruitmentId, 'isApplied'], {
+        isAppliedRecruitment: true,
+      });
+      setIsApplied(true);
       toast({
         position: 'top',
         description: '봉사 신청이 완료되었습니다.',
@@ -77,6 +116,10 @@ export default function VolunteersDetailPage() {
     navigate(`/shelters/profile/${data.shelterId}`);
   };
 
+  const goLogInPage = () => {
+    navigate('/signin');
+  };
+
   const onApplyRecruitment = () => {
     onClose();
     applyRecruitment();
@@ -98,10 +141,8 @@ export default function VolunteersDetailPage() {
           {data.recruitmentTitle}
         </Text>
         <Text fontSize="sm" fontWeight="normal" color="gray.500">
-          작성일 |{' '}
-          {updatedAt
-            ? `${createFormattedTime(updatedAt)} (수정됨)`
-            : createFormattedTime(createdAt)}
+          작성일 | {createFormattedTime(createdAt)}
+          {data.recruitmentUpdatedAt && ' (수정됨)'}
         </Text>
       </VStack>
 
@@ -167,19 +208,24 @@ export default function VolunteersDetailPage() {
           w="100%"
           _active={{ bg: undefined }}
           _hover={{ bg: undefined }}
-          isDisabled={isRecruitmentClosed}
+          isDisabled={isRecruitmentClosed || isApplied}
         >
-          신청하기
+          {isRecruitmentClosed
+            ? '모집마감'
+            : isApplied
+            ? '신청완료'
+            : '신청하기'}
         </Button>
       </HStack>
-      <AlertModal
-        modalTitle="봉사 신청"
-        modalContent="봉사를 신청하시겠습니까?"
-        btnTitle="신청하기"
-        isOpen={isOpen}
-        onClose={onClose}
-        onClick={onApplyRecruitment}
-      />
+      <AlertModal {...alertModalState} isOpen={isOpen} onClose={onClose} />
     </Box>
+  );
+}
+
+export default function VolunteersDetailPage() {
+  return (
+    <Suspense>
+      <VolunteersDetail />
+    </Suspense>
   );
 }
