@@ -63,7 +63,7 @@ export default function Layout({ appType }: LayoutProps) {
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
       <Header appType={appType} />
       <Box overflowY="scroll" width="100%" height="100%" as="main">
-        <LocalErrorBoundary appType={appType}>
+        <LocalErrorBoundary>
           <Outlet />
         </LocalErrorBoundary>
       </Box>
