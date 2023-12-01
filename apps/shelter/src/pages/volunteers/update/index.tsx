@@ -17,7 +17,7 @@ import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
-import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
+import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
 import * as z from 'zod';
 
 import { updateShelterRecruitment } from '@/apis/recruitment';
@@ -77,7 +77,7 @@ export default function VolunteersUpdatePage() {
     resolver: zodResolver(recruitmentSchema),
   });
   const { photos, setImageUrls, handleUploadPhoto, handleDeletePhoto } =
-    useUploadPhoto(UPLOAD_LIMIT);
+    usePhotosUpload(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
 

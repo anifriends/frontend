@@ -11,8 +11,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { usePhotoUpload } from 'shared/hooks/usePhotoUpload';
 
 import { updateShelterInfo } from '@/apis/shelter';
 import { UpdateShelterInfo } from '@/types/apis/shetler';
@@ -21,7 +22,6 @@ import useFetchShelterAccount from './_hooks/useFetchShelterAccount';
 
 export default function SettingsAccountPage() {
   const toast = useToast();
-  const [imgFile, setImgFile] = useState<string>('');
   const { data } = useFetchShelterAccount();
   const { mutate: updateShelter } = useMutation({
     mutationFn: (data: UpdateShelterInfo) => updateShelterInfo(data),
@@ -36,22 +36,21 @@ export default function SettingsAccountPage() {
   });
 
   const { register, handleSubmit, reset, watch } = useForm<UpdateShelterInfo>();
+  const { photo, setPhoto, handleUploadPhoto } = usePhotoUpload(data.imageUrl);
 
   useEffect(() => {
     reset(data);
-    setImgFile(data.imageUrl);
+    setPhoto(data.imageUrl);
   }, [data]);
 
   const onSubmit = handleSubmit((newData) => {
     updateShelter(newData);
   });
 
-  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const newImgFile = URL.createObjectURL(file);
-      setImgFile(newImgFile);
-    }
+  const uploadImgFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    handleUploadPhoto(files);
+    event.target.value = '';
   };
 
   return (
@@ -64,7 +63,7 @@ export default function SettingsAccountPage() {
             as="label"
             htmlFor="profileImg"
             cursor="pointer"
-            src={imgFile}
+            src={photo}
           />
           <Input
             id="profileImg"

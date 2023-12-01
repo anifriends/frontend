@@ -12,8 +12,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { usePhotoUpload } from 'shared/hooks/usePhotoUpload';
 
 import {
   UpdateUserInfoParams,
@@ -23,7 +24,6 @@ import useFetchMyVolunteer from '@/pages/my/_hooks/useFetchMyVolunteer';
 
 export default function SettingsAccountPage() {
   const toast = useToast();
-  const [imgFile, setImgFile] = useState<string>('');
   const { data } = useFetchMyVolunteer();
   const { mutate: updateAccount } = useMutation({
     mutationFn: (data: UpdateUserInfoParams) => updateVolunteerUserInfo(data),
@@ -38,6 +38,9 @@ export default function SettingsAccountPage() {
   });
   const { register, handleSubmit, reset, watch } =
     useForm<UpdateUserInfoParams>();
+  const { photo, setPhoto, handleUploadPhoto } = usePhotoUpload(
+    data.volunteerImageUrl,
+  );
 
   useEffect(() => {
     reset({
@@ -47,15 +50,13 @@ export default function SettingsAccountPage() {
       phoneNumber: data.volunteerPhoneNumber,
       gender: data.volunteerGender,
     });
-    setImgFile(data.volunteerImageUrl);
+    setPhoto(data.volunteerImageUrl);
   }, [data, reset]);
 
-  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const newImgFile = URL.createObjectURL(file);
-      setImgFile(newImgFile);
-    }
+  const uploadImgFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    handleUploadPhoto(files);
+    event.target.value = '';
   };
 
   const onSubmit = handleSubmit((newData) => {
@@ -71,7 +72,7 @@ export default function SettingsAccountPage() {
             as="label"
             htmlFor="profileImg"
             cursor="pointer"
-            src={imgFile}
+            src={photo}
             variant="프로필 이미지"
           />
           <Input

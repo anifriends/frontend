@@ -1,7 +1,8 @@
 import { Box, Container } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import Loader from '../components/Loader';
 import LocalErrorBoundary from '../components/LocalErrorBoundary';
 import useAuthStore from '../store/authStore';
 import { AppType } from '../types/app';
@@ -20,6 +21,7 @@ export default function Layout({ appType }: LayoutProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { setUser } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     try {
@@ -36,6 +38,8 @@ export default function Layout({ appType }: LayoutProps) {
       if (pathname === '/') {
         navigate('/signin');
       }
+    } finally {
+      setIsLoading(false);
     }
 
     //TODO 액세스 토큰 갱신 api 정상화 되면 연결
@@ -58,6 +62,10 @@ export default function Layout({ appType }: LayoutProps) {
     // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>
