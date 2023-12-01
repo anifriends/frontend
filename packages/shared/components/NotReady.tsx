@@ -7,7 +7,7 @@ export default function NotReady() {
   return (
     <VStack justify="center" align="center" h="full" spacing={6}>
       <Heading as="h4" fontSize="xl">
-        준비중인 페이지입니다
+        준비 중입니다
       </Heading>
       <Text color="gray.400" fontWeight="semibold">
         홈 혹은 이전 페이지로 이동해주세요
