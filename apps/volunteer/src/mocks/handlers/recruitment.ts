@@ -59,4 +59,9 @@ export const handlers = [
       status: 204,
     });
   }),
+  http.get('/volunteers/recruitments/:recruitmentId/apply', async () => {
+    return HttpResponse.json({
+      isAppliedRecruitment: false,
+    });
+  }),
 ];
