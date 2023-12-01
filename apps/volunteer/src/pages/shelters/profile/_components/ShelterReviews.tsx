@@ -23,8 +23,8 @@ export default function ShelterReviews() {
     queryFn: async ({ pageParam }) =>
       (
         await getVolunteerReviewsOnShelter(shelterId, {
-          pageNumber: pageParam,
-          pageSize: 10,
+          page: pageParam,
+          size: 10,
         })
       ).data,
     initialPageParam: 1,

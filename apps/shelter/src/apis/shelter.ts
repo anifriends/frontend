@@ -8,8 +8,8 @@ type PasswordUpdateParams = {
 };
 
 type PageParams = {
-  pageSize: number;
-  pageNumber: number;
+  page: number;
+  size: number;
 };
 
 export const getShelterInfoAPI = () =>
