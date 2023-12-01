@@ -6,7 +6,7 @@ import {
   useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import InfoSubtext from 'shared/components/InfoSubtext';
@@ -17,7 +17,7 @@ import { createFormattedTime } from 'shared/utils/date';
 import { deleteVolunteerReview } from '@/apis/review';
 import { getMyReviewsAPI, MyReviewsResponse } from '@/apis/volunteer';
 
-function MyReviews() {
+export default function MyReviews() {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -121,13 +121,5 @@ function MyReviews() {
         onClick={() => deleteReveiw.mutate(deleteReviewId)}
       />
     </Box>
-  );
-}
-
-export default function MyReviewsTab() {
-  return (
-    <Suspense fallback={<p>'로딩 중 입니다..'</p>}>
-      <MyReviews />
-    </Suspense>
   );
 }

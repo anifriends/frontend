@@ -1,5 +1,6 @@
 import { Box, useToken } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import Label from 'shared/components/Label';
 import ProfileInfo from 'shared/components/ProfileInfo';
@@ -10,7 +11,7 @@ import { getVolunteerProfile } from '@/apis/volunteers';
 import VolunteerRecruitments from './_components/VolunteerRecruitments';
 import VolunteerReviews from './_components/VolunteerReviews';
 
-export default function VolunteersProfilePage() {
+function VolunteersProfile() {
   const { id } = useParams<{ id: string }>();
   const [gray200] = useToken('colors', ['gray.200']);
 
@@ -43,10 +44,28 @@ export default function VolunteersProfilePage() {
       </Box>
       <Tabs
         tabs={[
-          ['봉사 후기', <VolunteerReviews id={Number(id)} key={1} />],
-          ['봉사 이력', <VolunteerRecruitments id={Number(id)} key={2} />],
+          [
+            '봉사 후기',
+            <Suspense fallback={<p>봉사 후기 로딩 중...</p>} key={1}>
+              <VolunteerReviews id={Number(id)} />
+            </Suspense>,
+          ],
+          [
+            '봉사 이력',
+            <Suspense fallback={<p>봉사 이력 로딩 중...</p>} key={2}>
+              <VolunteerRecruitments id={Number(id)} />
+            </Suspense>,
+          ],
         ]}
       />
     </Box>
+  );
+}
+
+export default function VolunteersProfilePage() {
+  return (
+    <Suspense fallback={<p>봉사자 프로필 페이지 로딩 중...</p>}>
+      <VolunteersProfile />
+    </Suspense>
   );
 }

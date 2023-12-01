@@ -225,7 +225,7 @@ function VolunteersDetail() {
 
 export default function VolunteersDetailPage() {
   return (
-    <Suspense>
+    <Suspense fallback={<p>봉사 상세 페이지 로딩 중...</p>}>
       <VolunteersDetail />
     </Suspense>
   );
