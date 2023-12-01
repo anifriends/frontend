@@ -16,7 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
-import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
+import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
 import * as z from 'zod';
 
 import { createShelterRecruitment } from '@/apis/recruitment';
@@ -60,7 +60,7 @@ export default function VolunteersWritePage() {
   });
 
   const { photos, handleUploadPhoto, handleDeletePhoto } =
-    useUploadPhoto(UPLOAD_LIMIT);
+    usePhotosUpload(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
 

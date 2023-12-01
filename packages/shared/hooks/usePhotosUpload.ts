@@ -24,47 +24,33 @@ const getRandomId = (): string => {
   return String(Math.random()).slice(2);
 };
 
-const getLocalImageUrls = (imageFiles: ImageFile[]): Promise<Photo[]> => {
-  const getLocalImageUrl = imageFiles.map(({ id, image }) => {
-    const reader = new FileReader();
+const getLocalImageUrls = (imageFiles: ImageFile[]): Photo[] =>
+  imageFiles.map(({ id, image }) => ({ id, url: URL.createObjectURL(image) }));
 
-    return new Promise<Photo>((resolve) => {
-      reader.onloadend = () => {
-        const imageFileUrl = String(reader.result);
-        resolve({ id, url: imageFileUrl });
-      };
-      reader.readAsDataURL(image as File);
-    });
-  });
-
-  return Promise.all(getLocalImageUrl);
-};
-
-const getServerImageUrls = (imageFiles: ImageFile[]) => {
-  const uploadPromises = imageFiles.map(async ({ id, image }) => {
-    try {
-      return new Promise<Photo>((resolve) => {
+const getServerImageUrls = async (
+  imageFiles: ImageFile[],
+): Promise<Photo[]> => {
+  const uploadPromises: Promise<Photo>[] = imageFiles.map(
+    async ({ id, image }) => {
+      try {
+        const resizedImage = await resizeImageFile(image, 2);
         const formData = new FormData();
+        formData.append('images', resizedImage);
 
-        resizeImageFile(image, 2).then((resizedImage: File) => {
-          formData.append('images', resizedImage);
-          uploadImage(formData).then(({ data }) => {
-            const [imageUrl] = data.imageUrls;
-            resolve({ id, url: imageUrl });
-          });
-        });
-      });
-    } catch (error) {
-      return new Promise<Photo>((resolve) => {
-        resolve({ id, url: 'upload-failed' });
-      });
-    }
-  });
+        const { data } = await uploadImage(formData);
+        const [imageUrl] = data.imageUrls;
+
+        return { id, url: imageUrl };
+      } catch (error) {
+        return { id, url: 'upload-failed' };
+      }
+    },
+  );
 
   return Promise.all(uploadPromises);
 };
 
-export const useUploadPhoto = (uploadLimit: number) => {
+export const usePhotosUpload = (uploadLimit: number) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   const toast = useToast();
@@ -79,7 +65,7 @@ export const useUploadPhoto = (uploadLimit: number) => {
     setPhotos(newPhotos);
   };
 
-  const handleUploadPhoto = (files: FileList | null) => {
+  const handleUploadPhoto = async (files: FileList | null) => {
     if (!files) {
       return;
     }
@@ -100,19 +86,19 @@ export const useUploadPhoto = (uploadLimit: number) => {
       image: file,
     }));
 
-    getLocalImageUrls(imageFiles).then((newPhotos) => {
-      setPhotos((prevPhotos) => [...newPhotos, ...prevPhotos]);
-    });
+    setPhotos((prevPhotos) => [
+      ...getLocalImageUrls(imageFiles),
+      ...prevPhotos,
+    ]);
 
-    getServerImageUrls(imageFiles).then((newPhotos) => {
-      newPhotos.forEach((newPhoto) => {
-        setPhotos((prevPhotos) =>
-          prevPhotos.map((photo) =>
-            photo.id === newPhoto.id ? newPhoto : photo,
-          ),
-        );
-      });
-    });
+    const newPhotos: Photo[] = await getServerImageUrls(imageFiles);
+
+    setPhotos((prevPhotos) =>
+      prevPhotos.map((photo) => {
+        const newPhoto = newPhotos.find(({ id }) => photo.id === id);
+        return newPhoto ? newPhoto : photo;
+      }),
+    );
   };
 
   const handleDeletePhoto = (photoIndex: number) => {
