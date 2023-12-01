@@ -1,11 +1,12 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
+import { ReactNode } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
 import { getErrorMessage } from '../utils/errorMessage';
 
-const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
+function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const navigate = useNavigate();
   const status = error?.response?.status;
   const { title, content } = getErrorMessage(status);
@@ -16,14 +17,14 @@ const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
 
   const onClick = () => {
     if (isNotAuthorized) {
-      navigate('/login');
+      navigate('/signin');
     } else {
       resetErrorBoundary();
     }
   };
 
   return (
-    <VStack justify="center" align="center" h="full" spacing="6">
+    <VStack justify="center" align="center" h="full" spacing={6}>
       <Heading as="h4" fontSize="xl">
         {title}
       </Heading>
@@ -36,19 +37,19 @@ const RetryErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
       </HStack>
     </VStack>
   );
-};
+}
 
-const FallbackComponent = (props: FallbackProps) => {
+function FallbackComponent(props: FallbackProps) {
   // TODO accessToken 갱신 api가 정상화되면
   //만약 401, 403, 404 혹은 그 외 에러가 발생하면 throw props.error
 
   return <RetryErrorFallback {...props} />;
-};
+}
 
 export default function LocalErrorBoundary({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <QueryErrorResetBoundary>
