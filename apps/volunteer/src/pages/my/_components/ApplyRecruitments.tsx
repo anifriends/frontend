@@ -96,7 +96,7 @@ function ApplyRecruitmentItem({
           </Text>
         </Text>
         {applicantStatus === APPLICANT_STATUS.ATTENDANCE.ENG &&
-          applicantIsWritedReview && (
+          !applicantIsWritedReview && (
             <Button
               size="sm"
               mt={4}
