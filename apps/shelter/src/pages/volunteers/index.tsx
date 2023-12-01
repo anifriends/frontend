@@ -17,6 +17,8 @@ function Recruitments() {
   const navigate = useNavigate();
   const goWritePage = () => navigate('/volunteers/write');
 
+  const infiniteQueryOption = recruitmentQueryOptions.all();
+
   const {
     goVolunteersDetail,
     goManageApplyPage,
@@ -27,14 +29,14 @@ function Recruitments() {
     alertModalState,
     isModalOpen,
     onCloseModal,
-  } = useVolunteerRecruitItem();
+  } = useVolunteerRecruitItem(infiniteQueryOption.queryKey);
 
   const {
     data: { pages },
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useSuspenseInfiniteQuery(recruitmentQueryOptions.all());
+  } = useSuspenseInfiniteQuery(infiniteQueryOption);
 
   const recruitments = pages
     .flatMap(({ data }) => data.recruitments)
