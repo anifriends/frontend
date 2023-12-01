@@ -370,7 +370,7 @@ export default function SignupPage() {
             placeholder="보호소 전화번호를 입력하세요"
             type="tel"
           />
-          <FormHelperText>형식: 01012345678</FormHelperText>
+          <FormHelperText>형식: 010-1234-5678</FormHelperText>
           <FormErrorMessage>
             {errors.phoneNumber && errors.phoneNumber.message}
           </FormErrorMessage>
