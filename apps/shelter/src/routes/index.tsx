@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
+import WithLogin from 'shared/components/WithLogin';
 import APP_TYPE from 'shared/constants/appType';
 import PAGE_TYPE from 'shared/constants/pageType';
 import Layout from 'shared/layout';
@@ -40,32 +41,56 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.VOLUNTEERS,
             index: true,
-            element: <VolunteersPage />,
+            element: (
+              <WithLogin>
+                <VolunteersPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.VOLUNTEERS_DETAIL,
             path: PATH.VOLUNTEERS.DETAIL,
-            element: <VolunteersDetailPage />,
+            element: (
+              <WithLogin>
+                <VolunteersDetailPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.VOLUNTEERS_PROFILE,
             path: PATH.VOLUNTEERS.PROFILE,
-            element: <VolunteersProfilePage />,
+            element: (
+              <WithLogin>
+                <VolunteersProfilePage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.VOLUNTEERS_SEARCH,
             path: PATH.VOLUNTEERS.SEARCH,
-            element: <VolunteersSearchPage />,
+            element: (
+              <WithLogin>
+                <VolunteersSearchPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.VOLUNTEERS_WRITE,
             path: PATH.VOLUNTEERS.WRITE,
-            element: <VolunteersWritePage />,
+            element: (
+              <WithLogin>
+                <VolunteersWritePage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.VOLUNTEERS_UPDATE,
             path: PATH.VOLUNTEERS.UPDATE,
-            element: <VolunteersUpdatePage />,
+            element: (
+              <WithLogin>
+                <VolunteersUpdatePage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -75,27 +100,47 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.ANIMALS,
             index: true,
-            element: <AnimalsPage />,
+            element: (
+              <WithLogin>
+                <AnimalsPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.ANIMALS_DETAIL,
             path: PATH.ANIMALS.DETAIL,
-            element: <AnimalsDetailPage />,
+            element: (
+              <WithLogin>
+                <AnimalsDetailPage />,
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.ANIMALS_SEARCH,
             path: PATH.ANIMALS.SEARCH,
-            element: <AnimalsSearchPage />,
+            element: (
+              <WithLogin>
+                <AnimalsSearchPage />,
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.ANIMALS_WRITE,
             path: PATH.ANIMALS.WRITE,
-            element: <AnimalsWritePage />,
+            element: (
+              <WithLogin>
+                <AnimalsWritePage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.ANIMALS_UPDATE,
             path: PATH.ANIMALS.UPDATE,
-            element: <AnimalsUpdatePage />,
+            element: (
+              <WithLogin>
+                <AnimalsUpdatePage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -105,12 +150,20 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.CHATTINGS,
             index: true,
-            element: <ChattingsPage />,
+            element: (
+              <WithLogin>
+                <ChattingsPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.CHATTINGS_ROOM,
             path: PATH.CHATTINGS.ROOM,
-            element: <ChattingsRoomPage />,
+            element: (
+              <WithLogin>
+                <ChattingsRoomPage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -120,12 +173,20 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.MYPAGE,
             index: true,
-            element: <MyPage />,
+            element: (
+              <WithLogin>
+                <MyPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.MYPAGE_REVIEWS,
             path: PATH.MYPAGE.REVIEWS,
-            element: <MyReviewsPage />,
+            element: (
+              <WithLogin>
+                <MyReviewsPage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -135,12 +196,20 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.SETTINGS_ACCOUNT,
             path: PATH.SETTINGS.ACCOUNT,
-            element: <SettingsAccountPage />,
+            element: (
+              <WithLogin>
+                <SettingsAccountPage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.SETTINGS_PASSWORD,
             path: PATH.SETTINGS.PASSWORD,
-            element: <SettingsPasswordPage />,
+            element: (
+              <WithLogin>
+                <SettingsPasswordPage />
+              </WithLogin>
+            ),
           },
         ],
       },
@@ -150,19 +219,31 @@ export const router: RouterProviderProps['router'] = createBrowserRouter([
           {
             id: PAGE_TYPE.MANAGE_ATTENDANCE,
             path: PATH.MANAGE.ATTENDANCE,
-            element: <ManageAttendancePage />,
+            element: (
+              <WithLogin>
+                <ManageAttendancePage />
+              </WithLogin>
+            ),
           },
           {
             id: PAGE_TYPE.MANAGE_APPLY,
             path: PATH.MANAGE.APPLY,
-            element: <ManageApplyPage />,
+            element: (
+              <WithLogin>
+                <ManageApplyPage />
+              </WithLogin>
+            ),
           },
         ],
       },
       {
         id: PAGE_TYPE.NOTIFICATIONS,
         path: PATH.NOTIFICATIONS,
-        element: <NotificationsPage />,
+        element: (
+          <WithLogin>
+            <NotificationsPage />
+          </WithLogin>
+        ),
       },
       {
         id: PAGE_TYPE.SIGNUP,
