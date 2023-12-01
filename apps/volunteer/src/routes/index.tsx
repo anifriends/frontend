@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
+import WithLogin from 'shared/components/WithLogin';
 import APP_TYPE from 'shared/constants/appType';
 import PAGE_TYPE from 'shared/constants/pageType';
 import Layout from 'shared/layout';
 
-import WithLogin from '@/components/WithLogin';
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';
 import AnimalsDetailPage from '@/pages/animals/detail';

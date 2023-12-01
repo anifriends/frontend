@@ -4,7 +4,9 @@ import { ReactNode } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
+import APP_TYPE from '../constants/appType';
 import { getErrorMessage } from '../utils/errorMessage';
+import { removeItemFromStorage } from '../utils/localStorage';
 
 function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const navigate = useNavigate();
@@ -14,6 +16,11 @@ function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const isNotAuthorized = status === 401;
   const isForbidden = status === 403;
   const buttonMessage = isNotAuthorized ? '로그인' : '다시 시도';
+
+  if (isNotAuthorized) {
+    removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
+    removeItemFromStorage(APP_TYPE.SHELTER_APP);
+  }
 
   const onClick = () => {
     if (isNotAuthorized) {

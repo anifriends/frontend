@@ -3,8 +3,12 @@ import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import LocalErrorBoundary from '../components/LocalErrorBoundary';
-import useAccessTokenMutation from '../hooks/useAccessTokenMutation';
+import useAuthStore from '../store/authStore';
 import { AppType } from '../types/app';
+import {
+  getItemFromStorage,
+  removeItemFromStorage,
+} from '../utils/localStorage';
 import BottomNavBar from './BottomNavBar';
 import Header from './Header';
 
@@ -15,16 +19,23 @@ type LayoutProps = {
 export default function Layout({ appType }: LayoutProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { isPending } = useAccessTokenMutation();
+  const { setUser } = useAuthStore();
 
   useEffect(() => {
-    if (appType === 'VOLUNTEER_APP' && pathname === '/') {
-      navigate('/volunteers');
-    } else if (appType === 'SHELTER_APP') {
-      if (pathname === '/signup' || pathname === '/signin') {
-        return;
+    try {
+      const user = JSON.parse(getItemFromStorage(appType));
+      setUser(user);
+      //로그인 성공시 그대로있거나 홈으로 이동
+      if (pathname === '/') {
+        navigate('/volunteers');
       }
-      navigate('/signin');
+    } catch (error) {
+      setUser(null);
+      removeItemFromStorage('token');
+
+      if (pathname === '/') {
+        navigate('/signin');
+      }
     }
 
     //TODO 액세스 토큰 갱신 api 정상화 되면 연결
@@ -47,10 +58,6 @@ export default function Layout({ appType }: LayoutProps) {
     // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (isPending) {
-    return <p>...로딩중</p>;
-  }
 
   return (
     <Container pos="relative" maxW="container.sm" h="100vh" p={0} centerContent>

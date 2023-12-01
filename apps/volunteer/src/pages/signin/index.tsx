@@ -21,9 +21,14 @@ import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
 import IoEyeOff from 'shared/assets/IoEyeOff';
 import IoEyeSharp from 'shared/assets/IoEyeSharp';
+import APP_TYPE from 'shared/constants/appType';
 import useToggle from 'shared/hooks/useToggle';
 import useAuthStore from 'shared/store/authStore';
 import { SigninRequestData } from 'shared/types/apis/auth';
+import {
+  removeItemFromStorage,
+  setItemToStorage,
+} from 'shared/utils/localStorage';
 import { email, password } from 'shared/utils/validations';
 import * as z from 'zod';
 
@@ -53,11 +58,15 @@ export default function SigninPage() {
   const { mutate } = useMutation({
     mutationFn: (data: SigninRequestData) => signinVolunteer(data),
     onSuccess: ({ data: { userId, accessToken } }) => {
-      setUser({ userId, accessToken });
+      const user = { userId, accessToken };
+
+      setUser(user);
+      setItemToStorage(APP_TYPE.VOLUNTEER_APP, JSON.stringify(user));
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
       setUser(null);
+      removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
       toast({
         position: 'top',
         description: error.response?.data.message,
