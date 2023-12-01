@@ -1,3 +1,5 @@
+import NotReady from 'shared/components/NotReady';
+
 export default function ChattingsPage() {
-  return <h1>ChattingsPage</h1>;
+  return <NotReady />;
 }
