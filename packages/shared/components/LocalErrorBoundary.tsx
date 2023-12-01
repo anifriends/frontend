@@ -6,29 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { getErrorMessage } from '../utils/errorMessage';
 
-export default function LocalErrorBoundary({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <QueryErrorResetBoundary>
-      {({ reset }) => (
-        <ErrorBoundary FallbackComponent={FallbackComponent} onReset={reset}>
-          {children}
-        </ErrorBoundary>
-      )}
-    </QueryErrorResetBoundary>
-  );
-}
-
-function FallbackComponent(props: FallbackProps) {
-  // TODO accessToken 갱신 api가 정상화되면
-  //만약 401, 403, 404 혹은 그 외 에러가 발생하면 throw props.error
-
-  return <RetryErrorFallback {...props} />;
-}
-
 function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const navigate = useNavigate();
   const status = error?.response?.status;
@@ -59,5 +36,28 @@ function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
         <Button onClick={() => navigate('/volunteers')}>홈으로</Button>
       </HStack>
     </VStack>
+  );
+}
+
+function FallbackComponent(props: FallbackProps) {
+  // TODO accessToken 갱신 api가 정상화되면
+  //만약 401, 403, 404 혹은 그 외 에러가 발생하면 throw props.error
+
+  return <RetryErrorFallback {...props} />;
+}
+
+export default function LocalErrorBoundary({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary FallbackComponent={FallbackComponent} onReset={reset}>
+          {children}
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
   );
 }
