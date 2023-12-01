@@ -27,7 +27,7 @@ export default function MyPage() {
   };
 
   return (
-    <Box>
+    <Box pb="50px">
       <ProfileInfo infoTitle={shelterName} infoTexts={[email]} />
       <Divider />
       <InfoList py={4}>

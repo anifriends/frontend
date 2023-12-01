@@ -40,7 +40,7 @@ function Recruitments() {
   });
 
   return (
-    <Box>
+    <Box pb="50px">
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}

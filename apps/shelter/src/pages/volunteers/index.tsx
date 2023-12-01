@@ -1,4 +1,4 @@
-import { IconButton } from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -50,7 +50,7 @@ function Recruitments() {
   });
 
   return (
-    <>
+    <Box pb="50px">
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
@@ -82,7 +82,7 @@ function Recruitments() {
         onClose={onCloseModal}
         {...alertModalState}
       />
-    </>
+    </Box>
   );
 }
 
