@@ -24,21 +24,8 @@ const getRandomId = (): string => {
   return String(Math.random()).slice(2);
 };
 
-const getLocalImageUrls = (imageFiles: ImageFile[]): Promise<Photo[]> => {
-  const getUrlPromises: Promise<Photo>[] = imageFiles.map(
-    ({ id, image }) =>
-      new Promise<Photo>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const imageFileUrl = String(reader.result);
-          resolve({ id, url: imageFileUrl });
-        };
-        reader.readAsDataURL(image as File);
-      }),
-  );
-
-  return Promise.all(getUrlPromises);
-};
+const getLocalImageUrls = (imageFiles: ImageFile[]): Photo[] =>
+  imageFiles.map(({ id, image }) => ({ id, url: URL.createObjectURL(image) }));
 
 const getServerImageUrls = async (
   imageFiles: ImageFile[],
@@ -78,7 +65,7 @@ export const usePhotosUpload = (uploadLimit: number) => {
     setPhotos(newPhotos);
   };
 
-  const handleUploadPhoto = (files: FileList | null) => {
+  const handleUploadPhoto = async (files: FileList | null) => {
     if (!files) {
       return;
     }
@@ -99,19 +86,19 @@ export const usePhotosUpload = (uploadLimit: number) => {
       image: file,
     }));
 
-    getLocalImageUrls(imageFiles).then((newPhotos) => {
-      setPhotos((prevPhotos) => [...newPhotos, ...prevPhotos]);
-    });
+    setPhotos((prevPhotos) => [
+      ...getLocalImageUrls(imageFiles),
+      ...prevPhotos,
+    ]);
 
-    getServerImageUrls(imageFiles).then((newPhotos) => {
-      newPhotos.forEach((newPhoto) => {
-        setPhotos((prevPhotos) =>
-          prevPhotos.map((photo) =>
-            photo.id === newPhoto.id ? newPhoto : photo,
-          ),
-        );
-      });
-    });
+    const newPhotos: Photo[] = await getServerImageUrls(imageFiles);
+
+    setPhotos((prevPhotos) =>
+      prevPhotos.map((photo) => {
+        const newPhoto = newPhotos.find(({ id }) => photo.id === id);
+        return newPhoto ? newPhoto : photo;
+      }),
+    );
   };
 
   const handleDeletePhoto = (photoIndex: number) => {
