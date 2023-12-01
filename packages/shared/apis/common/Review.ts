@@ -2,8 +2,8 @@ import axiosInstance from 'apis/axiosInstance';
 
 export const getVolunteerReviews = (
   volunteerId: number,
-  pageNumber: number,
-  pageSize: number,
+  page: number,
+  size: number,
 ) =>
   axiosInstance.get<
     {
@@ -20,12 +20,12 @@ export const getVolunteerReviews = (
       }[];
     },
     {
-      pageNumber: number;
-      pageSize: number;
+      page: number;
+      size: number;
     }
   >(`/volunteers/${volunteerId}/reviews`, {
     params: {
-      pageNumber,
-      pageSize,
+      page,
+      size,
     },
   });
