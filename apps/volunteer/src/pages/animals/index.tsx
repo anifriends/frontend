@@ -1,3 +1,5 @@
+import NotReady from 'shared/components/NotReady';
+
 export default function AnimalsPage() {
-  return <h1>AnimalsPage</h1>;
+  return <NotReady />;
 }
