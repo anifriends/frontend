@@ -46,8 +46,8 @@ export default function SettingsAccountPage() {
     updateShelter(newData);
   });
 
-  const uploadImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const uploadImgFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const newImgFile = URL.createObjectURL(file);
       setImgFile(newImgFile);

@@ -14,7 +14,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import ProfileInfo from 'shared/components/ProfileInfo';
-import { useUploadPhoto } from 'shared/hooks/useUploadPhoto';
+import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
 
 import { createVolunteerReview } from '@/apis/review';
 import { getSimpleShelterProfile } from '@/apis/shelter';
@@ -72,7 +72,7 @@ export default function SheltersReviewsWritePage() {
   });
 
   const { photos, handleUploadPhoto, handleDeletePhoto } =
-    useUploadPhoto(UPLOAD_LIMIT);
+    usePhotosUpload(UPLOAD_LIMIT);
 
   const contentLength = watch('content')?.length ?? 0;
 

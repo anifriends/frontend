@@ -25,46 +25,45 @@ const getRandomId = (): string => {
 };
 
 const getLocalImageUrls = (imageFiles: ImageFile[]): Promise<Photo[]> => {
-  const getLocalImageUrl = imageFiles.map(({ id, image }) => {
-    const reader = new FileReader();
+  const getUrlPromises: Promise<Photo>[] = imageFiles.map(
+    ({ id, image }) =>
+      new Promise<Photo>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const imageFileUrl = String(reader.result);
+          resolve({ id, url: imageFileUrl });
+        };
+        reader.readAsDataURL(image as File);
+      }),
+  );
 
-    return new Promise<Photo>((resolve) => {
-      reader.onloadend = () => {
-        const imageFileUrl = String(reader.result);
-        resolve({ id, url: imageFileUrl });
-      };
-      reader.readAsDataURL(image as File);
-    });
-  });
-
-  return Promise.all(getLocalImageUrl);
+  return Promise.all(getUrlPromises);
 };
 
-const getServerImageUrls = (imageFiles: ImageFile[]) => {
-  const uploadPromises = imageFiles.map(async ({ id, image }) => {
-    try {
-      return new Promise<Photo>((resolve) => {
+const getServerImageUrls = async (
+  imageFiles: ImageFile[],
+): Promise<Photo[]> => {
+  const uploadPromises: Promise<Photo>[] = imageFiles.map(
+    async ({ id, image }) => {
+      try {
+        const resizedImage = await resizeImageFile(image, 2);
         const formData = new FormData();
+        formData.append('images', resizedImage);
 
-        resizeImageFile(image, 2).then((resizedImage: File) => {
-          formData.append('images', resizedImage);
-          uploadImage(formData).then(({ data }) => {
-            const [imageUrl] = data.imageUrls;
-            resolve({ id, url: imageUrl });
-          });
-        });
-      });
-    } catch (error) {
-      return new Promise<Photo>((resolve) => {
-        resolve({ id, url: 'upload-failed' });
-      });
-    }
-  });
+        const { data } = await uploadImage(formData);
+        const [imageUrl] = data.imageUrls;
+
+        return { id, url: imageUrl };
+      } catch (error) {
+        return { id, url: 'upload-failed' };
+      }
+    },
+  );
 
   return Promise.all(uploadPromises);
 };
 
-export const useUploadPhoto = (uploadLimit: number) => {
+export const usePhotosUpload = (uploadLimit: number) => {
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   const toast = useToast();
