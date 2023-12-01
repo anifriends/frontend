@@ -281,6 +281,9 @@ importers:
       react-error-boundary:
         specifier: ^4.0.11
         version: 4.0.11(react@18.2.0)
+      react-image-file-resizer:
+        specifier: ^0.4.8
+        version: 0.4.8
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -5582,6 +5585,10 @@ packages:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-image-file-resizer@0.4.8:
+    resolution: {integrity: sha512-Ue7CfKnSlsfJ//SKzxNMz8avDgDSpWQDOnTKOp/GNRFJv4dO9L5YGHNEnj40peWkXXAK2OK0eRIoXhOYpUzUTQ==}
     dev: false
 
   /react-is@16.13.1:
