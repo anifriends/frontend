@@ -34,6 +34,11 @@ export default function VolunteersSearchPage() {
   const { isKeywordSearched, searchFilter, handleChangeSearchFilter } =
     useRecruitmentSearch();
 
+  const infiniteQueryOption = recruitmentQueryOptions.search(
+    getVolunteerSearchRequestFilter(searchFilter),
+    isKeywordSearched,
+  );
+
   const {
     goVolunteersDetail,
     goManageApplyPage,
@@ -44,15 +49,10 @@ export default function VolunteersSearchPage() {
     alertModalState,
     isModalOpen,
     onCloseModal,
-  } = useVolunteerRecruitItem();
+  } = useVolunteerRecruitItem(infiniteQueryOption.queryKey);
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
-    useInfiniteQuery(
-      recruitmentQueryOptions.search(
-        getVolunteerSearchRequestFilter(searchFilter),
-        isKeywordSearched,
-      ),
-    );
+    useInfiniteQuery(infiniteQueryOption);
 
   const recruitments = data?.pages
     .flatMap(({ data }) => data.recruitments)

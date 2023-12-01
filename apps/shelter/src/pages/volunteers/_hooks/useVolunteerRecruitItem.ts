@@ -12,9 +12,15 @@ import {
   closeShelterRecruitment,
   deleteShelterRecruitment,
 } from '@/apis/recruitment';
-import { RecruitementsResponse, Recruitment } from '@/types/apis/recruitment';
+import {
+  RecruitementsResponse,
+  Recruitment,
+  RecruitmentSearchFilter,
+} from '@/types/apis/recruitment';
 
-export const useVolunteerRecruitItem = () => {
+export const useVolunteerRecruitItem = (
+  queryKey: (string | Partial<RecruitmentSearchFilter>)[],
+) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -46,7 +52,7 @@ export const useVolunteerRecruitItem = () => {
     },
     onSuccess: (_, recruitmentId) => {
       queryClient.setQueryData(
-        ['recruitments'],
+        queryKey,
         (data: InfiniteData<AxiosResponse<RecruitementsResponse>>) => {
           return {
             pages: getNewPages(data, (recruitments) =>
@@ -70,7 +76,7 @@ export const useVolunteerRecruitItem = () => {
     },
     onSuccess: (_, recruitmentId) => {
       queryClient.setQueryData(
-        ['recruitments'],
+        queryKey,
         (data: InfiniteData<AxiosResponse<RecruitementsResponse>>) => {
           return {
             pages: getNewPages(data, (recruitments) =>
