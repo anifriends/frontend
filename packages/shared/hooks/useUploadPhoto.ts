@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { uploadImage } from '../apis/common/Image';
 import { Photo } from '../components/EditPhotoList';
+import { resizeImageFile } from '../utils/image';
 
 type ImageFile = { id: string; image: File };
 
@@ -42,14 +43,16 @@ const getLocalImageUrls = (imageFiles: ImageFile[]): Promise<Photo[]> => {
 const getServerImageUrls = (imageFiles: ImageFile[]) => {
   const uploadPromises = imageFiles.map(async ({ id, image }) => {
     try {
-      const formData = new FormData();
-      formData.append('images', image);
-
-      const { data } = await uploadImage(formData);
-      const [imageUrl] = data.imageUrls;
-
       return new Promise<Photo>((resolve) => {
-        resolve({ id, url: imageUrl });
+        const formData = new FormData();
+
+        resizeImageFile(image, 2).then((resizedImage: File) => {
+          formData.append('images', resizedImage);
+          uploadImage(formData).then(({ data }) => {
+            const [imageUrl] = data.imageUrls;
+            resolve({ id, url: imageUrl });
+          });
+        });
       });
     } catch (error) {
       return new Promise<Photo>((resolve) => {
