@@ -110,9 +110,9 @@ export default function VolunteersUpdatePage() {
       recruitmentId: Number(recruitmentId),
       request: {
         ...data,
-        startTime: String(startTime),
-        endTime: String(endTime),
-        deadline: String(deadline),
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        deadline: deadline.toISOString(),
         imageUrls: photos
           .filter(({ url }) => url !== 'upload-failed')
           .map(({ url }) => url),

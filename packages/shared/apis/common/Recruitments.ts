@@ -23,8 +23,8 @@ export const getRecruitmentDetail = (recruitmentId: number) =>
 // 봉사자가 완료한 봉사 모집글 리스트 조회
 export const getCompletedVolunteers = (
   volunteerId: number,
-  pageNumber: number,
-  pageSize: number,
+  page: number,
+  size: number,
 ) =>
   axiosInstance.get<
     {
@@ -39,19 +39,19 @@ export const getCompletedVolunteers = (
         shelterName: string;
       }[];
     },
-    { pageNumber: number; pageSize: number }
+    { page: number; size: number }
   >(`/volunteers/${volunteerId}/recruitments/completed`, {
     params: {
-      pageNumber,
-      pageSize,
+      page,
+      size,
     },
   });
 
 //보호소가 생성한 봉사 모집글 리스트 조회
 export const getShelterRecruitment = (
   shelterId: number,
-  pageNumber: number,
-  pageSize: number,
+  page: number,
+  size: number,
 ) =>
   axiosInstance.get<
     {
@@ -69,10 +69,10 @@ export const getShelterRecruitment = (
         recruitmentApplicantCount: number;
       }[];
     },
-    { pageNumber: number; pageSize: number }
+    { page: number; size: number }
   >(`/shelters/${shelterId}/recruitments`, {
     params: {
-      pageNumber,
-      pageSize,
+      page,
+      size,
     },
   });

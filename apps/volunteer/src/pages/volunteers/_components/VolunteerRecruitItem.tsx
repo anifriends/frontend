@@ -1,5 +1,6 @@
 import { AspectRatio, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { MouseEvent } from 'react';
+import NoImage from 'shared/assets/icon_no_image.svg';
 import ApplicantStatus from 'shared/components/ApplicantStatus';
 import InfoSubText from 'shared/components/InfoSubtext';
 import Label from 'shared/components/Label';
@@ -48,7 +49,12 @@ export default function VolunteerRecruitItem({
       onClick={onClickItem}
     >
       <AspectRatio minW="110px" ratio={1}>
-        <Image src={shelterProfileImage} borderRadius={10} />
+        <Image
+          as="img"
+          src={shelterProfileImage}
+          borderRadius={10}
+          fallbackSrc={NoImage}
+        />
       </AspectRatio>
       <Box w="full" pos="relative">
         <VStack w="full" align="start" gap={1}>

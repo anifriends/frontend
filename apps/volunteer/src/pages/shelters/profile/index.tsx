@@ -11,7 +11,7 @@ import { getShelterProfileDetail } from '@/apis/shelter';
 import ShelterRecruitments from './_components/ShelterRecruitments';
 import ShelterReviewsTab from './_components/ShelterReviews';
 
-export default function SheltersProfilePage() {
+function SheltersProfile() {
   const { id } = useParams<{ id: string }>();
   const shelterId = Number(id);
 
@@ -21,34 +21,50 @@ export default function SheltersProfilePage() {
   });
 
   return (
-    <Suspense fallback={<p>보호소 프로필 정도 로딩 중...</p>}>
-      <Box>
-        <ProfileInfo
-          infoImage={data.shelterImageUrl}
-          infoTitle={data.shelterName}
-          infoTexts={[data.shelterEmail, data.shelterAddress]}
-        />
-        <Divider />
-        <InfoTextList
-          infoTextItems={[
-            { title: '전화번호', content: data.shelterPhoneNumber },
-            {
-              title: '전화번호(임시)',
-              content: data.shelterSparePhoneNumber,
-            },
-            {
-              title: '상세주소',
-              content: data.shelterAddressDetail,
-            },
-          ]}
-        />
-        <Tabs
-          tabs={[
-            ['봉사후기', <ShelterReviewsTab key={1} />],
-            ['봉사모집글', <ShelterRecruitments key={2} />],
-          ]}
-        />
-      </Box>
+    <Box>
+      <ProfileInfo
+        infoImage={data.shelterImageUrl}
+        infoTitle={data.shelterName}
+        infoTexts={[data.shelterEmail, data.shelterAddress]}
+      />
+      <Divider />
+      <InfoTextList
+        infoTextItems={[
+          { title: '전화번호', content: data.shelterPhoneNumber },
+          {
+            title: '전화번호(임시)',
+            content: data.shelterSparePhoneNumber,
+          },
+          {
+            title: '상세주소',
+            content: data.shelterAddressDetail,
+          },
+        ]}
+      />
+      <Tabs
+        tabs={[
+          [
+            '봉사후기',
+            <Suspense fallback={<p>봉사 후기 로징 중...</p>} key={1}>
+              <ShelterReviewsTab key={1} />
+            </Suspense>,
+          ],
+          [
+            '봉사모집글',
+            <Suspense fallback={<p>봉사 모집글 로딩 중...</p>} key={2}>
+              <ShelterRecruitments key={2} />
+            </Suspense>,
+          ],
+        ]}
+      />
+    </Box>
+  );
+}
+
+export default function SheltersProfilePage() {
+  return (
+    <Suspense fallback={<p>보호소 프로필 페이지 로딩 중...</p>}>
+      <SheltersProfile />
     </Suspense>
   );
 }

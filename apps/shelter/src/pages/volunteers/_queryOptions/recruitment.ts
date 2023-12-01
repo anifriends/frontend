@@ -40,8 +40,8 @@ const recruitmentQueryOptions: RecruitmentQueryOptions = {
       queryKey: ['recruitments'],
       queryFn: ({ pageParam }) =>
         getShelterRecruitments({
-          pageNumber: pageParam,
-          pageSize: 10,
+          page: pageParam,
+          size: 10,
         }),
       initialPageParam: 0,
       getNextPageParam: ({ data: { pageInfo } }, _, lastPageParam) =>
@@ -57,8 +57,8 @@ const recruitmentQueryOptions: RecruitmentQueryOptions = {
       queryFn: ({ pageParam }) =>
         getShelterRecruitments({
           ...searchFilter,
-          pageNumber: pageParam,
-          pageSize: 10,
+          page: pageParam,
+          size: 10,
         }),
       initialPageParam: 0,
       getNextPageParam: ({ data: { pageInfo } }, _, lastPageParam) =>

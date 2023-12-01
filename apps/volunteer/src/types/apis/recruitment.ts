@@ -4,8 +4,8 @@ export type PageInfo = {
 };
 
 export type Pagination = {
-  pageSize: number;
-  pageNumber: number;
+  size: number;
+  page: number;
 };
 
 export type Recruitment = {

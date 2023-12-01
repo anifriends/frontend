@@ -4,8 +4,8 @@ export type PageInfo = {
 };
 
 export type Pagination = {
-  pageSize: number;
-  pageNumber: number;
+  page: number;
+  size: number;
 };
 
 export type ReviewDetailResponse = {

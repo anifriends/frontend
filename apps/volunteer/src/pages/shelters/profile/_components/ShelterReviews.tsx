@@ -1,6 +1,5 @@
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import InfoSubtext from 'shared/components/InfoSubtext';
 import Label from 'shared/components/Label';
@@ -10,7 +9,7 @@ import { createFormattedTime } from 'shared/utils/date';
 
 import { getVolunteerReviewsOnShelter } from '@/apis/review';
 
-function ShelterReviews() {
+export default function ShelterReviews() {
   const { id } = useParams<{ id: string }>();
   const shelterId = Number(id);
 
@@ -24,8 +23,8 @@ function ShelterReviews() {
     queryFn: async ({ pageParam }) =>
       (
         await getVolunteerReviewsOnShelter(shelterId, {
-          pageNumber: pageParam,
-          pageSize: 10,
+          page: pageParam,
+          size: 10,
         })
       ).data,
     initialPageParam: 1,
@@ -74,12 +73,5 @@ function ShelterReviews() {
       </VStack>
       <div ref={ref} />
     </Box>
-  );
-}
-export default function ShelterReviewsTab() {
-  return (
-    <Suspense fallback={<p>봉사 후기 로딩중...</p>}>
-      <ShelterReviews />
-    </Suspense>
   );
 }

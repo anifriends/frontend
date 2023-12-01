@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 
 export type AlertModalProps = {
-  modalTitle: string;
-  modalContent: string;
+  modalTitle?: string;
+  modalContent?: string;
   btnTitle: string;
   onClick?: VoidFunction;
 } & Omit<ModalProps, 'children'>;
@@ -33,10 +33,15 @@ export default function AlertModal({
           {modalTitle}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{modalContent}</ModalBody>
-
+        <ModalBody whiteSpace="pre-wrap">{modalContent}</ModalBody>
         <ModalFooter>
-          <Button colorScheme="gray" mr={3} onClick={onClose}>
+          <Button
+            colorScheme="gray"
+            mr={3}
+            onClick={onClose}
+            _active={{ bg: undefined }}
+            _hover={{ bg: undefined }}
+          >
             취소하기
           </Button>
           <Button
@@ -44,6 +49,8 @@ export default function AlertModal({
             bgColor="orange.400"
             color="white"
             onClick={onClick}
+            _active={{ bg: undefined }}
+            _hover={{ bg: undefined }}
           >
             {btnTitle}
           </Button>
