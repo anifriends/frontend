@@ -2,6 +2,7 @@ import type { ImageProps } from '@chakra-ui/react';
 import { Box, Image } from '@chakra-ui/react';
 
 import BiX from '../assets/icon_BiX.svg';
+import NoImage from '../assets/icon_no_image.svg';
 
 type UploadedPhotoItemProps = {
   photoSrc: ImageProps['src'];
@@ -35,7 +36,7 @@ export default function EditPhotoItem({
       >
         <Image src={BiX} />
       </Box>
-      <Image boxSize={100} fit="cover" src={photoSrc} />
+      <Image boxSize={100} fit="cover" src={photoSrc} fallbackSrc={NoImage} />
     </Box>
   );
 }
