@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
-import { AppType } from '../types/app';
+import APP_TYPE from '../constants/appType';
 import { getErrorMessage } from '../utils/errorMessage';
 import { removeItemFromStorage } from '../utils/localStorage';
 
