@@ -95,7 +95,7 @@ function ApplyRecruitmentItem({
             {` ${createFormattedTime(new Date(recruitmentStartTime))}`}
           </Text>
         </Text>
-        {applicantStatus === APPLICANT_STATUS.APPROVED.ENG &&
+        {applicantStatus === APPLICANT_STATUS.ATTENDANCE.ENG &&
           applicantIsWritedReview && (
             <Button
               size="sm"
