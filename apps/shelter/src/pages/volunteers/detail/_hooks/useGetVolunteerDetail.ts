@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   getRecruitmentDetail,
   RecruitmentDetailResponse,
@@ -51,24 +51,11 @@ const createRecruitmentDetail = (
 };
 
 const useGetVolunteerDetail = (recruitmentId: number) =>
-  useQuery({
+  useSuspenseQuery({
     queryKey: ['recruitment', 'detail', recruitmentId],
     queryFn: async () => {
       const response = (await getRecruitmentDetail(recruitmentId)).data;
       return createRecruitmentDetail(response);
-    },
-    initialData: {
-      title: '',
-      content: '',
-      applicant: 0,
-      capacity: 0,
-      startTime: '',
-      endTime: '',
-      deadline: '',
-      createdAt: '',
-      updatedAt: '',
-      imageUrls: [],
-      isClosed: false,
     },
   });
 
