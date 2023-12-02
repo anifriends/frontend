@@ -29,7 +29,7 @@ const phoneRegx2 = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))-(\d{3,4})-(\d{4})$/;
 
 const accountSchema = z.object({
   name: z.string().trim().min(2, { message: '이름은 2글자 이상입니다' }),
-  address: z.string().min(3, { message: '보호소 주소 정보는 필수입니다' }),
+  address: z.string().min(1, { message: '보호소 주소 정보는 필수입니다' }),
   addressDetail: z
     .string()
     .trim()
