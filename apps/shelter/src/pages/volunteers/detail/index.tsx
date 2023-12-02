@@ -7,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
@@ -28,7 +28,7 @@ const handleDeletePost = (postId: number) => {
   console.log('[Delete Volunteer] postId:', postId);
 };
 
-export default function VolunteersDetailPage() {
+function VolunteersDetail() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
 
   useEffect(() => {
@@ -80,7 +80,9 @@ export default function VolunteersDetailPage() {
 
   return (
     <Box>
-      <ImageCarousel imageUrls={recruitment.imageUrls} />
+      {recruitment.imageUrls.length > 0 && (
+        <ImageCarousel imageUrls={recruitment.imageUrls} />
+      )}
       <VStack spacing="5px" align="flex-start" p={4}>
         <LabelText
           labelTitle={label.labelTitle}
@@ -169,5 +171,13 @@ export default function VolunteersDetailPage() {
         onClick={onCloseRecruitment}
       />
     </Box>
+  );
+}
+
+export default function VolunteersDetailPage() {
+  return (
+    <Suspense fallback={<p>봉사 상세 페이지 로딩 중...</p>}>
+      <VolunteersDetail />
+    </Suspense>
   );
 }

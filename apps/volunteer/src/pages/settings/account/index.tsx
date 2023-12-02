@@ -10,24 +10,38 @@ import {
   Radio,
   RadioGroup,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { usePhotoUpload } from 'shared/hooks/usePhotoUpload';
 
 import {
+  MyInfoResponse,
   UpdateUserInfoParams,
   updateVolunteerUserInfo,
 } from '@/apis/volunteer';
 import useFetchMyVolunteer from '@/pages/my/_hooks/useFetchMyVolunteer';
 
 export default function SettingsAccountPage() {
+  const queryClient = useQueryClient();
+
   const toast = useToast();
   const { data } = useFetchMyVolunteer();
+
   const { mutate: updateAccount } = useMutation({
-    mutationFn: (data: UpdateUserInfoParams) => updateVolunteerUserInfo(data),
-    onSuccess: () => {
+    mutationFn: (newData: UpdateUserInfoParams) =>
+      updateVolunteerUserInfo(newData),
+    onSuccess: (_, newData) => {
+      queryClient.setQueryData(['myVolunteer'], (data: MyInfoResponse) => ({
+        ...data,
+        volunteerName: newData.name,
+        volunteerBirthDate: newData.birthDate,
+        volunteerPhoneNumber: newData.phoneNumber,
+        volunteerImageUrl: newData.imageUrl,
+        volunteerGender: newData.gender,
+      }));
       toast({
         position: 'top',
         description: '계정 정보가 수정되었습니다.',
@@ -36,6 +50,7 @@ export default function SettingsAccountPage() {
       });
     },
   });
+
   const { register, handleSubmit, reset, watch } =
     useForm<UpdateUserInfoParams>();
   const { photo, setPhoto, handleUploadPhoto } = usePhotoUpload(
@@ -64,7 +79,7 @@ export default function SettingsAccountPage() {
   });
 
   return (
-    <Box px={4} pb={208}>
+    <Box px={4} pb={164}>
       <form onSubmit={onSubmit}>
         <Center py={30}>
           <Avatar
@@ -130,21 +145,31 @@ export default function SettingsAccountPage() {
           </RadioGroup>
         </FormControl>
 
-        <Center>
+        <VStack
+          maxW="container.sm"
+          mx="auto"
+          px={4}
+          bgColor="white"
+          pos="fixed"
+          bottom={0}
+          left={0}
+          right={0}
+          py={2}
+          zIndex={10}
+          spacing={2}
+          align="stretch"
+        >
           <Button
             type="submit"
-            w="100%"
             h="44px"
             bgColor="orange.400"
             color="white"
-            pos="absolute"
-            bottom={21}
             _active={{ bg: undefined }}
             _hover={{ bg: undefined }}
           >
             수정 완료
           </Button>
-        </Center>
+        </VStack>
       </form>
     </Box>
   );

@@ -1,4 +1,4 @@
-import { IconButton } from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,8 @@ function Recruitments() {
   const navigate = useNavigate();
   const goWritePage = () => navigate('/volunteers/write');
 
+  const infiniteQueryOption = recruitmentQueryOptions.all();
+
   const {
     goVolunteersDetail,
     goManageApplyPage,
@@ -27,14 +29,14 @@ function Recruitments() {
     alertModalState,
     isModalOpen,
     onCloseModal,
-  } = useVolunteerRecruitItem();
+  } = useVolunteerRecruitItem(infiniteQueryOption.queryKey);
 
   const {
     data: { pages },
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useSuspenseInfiniteQuery(recruitmentQueryOptions.all());
+  } = useSuspenseInfiniteQuery(infiniteQueryOption);
 
   const recruitments = pages
     .flatMap(({ data }) => data.recruitments)
@@ -48,7 +50,7 @@ function Recruitments() {
   });
 
   return (
-    <>
+    <Box pb="50px">
       {recruitments.map((recruitment) => (
         <VolunteerRecruitItem
           key={recruitment.id}
@@ -80,7 +82,7 @@ function Recruitments() {
         onClose={onCloseModal}
         {...alertModalState}
       />
-    </>
+    </Box>
   );
 }
 

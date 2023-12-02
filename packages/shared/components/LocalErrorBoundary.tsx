@@ -22,14 +22,6 @@ function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
     removeItemFromStorage(APP_TYPE.SHELTER_APP);
   }
 
-  const onClick = () => {
-    if (isNotAuthorized) {
-      navigate('/signin');
-    } else {
-      resetErrorBoundary();
-    }
-  };
-
   return (
     <VStack justify="center" align="center" h="full" spacing={6}>
       <Heading as="h4" fontSize="xl">
@@ -39,8 +31,24 @@ function RetryErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
         {content}
       </Text>
       <HStack spacing={6}>
-        {!isForbidden && <Button onClick={onClick}>{buttonMessage}</Button>}
-        <Button onClick={() => navigate('/volunteers')}>홈으로</Button>
+        {!isForbidden && (
+          <Button
+            onClick={() => {
+              resetErrorBoundary();
+              isNotAuthorized && navigate('/signin');
+            }}
+          >
+            {buttonMessage}
+          </Button>
+        )}
+        <Button
+          onClick={() => {
+            resetErrorBoundary();
+            navigate('/volunteers');
+          }}
+        >
+          홈으로
+        </Button>
       </HStack>
     </VStack>
   );
