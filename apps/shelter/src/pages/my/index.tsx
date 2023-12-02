@@ -1,6 +1,6 @@
 import { Box, Divider, Switch, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Suspense, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InfoItem from 'shared/components/InfoItem';
 import InfoList from 'shared/components/InfoList';
@@ -13,7 +13,7 @@ import { ShelterInfo } from '@/types/apis/shetler';
 
 import useFetchMyShelter from './_hooks/useFetchShelterProfile';
 
-export default function MyPage() {
+function ShelterMy() {
   const navigate = useNavigate();
 
   const {
@@ -95,5 +95,13 @@ export default function MyPage() {
         />
       </VStack>
     </Box>
+  );
+}
+
+export default function MyPage() {
+  return (
+    <Suspense fallback="로딩중">
+      <ShelterMy />
+    </Suspense>
   );
 }
