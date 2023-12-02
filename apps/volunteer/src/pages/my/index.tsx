@@ -35,7 +35,7 @@ function My() {
           query={`${data.completedVolunteerCount}회`}
           styles={{ color: 'orange.400', fontWeight: 600 }}
         >
-          {`김프롱 님께서는 봉사를 ${data.completedVolunteerCount}회 완료했어요!`}
+          {`${data.volunteerName} 님께서는 봉사를 ${data.completedVolunteerCount}회 완료했어요!`}
         </Highlight>
       </Box>
       <Tabs
