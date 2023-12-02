@@ -27,7 +27,7 @@ export default function ShelterReviews() {
           size: 10,
         })
       ).data,
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
       pageInfo.hasNext ? lastPageParam + 1 : null,
   });
