@@ -50,3 +50,8 @@ export const getAge = (birthDate: string) => {
 
   return age + Number(isPassed);
 };
+
+export const getKoreanTime = (date: Date) => {
+  date.setHours(date.getHours() + 9);
+  return date;
+};

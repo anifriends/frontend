@@ -17,6 +17,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
 import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
+import { getKoreanTime } from 'shared/utils/date';
 import * as z from 'zod';
 
 import { createShelterRecruitment } from '@/apis/recruitment';
@@ -84,9 +85,9 @@ export default function VolunteersWritePage() {
 
     mutate({
       ...data,
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-      deadline: deadline.toISOString(),
+      startTime: getKoreanTime(startTime).toISOString(),
+      endTime: getKoreanTime(endTime).toISOString(),
+      deadline: getKoreanTime(deadline).toISOString(),
       imageUrls: photos
         .filter(({ url }) => url !== 'upload-failed')
         .map(({ url }) => url),
