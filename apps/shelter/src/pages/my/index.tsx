@@ -1,16 +1,21 @@
-import { Box, Divider, Switch, VStack } from '@chakra-ui/react';
+import { Box, Divider, Switch, useToast, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import InfoItem from 'shared/components/InfoItem';
 import InfoList from 'shared/components/InfoList';
 import InfoTextItem from 'shared/components/InfoTextItem';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import SettingGroup from 'shared/components/SettingGroup';
+import APP_TYPE from 'shared/constants/appType';
+import useAuthStore from 'shared/store/authStore';
+import { removeItemFromStorage } from 'shared/utils/localStorage';
 
 import { useMyPage } from '@/pages/my/_hooks/useMyPage';
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const { setUser } = useAuthStore();
   const { shelterProfile, isAddressPublic, updateAddressStatus } = useMyPage();
+  const toast = useToast();
 
   if (!shelterProfile) {
     return null;
@@ -23,7 +28,15 @@ export default function MyPage() {
   const goSettingsAccount = () => navigate('/settings/account');
   const goSettingsPassword = () => navigate('/settings/password');
   const logout = () => {
-    // TODO: 로그아웃
+    setUser(null);
+    removeItemFromStorage(APP_TYPE.SHELTER_APP);
+    navigate('/signin');
+    toast({
+      position: 'top',
+      description: '로그아웃 되었습니다.',
+      status: 'success',
+      duration: 1500,
+    });
   };
 
   return (

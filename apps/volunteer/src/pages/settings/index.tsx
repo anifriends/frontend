@@ -1,13 +1,26 @@
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, useToast, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import SettingGroup from 'shared/components/SettingGroup';
+import APP_TYPE from 'shared/constants/appType';
+import useAuthStore from 'shared/store/authStore';
+import { removeItemFromStorage } from 'shared/utils/localStorage';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const goSettingsAccount = () => navigate('/settings/account');
   const goSettingsPassword = () => navigate('/settings/password');
+  const { setUser } = useAuthStore();
+  const toast = useToast();
   const logout = () => {
-    // TODO: 로그아웃
+    setUser(null);
+    removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
+    navigate('/volunteers');
+    toast({
+      position: 'top',
+      description: '로그아웃 되었습니다.',
+      status: 'success',
+      duration: 1500,
+    });
   };
 
   return (
