@@ -5,14 +5,16 @@ import {
   HStack,
   Text,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
 import ImageCarousel from 'shared/components/ImageCarousel';
 import InfoTextList from 'shared/components/InfoTextList';
-import { LabelProps } from 'shared/components/Label';
+import Label from 'shared/components/Label';
 import LabelText from 'shared/components/LabelText';
 import useDetailHeaderStore from 'shared/store/detailHeaderStore';
 import {
@@ -21,16 +23,21 @@ import {
   getDDay,
 } from 'shared/utils/date';
 
+import {
+  closeShelterRecruitment,
+  deleteShelterRecruitment,
+} from '@/apis/recruitment';
+
 import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
 
 const handleDeletePost = (postId: number) => {
-  // TODO: VolunteerPost delete API 호출
-  console.log('[Delete Volunteer] postId:', postId);
+  deleteShelterRecruitment(postId);
 };
 
 function VolunteersDetail() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
 
+  const toast = useToast();
   useEffect(() => {
     setOnDelete(handleDeletePost);
 
@@ -40,15 +47,34 @@ function VolunteersDetail() {
   }, [setOnDelete]);
 
   const navigate = useNavigate();
-  const { id: recruitmentId } = useParams();
+  const { id } = useParams();
+  const recruitmentId = Number(id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: recruitment } = useGetVolunteerDetail(Number(recruitmentId));
+  const { data: recruitment } = useGetVolunteerDetail(recruitmentId);
+
+  const { mutate: closedRecruitment } = useMutation({
+    mutationFn: async (recruitmentId: number) =>
+      closeShelterRecruitment(recruitmentId),
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        description: '모집마감되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+      setIsClosed(true);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   const startDate = new Date(recruitment.startTime);
   const deadline = new Date(recruitment.deadline);
   const createdAt = new Date(recruitment.createdAt);
+  const volunteerDateDay = getDDay(recruitment.deadline);
 
   const volunteerDate = createFormattedTime(startDate);
   const volunteerDay = createWeekDayLocalString(startDate);
@@ -56,26 +82,16 @@ function VolunteersDetail() {
   const deadlineDate = createFormattedTime(deadline);
   const deadlineDay = createWeekDayLocalString(deadline);
 
-  const [label, setLabel] = useState<LabelProps>({
-    labelTitle: '모집중',
-    type: 'GREEN',
-  });
-  const [isClosed, setIsClosed] = useState(false);
-
-  useEffect(() => {
-    if (recruitment.isClosed) {
-      setIsClosed(true);
-      setLabel({ labelTitle: '마감완료', type: 'GRAY' });
-    }
-  }, [recruitment.isClosed]);
+  const [isClosed, setIsClosed] = useState(
+    recruitment.isClosed || volunteerDateDay < 0,
+  );
 
   const goManageApply = () => navigate(`/manage/apply/${recruitmentId}`);
   const goManageAttendance = () =>
     navigate(`/manage/attendance/${recruitmentId}`);
-  const onCloseRecruitment = () => {
+  const onCloseRecruitment = (recruitmentId: number) => {
+    closedRecruitment(recruitmentId);
     onClose();
-    setIsClosed(true);
-    setLabel({ labelTitle: '마감완료', type: 'GRAY' });
   };
 
   return (
@@ -84,16 +100,20 @@ function VolunteersDetail() {
         <ImageCarousel imageUrls={recruitment.imageUrls} />
       )}
       <VStack spacing="5px" align="flex-start" p={4}>
-        <LabelText
-          labelTitle={label.labelTitle}
-          type={label.type}
-          content={`D-${getDDay(recruitment.deadline)}`}
-        />
+        {isClosed ? (
+          <Label labelTitle="마감완료" type="GRAY" />
+        ) : (
+          <LabelText
+            labelTitle="모집중"
+            content={`D-${volunteerDateDay === 0 ? 'Day' : volunteerDateDay}`}
+          />
+        )}
         <Text fontSize="xl" fontWeight="semibold">
           {recruitment.title}
         </Text>
         <Text fontSize="sm" fontWeight="normal" color="gray.500">
-          작성일 | {createFormattedTime(createdAt)}(수정됨)
+          작성일 | {createFormattedTime(createdAt)}
+          {recruitment.createdAt && ' (수정됨)'}
         </Text>
       </VStack>
       <Divider />
@@ -168,7 +188,7 @@ function VolunteersDetail() {
         btnTitle="마감하기"
         isOpen={isOpen}
         onClose={onClose}
-        onClick={onCloseRecruitment}
+        onClick={() => onCloseRecruitment(recruitmentId)}
       />
     </Box>
   );

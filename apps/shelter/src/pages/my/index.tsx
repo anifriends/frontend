@@ -67,7 +67,7 @@ function ShelterMy() {
   };
 
   return (
-    <Box>
+    <Box pb="50px">
       <ProfileInfo
         infoImage={imageUrl}
         infoTitle={name}
@@ -99,7 +99,6 @@ function ShelterMy() {
           settingItems={[
             { itemTitle: '계정 정보 수정하기', onClick: goSettingsAccount },
             { itemTitle: '비밀번호 변경하기', onClick: goSettingsPassword },
-            { itemTitle: '로그아웃하기', onClick: goSettingsPassword },
           ]}
         />
         <SettingGroup

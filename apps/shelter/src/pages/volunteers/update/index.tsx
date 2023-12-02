@@ -13,10 +13,11 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { Suspense, useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import EditPhotoList from 'shared/components/EditPhotoList';
+import Loader from 'shared/components/Loader';
 import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
 import { getKoreanTime } from 'shared/utils/date';
 import * as z from 'zod';
@@ -31,21 +32,26 @@ import useGetVolunteerDetail, {
 const recruitmentSchema = z
   .object({
     title: z.string().min(1, '제목은 필수로 입력해주세요'),
-    startTime: z.coerce.date(),
-    endTime: z.coerce.date(),
-    deadline: z.coerce.date(),
+    startTime: z.string(),
+    endTime: z.string(),
+    deadline: z.string(),
     capacity: z.coerce.number(),
     content: z
       .string()
       .optional()
       .refine((val) => val?.length && val.length < 500, '에러입니다'),
   })
-  .refine(({ startTime, endTime }) => startTime.getTime() < endTime.getTime(), {
-    message: '봉사 시작 일시 이후로 입력해주세요 ',
-    path: ['endTime'],
-  })
   .refine(
-    ({ startTime, deadline }) => deadline.getTime() <= startTime.getTime(),
+    ({ startTime, endTime }) =>
+      new Date(startTime).getTime() < new Date(endTime).getTime(),
+    {
+      message: '봉사 시작 일시 이후로 입력해주세요 ',
+      path: ['endTime'],
+    },
+  )
+  .refine(
+    ({ startTime, deadline }) =>
+      new Date(deadline).getTime() <= new Date(startTime).getTime(),
     {
       message: '봉사 시작 일시 전으로 입력해주세요',
       path: ['deadLine'],
@@ -56,14 +62,11 @@ type RecruitmentSchema = z.infer<typeof recruitmentSchema>;
 
 const UPLOAD_LIMIT = 5;
 
-export default function VolunteersUpdatePage() {
+const UpdateForm = () => {
   const { id: recruitmentId } = useParams<{ id: string }>() as { id: string };
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // TODO 이 훅에서 startDate, endDate와 같은 날짜데이터를 가공하기 때문에
-  // 다른 훅을 만들어서 사용해야 할 것 같습니다.
-  // 혹은 훅 내의 select 옵션을 수정해야 할 것 같습니다.
   const { data: recruitment, isPending: isRecruitFetchLoading } =
     useGetVolunteerDetail(Number(recruitmentId));
 
@@ -111,9 +114,9 @@ export default function VolunteersUpdatePage() {
       recruitmentId: Number(recruitmentId),
       request: {
         ...data,
-        startTime: getKoreanTime(startTime).toISOString(),
-        endTime: getKoreanTime(endTime).toISOString(),
-        deadline: getKoreanTime(deadline).toISOString(),
+        startTime: getKoreanTime(new Date(startTime)).toISOString(),
+        endTime: getKoreanTime(new Date(endTime)).toISOString(),
+        deadline: getKoreanTime(new Date(deadline)).toISOString(),
         imageUrls: photos
           .filter(({ url }) => url !== 'upload-failed')
           .map(({ url }) => url),
@@ -124,9 +127,9 @@ export default function VolunteersUpdatePage() {
   const setVolunteersRecruitmentFormvalues = useCallback(
     (recruitment: RecruitmentDetail) => {
       setValue('title', recruitment.title);
-      setValue('startTime', new Date(recruitment.startTime));
-      setValue('endTime', new Date(recruitment.endTime));
-      setValue('deadline', new Date(recruitment.deadline));
+      setValue('startTime', recruitment.startTime.slice(0, -3));
+      setValue('endTime', recruitment.endTime.slice(0, -3));
+      setValue('deadline', recruitment.deadline.slice(0, -3));
       setValue('capacity', recruitment.capacity);
       setValue('content', recruitment?.content ?? '');
       setImageUrls(recruitment.imageUrls);
@@ -232,5 +235,13 @@ export default function VolunteersUpdatePage() {
         </Button>
       </form>
     </Box>
+  );
+};
+
+export default function VolunteersUpdatePage() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <UpdateForm />
+    </Suspense>
   );
 }
