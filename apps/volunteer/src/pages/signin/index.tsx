@@ -11,11 +11,12 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
+  UseToastOptions,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
@@ -45,6 +46,7 @@ const schema = z.object({
 export default function SigninPage() {
   const navigate = useNavigate();
   const toast = useToast();
+  const signinToast = useId();
   const [isShow, toggleInputShow] = useToggle();
   const { setUser } = useAuthStore();
   const {
@@ -65,14 +67,23 @@ export default function SigninPage() {
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
-      setUser(null);
-      removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
-      toast({
+      const toastOptions: UseToastOptions = {
+        id: signinToast,
         position: 'top',
-        description: error.response?.data.message,
+        description:
+          error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
         status: 'error',
         duration: 1500,
-      });
+      };
+
+      setUser(null);
+      removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
+
+      if (!toast.isActive(signinToast)) {
+        toast(toastOptions);
+      } else {
+        toast.update(signinToast, toastOptions);
+      }
 
       setFocus('email');
     },
