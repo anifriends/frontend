@@ -69,7 +69,7 @@ function VolunteersDetail() {
     {
       data: { isAppliedRecruitment },
     },
-  ] = useFetchVolunteerDetail(recruitmentId);
+  ] = useFetchVolunteerDetail(recruitmentId, user);
 
   const [isApplied, setIsApplied] = useState(isAppliedRecruitment);
 
