@@ -12,7 +12,7 @@ function My() {
   const { data } = useFetchMyVolunteer();
 
   return (
-    <Box>
+    <Box pb="50px">
       <ProfileInfo
         infoImage={data.volunteerImageUrl}
         infoTitle={data.volunteerName}
