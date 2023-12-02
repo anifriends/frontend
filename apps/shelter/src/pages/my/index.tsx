@@ -1,4 +1,6 @@
 import { Box, Divider, Switch, VStack } from '@chakra-ui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InfoItem from 'shared/components/InfoItem';
 import InfoList from 'shared/components/InfoList';
@@ -6,18 +8,43 @@ import InfoTextItem from 'shared/components/InfoTextItem';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import SettingGroup from 'shared/components/SettingGroup';
 
-import { useMyPage } from '@/pages/my/_hooks/useMyPage';
+import { updateAddressStatusAPI } from '@/apis/shelter';
+import { ShelterInfo } from '@/types/apis/shetler';
+
+import useFetchMyShelter from './_hooks/useFetchShelterProfile';
 
 export default function MyPage() {
   const navigate = useNavigate();
-  const { shelterProfile, isAddressPublic, updateAddressStatus } = useMyPage();
 
-  if (!shelterProfile) {
-    return null;
-  }
+  const {
+    imageUrl,
+    name,
+    email,
+    phoneNumber,
+    sparePhoneNumber,
+    address,
+    addressDetail,
+    isOpenedAddress,
+  } = useFetchMyShelter().data;
 
-  const { shelterName, email, phoneNumber, sparePhoneNumber, shelterAddress } =
-    shelterProfile;
+  const [isAddressPublic, setIsAddressPublic] = useState(isOpenedAddress);
+  const queryClient = useQueryClient();
+
+  const { mutate: updateAddress } = useMutation({
+    mutationFn: async (updatedAddress: boolean) =>
+      updateAddressStatusAPI(updatedAddress),
+    onSuccess: (_, updatedAddress) => {
+      setIsAddressPublic(updatedAddress);
+      queryClient.setQueryData(['shelterProfile'], (data: ShelterInfo) => ({
+        ...data,
+        isOpenedAddress: updatedAddress,
+      }));
+    },
+  });
+
+  const updateAddressStatus = (e: ChangeEvent<HTMLInputElement>) => {
+    updateAddress(e.target.checked);
+  };
 
   const goShelterReview = () => navigate('/mypage/reviews');
   const goSettingsAccount = () => navigate('/settings/account');
@@ -27,13 +54,17 @@ export default function MyPage() {
   };
 
   return (
-    <Box pb="50px">
-      <ProfileInfo infoTitle={shelterName} infoTexts={[email]} />
+    <Box>
+      <ProfileInfo
+        infoImage={imageUrl}
+        infoTitle={name}
+        infoTexts={[email, address]}
+      />
       <Divider />
       <InfoList py={4}>
         <InfoTextItem title="전화번호" content={phoneNumber} />
         <InfoTextItem title="전화번호(임시)" content={sparePhoneNumber} />
-        <InfoTextItem title="상세주소" content={shelterAddress} />
+        <InfoTextItem title="상세주소" content={addressDetail} />
         <InfoItem title="상세주소 공개">
           <Switch
             size="sm"
@@ -55,6 +86,7 @@ export default function MyPage() {
           settingItems={[
             { itemTitle: '계정 정보 수정하기', onClick: goSettingsAccount },
             { itemTitle: '비밀번호 변경하기', onClick: goSettingsPassword },
+            { itemTitle: '로그아웃하기', onClick: goSettingsPassword },
           ]}
         />
         <SettingGroup
