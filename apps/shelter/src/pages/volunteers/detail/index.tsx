@@ -5,8 +5,10 @@ import {
   HStack,
   Text,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
@@ -21,16 +23,21 @@ import {
   getDDay,
 } from 'shared/utils/date';
 
+import {
+  closeShelterRecruitment,
+  deleteShelterRecruitment,
+} from '@/apis/recruitment';
+
 import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
 
 const handleDeletePost = (postId: number) => {
-  // TODO: VolunteerPost delete API 호출
-  console.log('[Delete Volunteer] postId:', postId);
+  deleteShelterRecruitment(postId);
 };
 
 function VolunteersDetail() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
 
+  const toast = useToast();
   useEffect(() => {
     setOnDelete(handleDeletePost);
 
@@ -40,11 +47,26 @@ function VolunteersDetail() {
   }, [setOnDelete]);
 
   const navigate = useNavigate();
-  const { id: recruitmentId } = useParams();
+  const { id } = useParams();
+  const recruitmentId = Number(id);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data: recruitment } = useGetVolunteerDetail(Number(recruitmentId));
+  const { data: recruitment } = useGetVolunteerDetail(recruitmentId);
+
+  const { mutate: closedRecruitment } = useMutation({
+    mutationFn: async (recruitmentId: number) =>
+      closeShelterRecruitment(recruitmentId),
+    onSuccess: () => {
+      setLabel({ labelTitle: '마감완료', type: 'GRAY' });
+      toast({
+        position: 'top',
+        description: '모집마감되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
 
   const startDate = new Date(recruitment.startTime);
   const deadline = new Date(recruitment.deadline);
@@ -72,10 +94,11 @@ function VolunteersDetail() {
   const goManageApply = () => navigate(`/manage/apply/${recruitmentId}`);
   const goManageAttendance = () =>
     navigate(`/manage/attendance/${recruitmentId}`);
-  const onCloseRecruitment = () => {
+  const onCloseRecruitment = (recruitmentId: number) => {
+    closedRecruitment(recruitmentId);
     onClose();
     setIsClosed(true);
-    setLabel({ labelTitle: '마감완료', type: 'GRAY' });
+    // setLabel({ labelTitle: '마감완료', type: 'GRAY' });
   };
 
   return (
@@ -168,7 +191,7 @@ function VolunteersDetail() {
         btnTitle="마감하기"
         isOpen={isOpen}
         onClose={onClose}
-        onClick={onCloseRecruitment}
+        onClick={() => onCloseRecruitment(recruitmentId)}
       />
     </Box>
   );
