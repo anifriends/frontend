@@ -80,7 +80,9 @@ function VolunteersDetail() {
 
   return (
     <Box>
-      <ImageCarousel imageUrls={recruitment.imageUrls} />
+      {recruitment.imageUrls.length > 0 && (
+        <ImageCarousel imageUrls={recruitment.imageUrls} />
+      )}
       <VStack spacing="5px" align="flex-start" p={4}>
         <LabelText
           labelTitle={label.labelTitle}
