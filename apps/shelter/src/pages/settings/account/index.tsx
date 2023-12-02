@@ -29,7 +29,10 @@ const phoneRegx2 = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))-(\d{3,4})-(\d{4})$/;
 
 const accountSchema = z.object({
   name: z.string().trim().min(1, { message: '이름은 필수입니다' }),
-  address: z.string().min(1, { message: '보호소 주소 정보는 필수입니다' }),
+  address: z
+    .string()
+    .trim()
+    .min(1, { message: '보호소 주소 정보는 필수입니다' }),
   addressDetail: z
     .string()
     .trim()
@@ -70,8 +73,13 @@ function SettingsAccount() {
         duration: 1500,
       });
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
+      toast({
+        position: 'top',
+        description: '계정 정보 수정이 실패했습니다.',
+        status: 'error',
+        duration: 1500,
+      });
     },
   });
 
