@@ -1,12 +1,16 @@
-import { Box, Divider, Switch, VStack } from '@chakra-ui/react';
+import { Box, Divider, Switch, useToast, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, Suspense, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import InfoItem from 'shared/components/InfoItem';
 import InfoList from 'shared/components/InfoList';
 import InfoTextItem from 'shared/components/InfoTextItem';
 import ProfileInfo from 'shared/components/ProfileInfo';
 import SettingGroup from 'shared/components/SettingGroup';
+import APP_TYPE from 'shared/constants/appType';
+import useAuthStore from 'shared/store/authStore';
+import { removeItemFromStorage } from 'shared/utils/localStorage';
 
 import { updateAddressStatusAPI } from '@/apis/shelter';
 import { ShelterInfo } from '@/types/apis/shetler';
@@ -15,6 +19,9 @@ import useFetchMyShelter from './_hooks/useFetchShelterProfile';
 
 function ShelterMy() {
   const navigate = useNavigate();
+  const { setUser } = useAuthStore();
+  const { shelterProfile, isAddressPublic, updateAddressStatus } = useMyPage();
+  const toast = useToast();
 
   const {
     imageUrl,
@@ -50,7 +57,15 @@ function ShelterMy() {
   const goSettingsAccount = () => navigate('/settings/account');
   const goSettingsPassword = () => navigate('/settings/password');
   const logout = () => {
-    // TODO: 로그아웃
+    setUser(null);
+    removeItemFromStorage(APP_TYPE.SHELTER_APP);
+    navigate('/signin');
+    toast({
+      position: 'top',
+      description: '로그아웃 되었습니다.',
+      status: 'success',
+      duration: 1500,
+    });
   };
 
   return (

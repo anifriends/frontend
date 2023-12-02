@@ -69,7 +69,7 @@ function VolunteersDetail() {
     {
       data: { isAppliedRecruitment },
     },
-  ] = useFetchVolunteerDetail(recruitmentId);
+  ] = useFetchVolunteerDetail(recruitmentId, user);
 
   const [isApplied, setIsApplied] = useState(isAppliedRecruitment);
 
@@ -128,7 +128,9 @@ function VolunteersDetail() {
 
   return (
     <Box pb={118}>
-      <ImageCarousel imageUrls={data.recruitmentImageUrls} />
+      {data.recruitmentImageUrls.length > 0 && (
+        <ImageCarousel imageUrls={data.recruitmentImageUrls} />
+      )}
       <VStack spacing="5px" align="flex-start" p={4}>
         {isRecruitmentClosed ? (
           <Label labelTitle="마감완료" type="GRAY" />
