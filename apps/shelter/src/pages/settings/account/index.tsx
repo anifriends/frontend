@@ -28,12 +28,12 @@ const phoneRegx1 = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))-(\d{4})$/;
 const phoneRegx2 = /^(0(2|3[1-3]|4[1-4]|5[1-5]|6[1-4]))-(\d{3,4})-(\d{4})$/;
 
 const accountSchema = z.object({
-  name: z.string().trim().min(2, { message: '이름은 2글자 이상입니다' }),
+  name: z.string().trim().min(1, { message: '이름은 필수입니다' }),
   address: z.string().min(1, { message: '보호소 주소 정보는 필수입니다' }),
   addressDetail: z
     .string()
     .trim()
-    .min(2, { message: '보호소 상세주소 정보는 필수입니다.' }),
+    .min(1, { message: '보호소 상세주소 정보는 필수입니다.' }),
   phoneNumber: z
     .string()
     .refine((phone) => phoneRegx1.test(phone) || phoneRegx2.test(phone), {
