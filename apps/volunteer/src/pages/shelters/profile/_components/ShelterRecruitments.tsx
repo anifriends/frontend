@@ -65,7 +65,7 @@ export default function ShelterRecruitments() {
     queryKey: ['shelter', shelterId, 'recruitments'],
     queryFn: async ({ pageParam }) =>
       (await getRecruitementsOfShelter(shelterId, pageParam, 10)).data,
-    initialPageParam: 1,
+    initialPageParam: 0,
     getNextPageParam: ({ pageInfo }, _, lastPageParam) =>
       pageInfo.hasNext ? lastPageParam + 1 : null,
   });
