@@ -1,7 +1,6 @@
 import { Box, Divider, Switch, useToast, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, Suspense, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import InfoItem from 'shared/components/InfoItem';
 import InfoList from 'shared/components/InfoList';
@@ -20,7 +19,6 @@ import useFetchMyShelter from './_hooks/useFetchShelterProfile';
 function ShelterMy() {
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
-  const { shelterProfile, isAddressPublic, updateAddressStatus } = useMyPage();
   const toast = useToast();
 
   const {
