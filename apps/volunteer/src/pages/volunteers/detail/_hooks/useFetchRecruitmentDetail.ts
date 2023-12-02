@@ -15,7 +15,7 @@ const useFetchRecruitmentDetail = (
         queryFn: async () => (await getRecruitmentDetail(recruitmentId)).data,
       },
       {
-        queryKey: ['recruitment', recruitmentId, 'isApplied', user],
+        queryKey: ['recruitment', recruitmentId, 'isApplied'],
         queryFn: async () => {
           if (!user) {
             return { isAppliedRecruitment: false };
