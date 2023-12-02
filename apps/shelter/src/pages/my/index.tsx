@@ -67,7 +67,7 @@ function ShelterMy() {
   };
 
   return (
-    <Box>
+    <Box pb="50px">
       <ProfileInfo
         infoImage={imageUrl}
         infoTitle={name}
