@@ -61,7 +61,7 @@ export default function ReviewItem({
     <Card
       p={4}
       gap={4}
-      width="342px"
+      width="full"
       border="1px"
       borderColor="gray.200"
       borderRadius={8}
