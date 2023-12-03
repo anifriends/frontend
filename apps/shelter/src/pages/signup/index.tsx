@@ -15,10 +15,12 @@ import {
   InputRightElement,
   Switch,
   useToast,
+  UseToastOptions,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
@@ -67,6 +69,7 @@ const schema = z
 export default function SignupPage() {
   const navigate = useNavigate();
   const toast = useToast();
+  const signupToast = useId();
   const [isPasswordShow, togglePasswordShow] = useToggle();
   const [isPasswordConfirmShow, togglePasswordConfirmShow] = useToggle();
   const {
@@ -87,6 +90,13 @@ export default function SignupPage() {
   });
   const watchIsEmailDuplicated = watch('isEmailDuplicated');
   const watchEmail = watch('email');
+  const doToast = (toastOptions: UseToastOptions) => {
+    if (!toast.isActive(signupToast)) {
+      toast(toastOptions);
+    } else {
+      toast.update(signupToast, toastOptions);
+    }
+  };
   const { mutate: signupShelterMutate } = useMutation({
     mutationFn: (data: SignupRequestData) => signupShelter(data),
     onSuccess: () => {
@@ -100,12 +110,15 @@ export default function SignupPage() {
       navigate(`/${PATH.SIGNIN}`);
     },
     onError: (error) => {
-      toast({
+      const toastOptions: UseToastOptions = {
+        id: signupToast,
         position: 'top',
         description: error.response?.data.message,
         status: 'error',
         duration: 1500,
-      });
+      };
+
+      doToast(toastOptions);
     },
   });
   const { mutate: checkDuplicatedEmailMutate } = useMutation({
@@ -115,33 +128,41 @@ export default function SignupPage() {
       if (isDuplicated) {
         setValue('isEmailDuplicated', true);
 
-        toast({
+        const toastOptions: UseToastOptions = {
+          id: signupToast,
           position: 'top',
           description: '이메일이 중복됩니다',
           status: 'error',
           duration: 2500,
-        });
+        };
+
+        doToast(toastOptions);
 
         setFocus('email');
       } else {
         setValue('isEmailDuplicated', false);
 
-        toast({
+        const toastOptions: UseToastOptions = {
+          id: signupToast,
           position: 'top',
           description: '이메일이 확인되었습니다',
           status: 'success',
           duration: 2500,
-        });
+        };
+
+        doToast(toastOptions);
       }
     },
     onError: (error) => {
-      toast({
+      const toastOptions: UseToastOptions = {
+        id: signupToast,
         position: 'top',
         description: error.response?.data.message,
         status: 'error',
         duration: 2500,
-      });
+      };
 
+      doToast(toastOptions);
       setFocus('email');
     },
   });
@@ -158,16 +179,17 @@ export default function SignupPage() {
     );
 
     if (!isValid) {
-      toast({
+      const toastOptions: UseToastOptions = {
+        id: signupToast,
         position: 'top',
         description: '이메일이 유효하지 않습니다',
         status: 'error',
         duration: 1500,
-      });
+      };
 
+      doToast(toastOptions);
       setValue('isEmailDuplicated', true);
       setFocus('email');
-
       return;
     }
 
@@ -188,12 +210,14 @@ export default function SignupPage() {
     isEmailDuplicated,
   }: Schema) => {
     if (isEmailDuplicated) {
-      toast({
+      const toastOptions: UseToastOptions = {
         position: 'top',
         description: '이메일 중복 확인을 해주세요',
         status: 'error',
         duration: 1500,
-      });
+      };
+
+      doToast(toastOptions);
 
       return;
     }
@@ -325,13 +349,7 @@ export default function SignupPage() {
               justify="flex-end"
               isInvalid={errors.isOpenedAddress ? true : false}
             >
-              <FormLabel
-                pos="relative"
-                top="1px"
-                fontSize="14px"
-                color="gray.500"
-                m={0}
-              >
+              <FormLabel fontSize="14px" color="gray.500" m={0}>
                 상세주소 공개
               </FormLabel>
               <Controller
