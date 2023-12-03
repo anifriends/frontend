@@ -30,25 +30,36 @@ import {
 
 import useGetVolunteerDetail from './_hooks/useGetVolunteerDetail';
 
-const handleDeletePost = (postId: number) => {
-  deleteShelterRecruitment(postId);
-};
-
 function VolunteersDetail() {
   const setOnDelete = useDetailHeaderStore((state) => state.setOnDelete);
-
-  const toast = useToast();
-  useEffect(() => {
-    setOnDelete(handleDeletePost);
-
-    return () => {
-      setOnDelete(() => {});
-    };
-  }, [setOnDelete]);
 
   const navigate = useNavigate();
   const { id } = useParams();
   const recruitmentId = Number(id);
+
+  const toast = useToast();
+
+  const { mutate: deleteRecruitment } = useMutation({
+    mutationFn: async (recruitmentId: number) =>
+      await deleteShelterRecruitment(recruitmentId),
+    onSuccess: () => {
+      navigate('/volunteers', { replace: true });
+      toast({
+        position: 'top',
+        description: '삭제되었습니다.',
+        status: 'success',
+        duration: 1500,
+      });
+    },
+  });
+
+  useEffect(() => {
+    setOnDelete(deleteRecruitment);
+
+    return () => {
+      setOnDelete(() => {});
+    };
+  }, [setOnDelete, deleteRecruitment]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

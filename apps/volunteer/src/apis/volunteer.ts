@@ -26,7 +26,7 @@ export type UpdateUserInfoParams = {
   gender: 'FEMALE' | 'MALE';
   birthDate: string;
   phoneNumber: string;
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 export const updateVolunteerUserInfo = (

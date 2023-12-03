@@ -1,11 +1,16 @@
-import { Box, Heading, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import {
-  InfiniteData,
+  Box,
+  Heading,
+  Text,
+  useDisclosure,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
+import {
   useMutation,
   useQueryClient,
   useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from 'shared/components/AlertModal';
@@ -15,7 +20,7 @@ import useIntersect from 'shared/hooks/useIntersection';
 import { createFormattedTime } from 'shared/utils/date';
 
 import { deleteVolunteerReview } from '@/apis/review';
-import { getMyReviewsAPI, MyReviewsResponse } from '@/apis/volunteer';
+import { getMyReviewsAPI } from '@/apis/volunteer';
 
 export default function MyReviews() {
   const navigate = useNavigate();
@@ -25,6 +30,8 @@ export default function MyReviews() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [deleteReviewId, setDeleteReviewId] = useState(0);
+
+  const toast = useToast();
 
   const {
     data: { pages },
@@ -49,22 +56,19 @@ export default function MyReviews() {
     }
   });
 
-  const deleteReveiw = useMutation({
+  const { mutate: deleteReveiw } = useMutation({
     mutationFn: async (reviewId: number) =>
       await deleteVolunteerReview(reviewId),
-    onSuccess: (_, reviewId) => {
-      queryClient.setQueryData(
-        ['myreviews'],
-        (data: InfiniteData<AxiosResponse<MyReviewsResponse>>) => ({
-          ...data,
-          pages: data.pages.map((page) => ({
-            ...page,
-            reviews: reviews.filter((review) => review.reviewId !== reviewId),
-          })),
-        }),
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myreviews'] });
       setDeleteReviewId(0);
       onClose();
+      toast({
+        position: 'top',
+        description: '삭제되었습니다',
+        status: 'success',
+        duration: 1500,
+      });
     },
   });
 
@@ -118,7 +122,7 @@ export default function MyReviews() {
           setDeleteReviewId(0);
           onClose();
         }}
-        onClick={() => deleteReveiw.mutate(deleteReviewId)}
+        onClick={() => deleteReveiw(deleteReviewId)}
       />
     </Box>
   );
