@@ -23,7 +23,8 @@ export default function Tabs({ tabs }: TabsProps) {
 
   const handleTabsChange = (index: number) => setTabIndex(index);
 
-  const handleSetTabParam = () => setSearchParams({ tab: `${tabIndex}` });
+  const handleSetTabParam = () =>
+    setSearchParams({ tab: `${tabIndex}` }, { replace: true });
 
   return (
     <ChakraTabs
