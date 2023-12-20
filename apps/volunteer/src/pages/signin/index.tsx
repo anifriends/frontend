@@ -11,7 +11,6 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-  UseToastOptions,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,6 +29,7 @@ import {
   removeItemFromStorage,
   setItemToStorage,
 } from 'shared/utils/localStorage';
+import { updateToast } from 'shared/utils/toast';
 import { email, password } from 'shared/utils/validations';
 import * as z from 'zod';
 
@@ -46,7 +46,7 @@ const schema = z.object({
 export default function SigninPage() {
   const navigate = useNavigate();
   const toast = useToast();
-  const signinToast = useId();
+  const signinToastId = useId();
   const [isShow, toggleInputShow] = useToggle();
   const { setUser } = useAuthStore();
   const {
@@ -67,37 +67,25 @@ export default function SigninPage() {
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
-      const toastOptions: UseToastOptions = {
-        id: signinToast,
-        position: 'top',
-        description:
-          error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
-        status: 'error',
-        duration: 1500,
-      };
-
+      updateToast({
+        toast,
+        toastId: signinToastId,
+        toastOptions: {
+          position: 'top',
+          description:
+            error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
       setUser(null);
       removeItemFromStorage(APP_TYPE.VOLUNTEER_APP);
-
-      if (!toast.isActive(signinToast)) {
-        toast(toastOptions);
-      } else {
-        toast.update(signinToast, toastOptions);
-      }
-
       setFocus('email');
     },
   });
 
-  const goSignupPage = () => {
-    navigate(`/${PATH.SIGNUP}`);
-  };
-
-  const goVolunteersPage = () => {
-    navigate(`/${PATH.VOLUNTEERS.INDEX}`);
-  };
-
-  const onSubmit = async (data: Schema) => {
+  const onSubmit = (data: Schema) => {
     mutate(data);
   };
 
@@ -159,12 +147,8 @@ export default function SigninPage() {
             bgColor="orange.400"
             color="white"
             type="submit"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
           >
             로그인
           </Button>
@@ -174,13 +158,9 @@ export default function SigninPage() {
             bgColor="inherit"
             border="1px solid"
             borderColor="orange.400"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-            onClick={goSignupPage}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
+            onClick={() => navigate(`/${PATH.SIGNUP}`)}
           >
             회원가입
           </Button>
@@ -188,13 +168,9 @@ export default function SigninPage() {
             fontWeight="semibold"
             bgColor="gray.100"
             color="gray.500"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-            onClick={goVolunteersPage}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
+            onClick={() => navigate(`/${PATH.VOLUNTEERS.INDEX}`)}
           >
             비회원으로 사용하기
           </Button>
