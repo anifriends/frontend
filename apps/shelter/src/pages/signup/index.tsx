@@ -432,12 +432,8 @@ export default function SignupPage() {
             bgColor="orange.400"
             color="white"
             type="submit"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
           >
             회원가입
           </Button>
@@ -447,12 +443,8 @@ export default function SignupPage() {
             bgColor="inherit"
             border="1px solid"
             borderColor="orange.400"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
             onClick={() => navigate(`/${PATH.SIGNIN}`)}
           >
             로그인
