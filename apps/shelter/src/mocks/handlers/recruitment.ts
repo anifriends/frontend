@@ -32,10 +32,12 @@ export const DUMMY_APPLICANT = {
   applicantStatus: 'APPROVED',
 };
 
-export const DUMMY_APPLICANT_LIST = Array.from(
-  { length: 9 },
-  () => DUMMY_APPLICANT,
-);
+export const DUMMY_APPLICANT_LIST = Array.from({ length: 9 }, (_, index) => {
+  return {
+    ...DUMMY_APPLICANT,
+    volunteerName: !(index % 2) ? '김철수' : '김영희',
+  };
+});
 
 export const handlers = [
   http.get('/shelters/recruitments', async () => {
@@ -58,6 +60,32 @@ export const handlers = [
     async () => {
       await delay(200);
       return HttpResponse.json({}, { status: 200 });
+    },
+  ),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/applicants/:applicantId',
+    async () => {
+      await delay(200);
+      return HttpResponse.json(
+        {
+          errorCode: 'AF301',
+          message: '해당 모집글에 대해 권한이 없습니다',
+        },
+        { status: 403 },
+      );
+    },
+  ),
+  http.patch(
+    '/shelters/recruitments/:recruitmentId/applicants/:applicantId',
+    async () => {
+      await delay(200);
+      return HttpResponse.json(
+        {
+          errorCode: 'AF401',
+          message: '해당 모집글을 신청한 봉사자가 아닙니다',
+        },
+        { status: 404 },
+      );
     },
   ),
   http.get('/shelters/recruitments/:recruitmentId/applicants', async () => {
