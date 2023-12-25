@@ -109,6 +109,13 @@ export default function ManageApplyItem({
   const changeApplicantStatus = ({
     isApproved,
   }: RecruitmentApplicantUpdateRequest) => {
+    if (
+      (isApproved && applicantStatus === APPLICANT_STATUS_ENG.APPROVED) ||
+      (!isApproved && applicantStatus === APPLICANT_STATUS_ENG.REFUSED)
+    ) {
+      return;
+    }
+
     mutate({ isApproved });
   };
 
