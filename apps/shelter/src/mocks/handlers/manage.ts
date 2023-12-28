@@ -10,7 +10,7 @@ const DUMMY_USER = {
   volunteerAttendance: false,
 };
 
-const DUMMY_USER_LIST = Array.from({ length: 8 }, () => {
+const DUMMY_USER_LIST = Array.from({ length: 20 }, () => {
   return {
     ...DUMMY_USER,
     volunteerId: Math.random(),
