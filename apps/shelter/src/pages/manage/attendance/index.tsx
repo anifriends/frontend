@@ -9,6 +9,7 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
 } from '@chakra-ui/react';
 import {
   queryOptions,
@@ -25,16 +26,6 @@ import {
 } from '@/apis/recruitment';
 import { AttendanceStatus } from '@/types/apis/recruitment';
 
-const attendanceQueryOptions = (recruitmentId: number) =>
-  queryOptions({
-    queryKey: ['attendance', recruitmentId],
-    queryFn: () => getShelterApprovedRecruitmentApplicants(recruitmentId),
-    select: ({ data }) => data,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-  });
-
 type Gender = 'MALE' | 'FEMALE';
 
 type Applicant = {
@@ -47,12 +38,23 @@ type Applicant = {
   volunteerAttendance: boolean;
 };
 
-function AttendanceForm() {
-  const { id } = useParams<{ id: string }>();
+const attendanceQueryOptions = (recruitmentId: number) =>
+  queryOptions({
+    queryKey: ['attendance', recruitmentId],
+    queryFn: () => getShelterApprovedRecruitmentApplicants(recruitmentId),
+    select: ({ data }) => data,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
 
+function ManageAttendance() {
+  const { id } = useParams<{ id: string }>();
   const [userList, setUserList] = useState<Applicant[]>([]);
   const queryClient = useQueryClient();
-
+  const {
+    data: { applicants },
+  } = useSuspenseQuery(attendanceQueryOptions(Number(id)));
   const { mutate, isPending } = useMutation({
     mutationFn: ({
       recruitmentId,
@@ -66,7 +68,7 @@ function AttendanceForm() {
     },
     onSettled: (_, __, { recruitmentId }) => {
       queryClient.invalidateQueries({
-        queryKey: ['attendance', recruitmentId],
+        queryKey: attendanceQueryOptions(Number(recruitmentId)).queryKey,
       });
     },
   });
@@ -75,12 +77,14 @@ function AttendanceForm() {
     if (isPending) {
       return;
     }
+
     const updatedUserList = userList.map(
       ({ applicantId, volunteerAttendance }) => ({
         applicantId,
         isAttended: volunteerAttendance,
       }),
     );
+
     mutate({
       recruitmentId: Number(id),
       applicants: updatedUserList,
@@ -91,6 +95,7 @@ function AttendanceForm() {
     if (isPending) {
       return;
     }
+
     const updatedUserList = userList.map((user) =>
       user.applicantId.toString() === id
         ? { ...user, volunteerAttendance: !user.volunteerAttendance }
@@ -106,14 +111,11 @@ function AttendanceForm() {
     if (isPending) {
       return;
     }
+
     setUserList(
       userList.map((user) => ({ ...user, volunteerAttendance: checked })),
     );
   };
-
-  const {
-    data: { applicants },
-  } = useSuspenseQuery(attendanceQueryOptions(Number(id)));
 
   const allChecked = userList.every(({ volunteerAttendance }) =>
     Boolean(volunteerAttendance),
@@ -124,12 +126,20 @@ function AttendanceForm() {
   }, [applicants]);
 
   return (
-    <Flex dir="column" justifyContent="center">
-      <TableContainer>
+    <Flex dir="column" justify="center" pb="56px">
+      <TableContainer
+        w="full"
+        sx={{
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
+      >
         <Table size="sm">
           <Thead bgColor="gray.100" color="gray.500">
             <Tr>
-              <Th py={5} textAlign="center">
+              <Th textAlign="center" py={2}>
                 <Checkbox
                   colorScheme="orange"
                   borderColor="orange.400"
@@ -137,18 +147,11 @@ function AttendanceForm() {
                   onChange={toggleAllCheck}
                 />
               </Th>
-              <Th textAlign="center" fontWeight="normal">
-                이름
-              </Th>
-              <Th textAlign="center" fontWeight="normal">
-                성별
-              </Th>
-              <Th textAlign="center" fontWeight="normal">
-                생년월일
-              </Th>
-              <Th textAlign="center" fontWeight="normal">
-                전화번호
-              </Th>
+              {['이름', '성별', '생년월일', '전화번호'].map((th, index) => (
+                <Th key={index} textAlign="center" fontWeight="normal" py={2}>
+                  {th}
+                </Th>
+              ))}
             </Tr>
           </Thead>
           <Tbody>
@@ -162,8 +165,8 @@ function AttendanceForm() {
                 volunteerPhoneNumber,
                 volunteerAttendance,
               }) => (
-                <Tr fontSize="sm" lineHeight={5} key={volunteerId}>
-                  <Td py={5}>
+                <Tr fontSize="sm" key={volunteerId}>
+                  <Td py={4} textAlign="center">
                     <Checkbox
                       colorScheme="orange"
                       borderColor="orange.400"
@@ -172,16 +175,16 @@ function AttendanceForm() {
                       id={applicantId.toString()}
                     />
                   </Td>
-                  <Td textAlign="center" fontWeight="semibold">
+                  <Td py={4} textAlign="center" fontWeight="semibold">
                     {volunteerName}
                   </Td>
-                  <Td textAlign="center">
+                  <Td py={4} textAlign="center">
                     {volunteerGender === 'FEMALE' ? '여성' : '남성'}
                   </Td>
-                  <Td textAlign="center">
+                  <Td py={4} textAlign="center">
                     {volunteerBirthDate.split('-').join('.')}
                   </Td>
-                  <Td textAlign="center">
+                  <Td py={4} textAlign="center">
                     {volunteerPhoneNumber.split('-').join('')}
                   </Td>
                 </Tr>
@@ -190,26 +193,32 @@ function AttendanceForm() {
           </Tbody>
         </Table>
       </TableContainer>
-      <Button
+      <VStack
+        bgColor="white"
+        mx="auto"
+        maxW="container.sm"
+        px={4}
+        py={2}
         pos="fixed"
         bottom={0}
-        width="90%"
-        maxW="342px"
-        bgColor="orange.400"
-        color="white"
-        borderRadius="0.625rem"
-        _hover={{
-          bg: undefined,
-        }}
-        _active={{
-          bg: undefined,
-        }}
-        onClick={updateAttendance}
-        disabled={isPending}
-        isLoading={isPending}
+        left={0}
+        right={0}
+        align="stretch"
+        zIndex={10}
       >
-        출석 완료
-      </Button>
+        <Button
+          bgColor="orange.400"
+          color="white"
+          borderRadius={10}
+          _hover={{ bg: undefined }}
+          _active={{ bg: undefined }}
+          onClick={updateAttendance}
+          disabled={isPending}
+          isLoading={isPending}
+        >
+          출석 완료
+        </Button>
+      </VStack>
     </Flex>
   );
 }
@@ -217,7 +226,7 @@ function AttendanceForm() {
 export default function ManageAttendancePage() {
   return (
     <Suspense fallback={<p>로딩 중...</p>}>
-      <AttendanceForm />
+      <ManageAttendance />
     </Suspense>
   );
 }
