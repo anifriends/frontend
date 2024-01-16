@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['custom'],
+  extends: ['anifriends'],
   overrides: [
     {
       files: ['__mocks__/**.ts', 'src/**/*.spec.ts', 'src/**/*.spec.tsx'],

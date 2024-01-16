@@ -1,10 +1,8 @@
+import { InfoTextList, ProfileInfo, Tabs } from '@anifriends/components';
 import { Box, Divider } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
-import InfoTextList from 'shared/components/InfoTextList';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import Tabs from 'shared/components/Tabs';
 
 import { getShelterProfileDetail } from '@/apis/shelter';
 

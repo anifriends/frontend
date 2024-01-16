@@ -1,4 +1,4 @@
-import { Period } from 'shared/types/period';
+import { Period } from '@anifriends/types';
 
 import {
   RECRUITMENT_STATUS,

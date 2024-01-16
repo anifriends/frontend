@@ -1,10 +1,9 @@
+import { ReviewItem, ReviewItemSkeletonList } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { createFormattedTime } from '@anifriends/utils';
 import { Box, Heading, VStack } from '@chakra-ui/react';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ReviewItem from 'shared/components/ReviewItem';
-import ReviewItemSkeletonList from 'shared/components/ReviewItemSkeletonList';
-import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import useFetchShelterReviews from './hooks/useFetchShelterReviews';
 import VolunteerProfile from './VolunteerProfile';

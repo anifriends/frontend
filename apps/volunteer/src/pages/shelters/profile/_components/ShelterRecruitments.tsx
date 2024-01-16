@@ -1,10 +1,9 @@
+import { ApplicantStatus, InfoSubtext } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { createFormattedTime } from '@anifriends/utils';
 import { Box, Card, CardBody, Heading, Text } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import ApplicantStatus from 'shared/components/ApplicantStatus';
-import InfoSubtext from 'shared/components/InfoSubtext';
-import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import {
   getRecruitementsOfShelter,

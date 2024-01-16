@@ -1,10 +1,10 @@
+import { ErrorResponseData } from '@anifriends/types';
 import {
   InfiniteData,
   infiniteQueryOptions,
   UseInfiniteQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponseData } from 'shared/types/apis/error';
 
 import { getRecruitments } from '@/apis/recruitment';
 import {

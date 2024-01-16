@@ -1,10 +1,12 @@
+import NoImage from '@anifriends/assets/icon_no_image.svg';
+import {
+  ApplicantStatus,
+  InfoSubtext,
+  Label,
+  LabelText,
+} from '@anifriends/components';
 import { AspectRatio, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { MouseEvent } from 'react';
-import NoImage from 'shared/assets/icon_no_image.svg';
-import ApplicantStatus from 'shared/components/ApplicantStatus';
-import InfoSubText from 'shared/components/InfoSubtext';
-import Label from 'shared/components/Label';
-import LabelText from 'shared/components/LabelText';
 
 type Recruitment = {
   id: number;
@@ -73,7 +75,7 @@ export default function VolunteerRecruitItem({
           <Text color="gray.400" fontSize="xs" lineHeight={4}>
             {shelterName}
           </Text>
-          <InfoSubText title="봉사일" content={volunteerDate} />
+          <InfoSubtext title="봉사일" content={volunteerDate} />
         </VStack>
         <Box pos="absolute" right={0} bottom={0}>
           <ApplicantStatus

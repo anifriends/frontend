@@ -1,15 +1,17 @@
+import {
+  InfoItem,
+  InfoList,
+  InfoTextItem,
+  ProfileInfo,
+  SettingGroup,
+} from '@anifriends/components';
+import { APP_TYPE } from '@anifriends/constants';
+import { useAuthStore } from '@anifriends/store';
+import { removeItemFromStorage } from '@anifriends/utils';
 import { Box, Divider, Switch, useToast, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChangeEvent, Suspense, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InfoItem from 'shared/components/InfoItem';
-import InfoList from 'shared/components/InfoList';
-import InfoTextItem from 'shared/components/InfoTextItem';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import SettingGroup from 'shared/components/SettingGroup';
-import APP_TYPE from 'shared/constants/appType';
-import useAuthStore from 'shared/store/authStore';
-import { removeItemFromStorage } from 'shared/utils/localStorage';
 
 import { updateAddressStatusAPI } from '@/apis/shelter';
 import { ShelterInfo } from '@/types/apis/shetler';

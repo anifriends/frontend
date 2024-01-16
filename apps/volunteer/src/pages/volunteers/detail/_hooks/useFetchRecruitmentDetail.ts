@@ -1,6 +1,6 @@
+import { getRecruitmentDetail } from '@anifriends/apis';
+import { User } from '@anifriends/store';
 import { useSuspenseQueries } from '@tanstack/react-query';
-import { getRecruitmentDetail } from 'shared/apis/common/Recruitments';
-import { User } from 'shared/store/authStore';
 
 import { getIsAppliedRecruitment } from '@/apis/recruitment';
 

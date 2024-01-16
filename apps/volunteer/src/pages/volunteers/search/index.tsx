@@ -1,9 +1,9 @@
+import { useIntersect } from '@anifriends/hooks';
+import { getDatesFromPeriod } from '@anifriends/utils';
 import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useIntersect from 'shared/hooks/useIntersection';
-import { getDatesFromPeriod } from 'shared/utils/period';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';

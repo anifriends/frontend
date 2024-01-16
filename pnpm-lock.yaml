@@ -26,9 +26,9 @@ importers:
       eslint:
         specifier: ^8.45.0
         version: 8.53.0
-      eslint-config-custom:
+      eslint-config-anifriends:
         specifier: workspace:*
-        version: link:packages/eslint-config-custom
+        version: link:configs/eslint-config-anifriends
       husky:
         specifier: ^8.0.0
         version: 8.0.3
@@ -47,6 +47,39 @@ importers:
 
   apps/shelter:
     dependencies:
+      '@anifriends/apis':
+        specifier: workspace:*
+        version: link:../../packages/apis
+      '@anifriends/assets':
+        specifier: workspace:*
+        version: link:../../packages/assets
+      '@anifriends/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@anifriends/fonts':
+        specifier: workspace:*
+        version: link:../../packages/fonts
+      '@anifriends/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
+      '@anifriends/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@anifriends/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../../packages/store
+      '@anifriends/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@anifriends/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@chakra-ui/react':
         specifier: ^2.8.1
         version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
@@ -86,9 +119,6 @@ importers:
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
-      shared:
-        specifier: workspace:*
-        version: link:../../packages/shared
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -96,6 +126,12 @@ importers:
         specifier: ^4.4.4
         version: 4.4.5(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@testing-library/jest-dom':
         specifier: ^6.2.0
         version: 6.2.0(vitest@1.2.0)
@@ -123,9 +159,9 @@ importers:
       eslint:
         specifier: ^8.45.0
         version: 8.52.0
-      eslint-config-custom:
+      eslint-config-anifriends:
         specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
+        version: link:../../packages/eslint-config-anifriends
       eslint-plugin-vitest:
         specifier: ^0.3.20
         version: 0.3.20(eslint@8.52.0)(typescript@5.2.2)(vitest@1.2.0)
@@ -135,9 +171,6 @@ importers:
       msw:
         specifier: ^2.0.1
         version: 2.0.1(typescript@5.2.2)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       typescript:
         specifier: ^5.0.2
         version: 5.2.2
@@ -150,6 +183,39 @@ importers:
 
   apps/volunteer:
     dependencies:
+      '@anifriends/apis':
+        specifier: workspace:*
+        version: link:../../packages/apis
+      '@anifriends/assets':
+        specifier: workspace:*
+        version: link:../../packages/assets
+      '@anifriends/components':
+        specifier: workspace:*
+        version: link:../../packages/components
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@anifriends/fonts':
+        specifier: workspace:*
+        version: link:../../packages/fonts
+      '@anifriends/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
+      '@anifriends/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@anifriends/layout':
+        specifier: workspace:*
+        version: link:../../packages/layout
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../../packages/store
+      '@anifriends/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@anifriends/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@chakra-ui/react':
         specifier: ^2.8.1
         version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
@@ -189,9 +255,6 @@ importers:
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
-      shared:
-        specifier: workspace:*
-        version: link:../../packages/shared
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -199,6 +262,12 @@ importers:
         specifier: ^4.4.4
         version: 4.4.5(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@testing-library/jest-dom':
         specifier: ^6.2.0
         version: 6.2.0(vitest@1.2.0)
@@ -226,9 +295,9 @@ importers:
       eslint:
         specifier: ^8.45.0
         version: 8.52.0
-      eslint-config-custom:
+      eslint-config-anifriends:
         specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
+        version: link:../../packages/eslint-config-anifriends
       eslint-plugin-vitest:
         specifier: ^0.3.20
         version: 0.3.20(eslint@8.52.0)(typescript@5.2.2)(vitest@1.2.0)
@@ -238,9 +307,6 @@ importers:
       msw:
         specifier: ^2.0.1
         version: 2.0.1(typescript@5.2.2)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
       typescript:
         specifier: ^5.0.2
         version: 5.2.2
@@ -251,7 +317,7 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(@types/node@20.8.10)(@vitest/ui@1.2.0)(jsdom@23.2.0)
 
-  packages/eslint-config-custom:
+  configs/eslint-config-anifriends:
     dependencies:
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.30.7
@@ -283,13 +349,58 @@ importers:
       eslint-plugin-unused-imports:
         specifier: ^3.0.0
         version: 3.0.0(@typescript-eslint/eslint-plugin@5.62.0)(eslint@8.53.0)
-    devDependencies:
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.4.0
-        version: 3.4.1(vite@4.5.0)
 
-  packages/shared:
+  configs/tsconfig: {}
+
+  packages/apis:
     dependencies:
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../store
+      axios:
+        specifier: ^1.6.0
+        version: 1.6.0
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../types
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/assets:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.33
+
+  packages/components:
+    dependencies:
+      '@anifriends/assets':
+        specifier: workspace:*
+        version: link:../assets
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../store
+      '@anifriends/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@chakra-ui/react':
         specifier: ^2.8.1
         version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
@@ -302,9 +413,151 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.4.3
         version: 5.4.3(react-dom@18.2.0)(react@18.2.0)
-      axios:
-        specifier: ^1.6.0
-        version: 1.6.0
+      framer-motion:
+        specifier: ^10.16.4
+        version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-error-boundary:
+        specifier: ^4.0.11
+        version: 4.0.11(react@18.2.0)
+      react-router-dom:
+        specifier: ^6.17.0
+        version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.33
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/constants:
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../types
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/fonts:
+    dependencies:
+      '@emotion/react':
+        specifier: ^11.11.1
+        version: 11.11.1(@types/react@18.2.33)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.33
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/hooks:
+    dependencies:
+      '@anifriends/apis':
+        specifier: workspace:*
+        version: link:../apis
+      '@anifriends/components':
+        specifier: workspace:*
+        version: link:../components
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../store
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../types
+      '@anifriends/utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@chakra-ui/react':
+        specifier: ^2.8.1
+        version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      '@emotion/react':
+        specifier: ^11.11.1
+        version: 11.11.1(@types/react@18.2.33)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.33)(react@18.2.0)
+      '@tanstack/react-query':
+        specifier: ^5.4.3
+        version: 5.4.3(react-dom@18.2.0)(react@18.2.0)
+      framer-motion:
+        specifier: ^10.16.4
+        version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-router-dom:
+        specifier: ^6.17.0
+        version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.33
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/icons:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@types/react':
+        specifier: ^18.2.15
+        version: 18.2.33
+
+  packages/layout:
+    dependencies:
+      '@anifriends/assets':
+        specifier: workspace:*
+        version: link:../assets
+      '@anifriends/components':
+        specifier: workspace:*
+        version: link:../components
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@anifriends/hooks':
+        specifier: workspace:*
+        version: link:../hooks
+      '@anifriends/store':
+        specifier: workspace:*
+        version: link:../store
+      '@anifriends/utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@chakra-ui/react':
+        specifier: ^2.8.1
+        version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      '@emotion/react':
+        specifier: ^11.11.1
+        version: 11.11.1(@types/react@18.2.33)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.33)(react@18.2.0)
       framer-motion:
         specifier: ^10.16.4
         version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
@@ -314,46 +567,82 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-error-boundary:
-        specifier: ^4.0.11
-        version: 4.0.11(react@18.2.0)
-      react-image-file-resizer:
-        specifier: ^0.4.8
-        version: 0.4.8
       react-router-dom:
         specifier: ^6.17.0
         version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
-      zustand:
-        specifier: ^4.4.4
-        version: 4.4.5(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../types
       '@types/react':
         specifier: ^18.2.15
         version: 18.2.33
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.14
-      eslint:
-        specifier: ^8.45.0
-        version: 8.53.0
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../eslint-config-custom
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
       typescript:
         specifier: ^5.0.2
         version: 5.2.2
 
-  packages/tsconfig:
+  packages/store:
+    dependencies:
+      zustand:
+        specifier: ^4.4.4
+        version: 4.4.5(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.4.0
-        version: 3.4.1(vite@4.5.0)
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/theme:
+    dependencies:
+      '@chakra-ui/react':
+        specifier: ^2.8.1
+        version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+
+  packages/types:
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
+
+  packages/utils:
+    dependencies:
+      '@anifriends/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@anifriends/types':
+        specifier: workspace:*
+        version: link:../types
+      '@chakra-ui/react':
+        specifier: ^2.8.1
+        version: 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.33)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      react-image-file-resizer:
+        specifier: ^0.4.8
+        version: 0.4.8
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@anifriends/tsconfig':
+        specifier: workspace:*
+        version: link:../../configs/tsconfig
+      typescript:
+        specifier: ^5.0.2
+        version: 5.2.2
 
 packages:
 

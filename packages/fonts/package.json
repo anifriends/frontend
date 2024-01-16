@@ -1,0 +1,19 @@
+{
+  "name": "@anifriends/fonts",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "@types/react": "^18.2.15",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
