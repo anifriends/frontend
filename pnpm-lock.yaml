@@ -199,6 +199,15 @@ importers:
         specifier: ^4.4.4
         version: 4.4.5(@types/react@18.2.33)(react@18.2.0)
     devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.2.0
+        version: 6.2.0(vitest@1.2.0)
+      '@testing-library/react':
+        specifier: ^14.1.2
+        version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: ^14.5.2
+        version: 14.5.2(@testing-library/dom@9.3.4)
       '@types/node':
         specifier: ^20.8.10
         version: 20.8.10
@@ -211,12 +220,21 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^3.4.0
         version: 3.4.1(vite@4.5.0)
+      '@vitest/ui':
+        specifier: ^1.2.0
+        version: 1.2.0(vitest@1.2.0)
       eslint:
         specifier: ^8.45.0
         version: 8.52.0
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      eslint-plugin-vitest:
+        specifier: ^0.3.20
+        version: 0.3.20(eslint@8.52.0)(typescript@5.2.2)(vitest@1.2.0)
+      jsdom:
+        specifier: ^23.2.0
+        version: 23.2.0
       msw:
         specifier: ^2.0.1
         version: 2.0.1(typescript@5.2.2)
@@ -229,6 +247,9 @@ importers:
       vite:
         specifier: ^4.4.5
         version: 4.5.0(@types/node@20.8.10)
+      vitest:
+        specifier: ^1.2.0
+        version: 1.2.0(@types/node@20.8.10)(@vitest/ui@1.2.0)(jsdom@23.2.0)
 
   packages/eslint-config-custom:
     dependencies:
@@ -2393,7 +2414,7 @@ packages:
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dependencies:
       cross-spawn: 7.0.3
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       is-glob: 4.0.3
       open: 9.1.0
       picocolors: 1.0.0
@@ -4684,6 +4705,7 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.5
+    dev: true
 
   /fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
@@ -4694,7 +4716,6 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.5
-    dev: true
 
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
@@ -5034,7 +5055,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
