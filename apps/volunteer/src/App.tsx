@@ -10,7 +10,7 @@ import { router } from '@/routes';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 50000,
+      staleTime: 50 * 1000,
     },
   },
 });
