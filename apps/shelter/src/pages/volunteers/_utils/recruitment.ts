@@ -1,4 +1,4 @@
-import { createFormattedTime, getDDay } from 'shared/utils/date';
+import { createFormattedTime, getDDay } from '@anifriends/utils';
 
 import { Recruitment } from '@/types/apis/recruitment';
 

@@ -1,4 +1,4 @@
-import { PersonGenderEng } from 'shared/types/gender';
+import { PersonGenderEng } from '@anifriends/types';
 
 import { applicantStatusEng as RecruitmentApplicantStatus } from '../recruitment';
 

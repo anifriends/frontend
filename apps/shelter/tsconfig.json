@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/vite.json",
+  "extends": "@anifriends/tsconfig/vite.json",
   "include": ["src"],
   "compilerOptions": {
     "baseUrl": ".",

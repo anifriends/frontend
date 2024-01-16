@@ -1,0 +1,16 @@
+{
+  "name": "@anifriends/theme",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@chakra-ui/react": "^2.8.1"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

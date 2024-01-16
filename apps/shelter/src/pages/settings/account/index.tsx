@@ -1,3 +1,4 @@
+import { usePhotoUpload } from '@anifriends/hooks';
 import {
   Avatar,
   Box,
@@ -17,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Suspense, useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { usePhotoUpload } from 'shared/hooks/usePhotoUpload';
 import { z } from 'zod';
 
 import { updateShelterInfo } from '@/apis/shelter';

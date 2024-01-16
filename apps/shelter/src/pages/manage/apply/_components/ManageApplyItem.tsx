@@ -1,9 +1,8 @@
+import { Label } from '@anifriends/components';
+import { PERSON_GENDER_KOR } from '@anifriends/constants';
+import { getAge, updateToast } from '@anifriends/utils';
 import { Button, Flex, HStack, Text, useToast, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Label from 'shared/components/Label';
-import { PERSON_GENDER_KOR } from 'shared/constants/gender';
-import { getAge } from 'shared/utils/date';
-import { updateToast } from 'shared/utils/toast';
 
 import { updateShelterRecruitmentApplicant } from '@/apis/recruitment';
 import CkCheck from '@/assets/CkCheck';

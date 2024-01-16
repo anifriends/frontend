@@ -1,8 +1,6 @@
+import { Label, ProfileInfo, Tabs } from '@anifriends/components';
 import { Box, Divider, Highlight } from '@chakra-ui/react';
 import { Suspense } from 'react';
-import Label from 'shared/components/Label';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import Tabs from 'shared/components/Tabs';
 
 import ApplyRecruitments from './_components/ApplyRecruitments';
 import MyReviewsTab from './_components/MyReviews';

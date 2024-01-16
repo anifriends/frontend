@@ -1,3 +1,6 @@
+import { EditPhotoList } from '@anifriends/components';
+import { usePhotosUpload } from '@anifriends/hooks';
+import { getKoreanTime } from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -15,9 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import EditPhotoList from 'shared/components/EditPhotoList';
-import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
-import { getKoreanTime } from 'shared/utils/date';
 import * as z from 'zod';
 
 import { createShelterRecruitment } from '@/apis/recruitment';

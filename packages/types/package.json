@@ -1,0 +1,14 @@
+{
+  "name": "@anifriends/types",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

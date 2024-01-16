@@ -1,5 +1,5 @@
+import { useSearchHeaderStore } from '@anifriends/store';
 import { useEffect } from 'react';
-import useSearchHeaderStore from 'shared/store/searchHeaderStore';
 
 const handleSearchkeyword = (keyword: string) => {
   // TODO: AnimalList 검색 API 호출

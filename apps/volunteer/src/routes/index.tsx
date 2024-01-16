@@ -1,8 +1,7 @@
+import { WithLogin } from '@anifriends/components';
+import { APP_TYPE, PAGE_TYPE } from '@anifriends/constants';
+import Layout from '@anifriends/layout';
 import { createBrowserRouter, RouterProviderProps } from 'react-router-dom';
-import WithLogin from 'shared/components/WithLogin';
-import APP_TYPE from 'shared/constants/appType';
-import PAGE_TYPE from 'shared/constants/pageType';
-import Layout from 'shared/layout';
 
 import PATH from '@/constants/path';
 import AnimalsPage from '@/pages/animals';

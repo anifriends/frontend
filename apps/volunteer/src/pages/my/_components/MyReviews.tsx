@@ -1,3 +1,6 @@
+import { AlertModal, InfoSubtext, ReviewItem } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { createFormattedTime } from '@anifriends/utils';
 import {
   Box,
   Heading,
@@ -13,11 +16,6 @@ import {
 } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AlertModal from 'shared/components/AlertModal';
-import InfoSubtext from 'shared/components/InfoSubtext';
-import ReviewItem from 'shared/components/ReviewItem';
-import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import { deleteVolunteerReview } from '@/apis/review';
 import { getMyReviewsAPI } from '@/apis/volunteer';

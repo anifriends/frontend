@@ -1,7 +1,6 @@
+import NextIcon from '@anifriends/assets/icon_review_next.svg';
+import { InfoSubtext, Label } from '@anifriends/components';
 import { Avatar, Box, HStack, Image, Text } from '@chakra-ui/react';
-import NextIcon from 'shared/assets/icon_review_next.svg';
-import InfoSubtext from 'shared/components/InfoSubtext';
-import Label from 'shared/components/Label';
 
 type VolunteerProfileprops = {
   volunteerName: string;

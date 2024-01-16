@@ -1,8 +1,8 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   getRecruitmentDetail,
   RecruitmentDetailResponse,
-} from 'shared/apis/common/Recruitments';
+} from '@anifriends/apis';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export type RecruitmentDetail = {
   title: string;

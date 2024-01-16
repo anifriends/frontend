@@ -1,3 +1,6 @@
+import { EditPhotoList, Loader } from '@anifriends/components';
+import { usePhotosUpload } from '@anifriends/hooks';
+import { getKoreanTime } from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -16,10 +19,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Suspense, useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import EditPhotoList from 'shared/components/EditPhotoList';
-import Loader from 'shared/components/Loader';
-import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
-import { getKoreanTime } from 'shared/utils/date';
 import * as z from 'zod';
 
 import { updateShelterRecruitment } from '@/apis/recruitment';

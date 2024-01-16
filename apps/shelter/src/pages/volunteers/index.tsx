@@ -1,9 +1,9 @@
+import { AlertModal } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
 import { Box, IconButton } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AlertModal from 'shared/components/AlertModal';
-import useIntersect from 'shared/hooks/useIntersection';
 
 import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitment';

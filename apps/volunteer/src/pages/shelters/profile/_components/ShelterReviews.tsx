@@ -1,11 +1,9 @@
+import { InfoSubtext, Label, ReviewItem } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { createFormattedTime } from '@anifriends/utils';
 import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import InfoSubtext from 'shared/components/InfoSubtext';
-import Label from 'shared/components/Label';
-import ReviewItem from 'shared/components/ReviewItem';
-import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import { getVolunteerReviewsOnShelter } from '@/apis/review';
 
