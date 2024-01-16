@@ -1,11 +1,8 @@
 {
-  "name": "tsconfig",
+  "name": "@anifriends/tsconfig",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "devDependencies": {
-    "@vitejs/plugin-react-swc": "^3.4.0"
-  },
   "publishConfig": {
     "access": "public"
   }

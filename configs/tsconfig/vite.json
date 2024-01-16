@@ -4,7 +4,7 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "noEmit": true,
     "noImplicitReturns": true,
@@ -12,6 +12,5 @@
     "sourceMap": true,
     "target": "ES2020",
     "useDefineForClassFields": true
-  },
-  "exclude": ["node_modules"]
+  }
 }
