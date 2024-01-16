@@ -1,4 +1,18 @@
 import {
+  AlertModal,
+  ImageCarousel,
+  InfoTextList,
+  Label,
+  LabelText,
+  ProfileInfo,
+} from '@anifriends/components';
+import { useAuthStore } from '@anifriends/store';
+import {
+  createFormattedTime,
+  createWeekDayLocalString,
+  getDDay,
+} from '@anifriends/utils';
+import {
   Box,
   Button,
   Divider,
@@ -11,18 +25,6 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import AlertModal from 'shared/components/AlertModal';
-import ImageCarousel from 'shared/components/ImageCarousel';
-import InfoTextList from 'shared/components/InfoTextList';
-import Label from 'shared/components/Label';
-import LabelText from 'shared/components/LabelText';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import useAuthStore from 'shared/store/authStore';
-import {
-  createFormattedTime,
-  createWeekDayLocalString,
-  getDDay,
-} from 'shared/utils/date';
 
 import { applyRecruitments } from '@/apis/recruitment';
 

@@ -1,0 +1,1 @@
+export { ApplicantIcon } from './ApplicantIcon';

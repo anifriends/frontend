@@ -1,3 +1,23 @@
+import AnimalfriendsLogo from '@anifriends/assets/image-anifriends-logo.png';
+import { RadioGroup } from '@anifriends/components';
+import { useToggle } from '@anifriends/hooks';
+import { IoEyeOff, IoEyeSharp } from '@anifriends/icons';
+import {
+  CheckDuplicatedEmailRequestData,
+  PersonGenderEng,
+  PersonGenderKor,
+} from '@anifriends/types';
+import {
+  birthDate,
+  email,
+  gender,
+  isEmailDuplicated,
+  name,
+  password,
+  passwordConfirm,
+  phoneNumber,
+  updateToast,
+} from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -13,7 +33,6 @@ import {
   InputRightAddon,
   InputRightElement,
   useToast,
-  UseToastOptions,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,23 +40,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
-import IoEyeOff from 'shared/assets/IoEyeOff';
-import IoEyeSharp from 'shared/assets/IoEyeSharp';
-import RadioGroup from 'shared/components/RadioGroup';
-import useToggle from 'shared/hooks/useToggle';
-import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
-import { PersonGenderEng, PersonGenderKor } from 'shared/types/gender';
-import {
-  birthDate,
-  email,
-  gender,
-  isEmailDuplicated,
-  name,
-  password,
-  passwordConfirm,
-  phoneNumber,
-} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';
@@ -65,7 +67,7 @@ const schema = z
 export default function SignupPage() {
   const navigate = useNavigate();
   const toast = useToast();
-  const signupToast = useId();
+  const signupToastId = useId();
   const [isPasswordShow, togglePasswordShow] = useToggle();
   const [isPasswordConfirmShow, togglePasswordConfirmShow] = useToggle();
   const {
@@ -83,38 +85,30 @@ export default function SignupPage() {
       isEmailDuplicated: true,
     },
   });
-  const watchIsEmailDuplicated = watch('isEmailDuplicated');
-  const watchEmail = watch('email');
-  const doToast = (toastOptions: UseToastOptions) => {
-    if (!toast.isActive(signupToast)) {
-      toast(toastOptions);
-    } else {
-      toast.update(signupToast, toastOptions);
-    }
-  };
   const { mutate: signupVolunteerMutate } = useMutation({
     mutationFn: (data: SignupRequestData) => signupVolunteer(data),
     onSuccess: () => {
       toast({
-        id: signupToast,
         position: 'top',
         description: '회원가입이 완료되었습니다',
         status: 'success',
         duration: 1500,
+        isClosable: true,
       });
-
       navigate(`/${PATH.SIGNIN}`);
     },
     onError: (error) => {
-      const toastOptions: UseToastOptions = {
-        id: signupToast,
-        position: 'top',
-        description: error.response?.data.message,
-        status: 'error',
-        duration: 1500,
-      };
-
-      doToast(toastOptions);
+      updateToast({
+        toast,
+        toastId: signupToastId,
+        toastOptions: {
+          position: 'top',
+          description: error.response?.data.message,
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
     },
   });
   const { mutate: checkDuplicatedEmailMutate } = useMutation({
@@ -123,50 +117,58 @@ export default function SignupPage() {
     onSuccess: ({ data: { isDuplicated } }) => {
       if (isDuplicated) {
         setValue('isEmailDuplicated', true);
-
-        const toastOptions: UseToastOptions = {
-          id: signupToast,
-          position: 'top',
-          description: '이메일이 중복됩니다',
-          status: 'error',
-          duration: 2500,
-        };
-
-        doToast(toastOptions);
-
+        updateToast({
+          toast,
+          toastId: signupToastId,
+          toastOptions: {
+            position: 'top',
+            description: '이메일이 중복됩니다',
+            status: 'error',
+            duration: 1500,
+            isClosable: true,
+          },
+        });
         setFocus('email');
       } else {
         setValue('isEmailDuplicated', false);
-
-        const toastOptions: UseToastOptions = {
-          id: signupToast,
-          position: 'top',
-          description: '이메일이 확인되었습니다',
-          status: 'success',
-          duration: 2500,
-        };
-
-        doToast(toastOptions);
+        updateToast({
+          toast,
+          toastId: signupToastId,
+          toastOptions: {
+            position: 'top',
+            description: '이메일이 확인되었습니다',
+            status: 'success',
+            duration: 1500,
+            isClosable: true,
+          },
+        });
       }
     },
     onError: (error) => {
-      const toastOptions: UseToastOptions = {
-        id: signupToast,
-        position: 'top',
-        description: error.response?.data.message,
-        status: 'error',
-        duration: 2500,
-      };
-
-      doToast(toastOptions);
+      updateToast({
+        toast,
+        toastId: signupToastId,
+        toastOptions: {
+          id: signupToastId,
+          position: 'top',
+          description: error.response?.data.message,
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
       setFocus('email');
     },
   });
+
+  const watchIsEmailDuplicated = watch('isEmailDuplicated');
+  const watchEmail = watch('email');
 
   const checkDuplicatedEmail = () => {
     if (!watchIsEmailDuplicated) {
       setValue('email', '');
       setValue('isEmailDuplicated', true);
+
       return;
     }
 
@@ -175,15 +177,18 @@ export default function SignupPage() {
     );
 
     if (!isValid) {
-      const toastOptions: UseToastOptions = {
-        id: signupToast,
-        position: 'top',
-        description: '이메일이 유효하지 않습니다',
-        status: 'error',
-        duration: 1500,
-      };
-
-      doToast(toastOptions);
+      updateToast({
+        toast,
+        toastId: signupToastId,
+        toastOptions: {
+          id: signupToastId,
+          position: 'top',
+          description: '이메일이 유효하지 않습니다',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
       setValue('isEmailDuplicated', true);
       setFocus('email');
 
@@ -192,8 +197,6 @@ export default function SignupPage() {
 
     checkDuplicatedEmailMutate({ email: getValues('email') });
   };
-
-  const goSigninPage = () => navigate(`/${PATH.SIGNIN}`);
 
   const onSubmit = ({
     email,
@@ -205,14 +208,17 @@ export default function SignupPage() {
     isEmailDuplicated,
   }: Schema) => {
     if (isEmailDuplicated) {
-      const toastOptions: UseToastOptions = {
-        position: 'top',
-        description: '이메일 중복 확인을 해주세요',
-        status: 'error',
-        duration: 1500,
-      };
-
-      doToast(toastOptions);
+      updateToast({
+        toast,
+        toastId: signupToastId,
+        toastOptions: {
+          position: 'top',
+          description: '이메일 중복 확인을 해주세요',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
 
       return;
     }
@@ -375,12 +381,8 @@ export default function SignupPage() {
             bgColor="orange.400"
             color="white"
             type="submit"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
           >
             회원가입
           </Button>
@@ -390,13 +392,9 @@ export default function SignupPage() {
             bgColor="inherit"
             border="1px solid"
             borderColor="orange.400"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-            onClick={goSigninPage}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
+            onClick={() => navigate(`/${PATH.SIGNIN}`)}
           >
             로그인
           </Button>
@@ -404,12 +402,8 @@ export default function SignupPage() {
             fontWeight="semibold"
             bgColor="gray.100"
             color="gray.500"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
           >
             비회원으로 사용하기
           </Button>

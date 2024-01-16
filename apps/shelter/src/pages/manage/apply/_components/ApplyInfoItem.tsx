@@ -1,5 +1,5 @@
+import { ApplicantStatus } from '@anifriends/components';
 import { Flex, Text } from '@chakra-ui/react';
-import ApplicantStatus from 'shared/components/ApplicantStatus';
 
 type ApplyInfoItemProps = {
   currentRecuritmentCount: number;

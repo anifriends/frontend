@@ -1,3 +1,16 @@
+import AnimalfriendsLogo from '@anifriends/assets/image-anifriends-logo.png';
+import { APP_TYPE } from '@anifriends/constants';
+import { useToggle } from '@anifriends/hooks';
+import { IoEyeOff, IoEyeSharp } from '@anifriends/icons';
+import { useAuthStore } from '@anifriends/store';
+import type { SigninRequestData } from '@anifriends/types';
+import {
+  email,
+  password,
+  removeItemFromStorage,
+  setItemToStorage,
+  updateToast,
+} from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -11,7 +24,6 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
-  UseToastOptions,
   VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,18 +31,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useId } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
-import IoEyeOff from 'shared/assets/IoEyeOff';
-import IoEyeSharp from 'shared/assets/IoEyeSharp';
-import APP_TYPE from 'shared/constants/appType';
-import useToggle from 'shared/hooks/useToggle';
-import useAuthStore from 'shared/store/authStore';
-import { SigninRequestData } from 'shared/types/apis/auth';
-import {
-  removeItemFromStorage,
-  setItemToStorage,
-} from 'shared/utils/localStorage';
-import { email, password } from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { signinShelter } from '@/apis/auth';
@@ -46,7 +46,7 @@ const schema = z.object({
 export default function SigninPage() {
   const navigate = useNavigate();
   const toast = useToast();
-  const signinToast = useId();
+  const signinToastId = useId();
   const [isShow, toggleInputShow] = useToggle();
   const { setUser } = useAuthStore();
   const {
@@ -61,38 +61,31 @@ export default function SigninPage() {
     mutationFn: (data: SigninRequestData) => signinShelter(data),
     onSuccess: ({ data: { userId, accessToken } }) => {
       const user = { userId, accessToken };
+
       setUser(user);
       setItemToStorage(APP_TYPE.SHELTER_APP, JSON.stringify(user));
       navigate(`/${PATH.VOLUNTEERS.INDEX}`);
     },
     onError: (error) => {
-      const toastOptions: UseToastOptions = {
-        id: signinToast,
-        position: 'top',
-        description:
-          error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
-        status: 'error',
-        duration: 1500,
-      };
-
+      updateToast({
+        toast,
+        toastId: signinToastId,
+        toastOptions: {
+          position: 'top',
+          description:
+            error.response?.data.message ?? '알 수 없는 에러가 발생했습니다',
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
       setUser(null);
       removeItemFromStorage(APP_TYPE.SHELTER_APP);
-
-      if (!toast.isActive(signinToast)) {
-        toast(toastOptions);
-      } else {
-        toast.update(signinToast, toastOptions);
-      }
-
       setFocus('email');
     },
   });
 
-  const goSignupPage = () => {
-    navigate(`/${PATH.SIGNUP}`);
-  };
-
-  const onSubmit = async (data: Schema) => {
+  const onSubmit = (data: Schema) => {
     mutate(data);
   };
 
@@ -154,12 +147,8 @@ export default function SigninPage() {
             bgColor="orange.400"
             color="white"
             type="submit"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
           >
             로그인
           </Button>
@@ -169,13 +158,9 @@ export default function SigninPage() {
             bgColor="inherit"
             border="1px solid"
             borderColor="orange.400"
-            _hover={{
-              bg: undefined,
-            }}
-            _active={{
-              bg: undefined,
-            }}
-            onClick={goSignupPage}
+            _hover={{ bg: undefined }}
+            _active={{ bg: undefined }}
+            onClick={() => navigate(`/${PATH.SIGNUP}`)}
           >
             회원가입
           </Button>

@@ -1,8 +1,8 @@
+import { Label } from '@anifriends/components';
+import { PERSON_GENDER_KOR } from '@anifriends/constants';
+import { getAge, updateToast } from '@anifriends/utils';
 import { Button, Flex, HStack, Text, useToast, VStack } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Label from 'shared/components/Label';
-import { PERSON_GENDER_KOR } from 'shared/constants/gender';
-import { getAge } from 'shared/utils/date';
 
 import { updateShelterRecruitmentApplicant } from '@/apis/recruitment';
 import CkCheck from '@/assets/CkCheck';
@@ -34,6 +34,7 @@ export default function ManageApplyItem({
   },
 }: ManageApplyItemProps) {
   const toast = useToast();
+  const manageApplyId = 'manage-apply';
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (data: RecruitmentApplicantUpdateRequest) =>
@@ -47,12 +48,55 @@ export default function ManageApplyItem({
         ? APPLICANT_STATUS_KOR.APPROVE
         : APPLICANT_STATUS_KOR.REFUSE;
 
-      toast({
-        position: 'top',
-        description: `${volunteerName}님의 봉사신청을 ${descriptionStatus}했습니다`,
-        status: 'success',
-        duration: 1000,
-        isClosable: true,
+      toast.close(manageApplyId);
+
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      updateToast({
+        toast,
+        toastId: manageApplyId,
+        toastOptions: {
+          position: 'top',
+          description: (
+            <Text w="100%">
+              <Text as="span" fontWeight="bold">
+                {volunteerName}
+              </Text>
+              님의 신청을{` `}
+              <Text as="span" fontWeight="bold">
+                {descriptionStatus}
+              </Text>
+              했습니다
+            </Text>
+          ),
+          status: 'success',
+          duration: 1500,
+          isClosable: true,
+        },
+      });
+    },
+    onError: async (error) => {
+      toast.close(manageApplyId);
+
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      updateToast({
+        toast,
+        toastId: manageApplyId,
+        toastOptions: {
+          position: 'top',
+          description: (
+            <Text>
+              <Text as="span" fontWeight="bold">
+                {volunteerName}
+              </Text>
+              님은 {error.response?.data.message}
+            </Text>
+          ),
+          status: 'error',
+          duration: 1500,
+          isClosable: true,
+        },
       });
     },
   });
@@ -64,6 +108,13 @@ export default function ManageApplyItem({
   const changeApplicantStatus = ({
     isApproved,
   }: RecruitmentApplicantUpdateRequest) => {
+    if (
+      (isApproved && applicantStatus === APPLICANT_STATUS_ENG.APPROVED) ||
+      (!isApproved && applicantStatus === APPLICANT_STATUS_ENG.REFUSED)
+    ) {
+      return;
+    }
+
     mutate({ isApproved });
   };
 

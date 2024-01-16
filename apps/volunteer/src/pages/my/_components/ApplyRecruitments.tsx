@@ -1,3 +1,6 @@
+import { Label } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { createFormattedTime } from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -9,9 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import Label from 'shared/components/Label';
-import useIntersect from 'shared/hooks/useIntersection';
-import { createFormattedTime } from 'shared/utils/date';
 
 import { getVolunteerApplicants } from '@/apis/volunteer';
 import { APPLICANT_STATUS } from '@/constants/applicantStatus';

@@ -1,0 +1,17 @@
+{
+  "name": "@anifriends/icons",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "@types/react": "^18.2.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

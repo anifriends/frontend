@@ -1,0 +1,27 @@
+{
+  "name": "@anifriends/hooks",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@anifriends/apis": "workspace:*",
+    "@anifriends/components": "workspace:*",
+    "@anifriends/store": "workspace:*",
+    "@anifriends/types": "workspace:*",
+    "@anifriends/utils": "workspace:*",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@tanstack/react-query": "^5.4.3",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-router-dom": "^6.17.0"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "@types/react": "^18.2.15",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

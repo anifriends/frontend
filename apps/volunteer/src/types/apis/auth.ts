@@ -1,5 +1,4 @@
-import { SigninRequestData } from 'shared/types/apis/auth';
-import { PersonGenderEng } from 'shared/types/gender';
+import type { PersonGenderEng, SigninRequestData } from '@anifriends/types';
 
 export type SignupRequestData = SigninRequestData & {
   name: string;

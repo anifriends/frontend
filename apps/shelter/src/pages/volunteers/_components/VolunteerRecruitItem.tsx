@@ -1,8 +1,10 @@
+import {
+  ApplicantStatus,
+  Label,
+  LabelText,
+  OptionMenu,
+} from '@anifriends/components';
 import { Box, HStack, MenuItem, Text, VStack } from '@chakra-ui/react';
-import ApplicantStatus from 'shared/components/ApplicantStatus';
-import Label from 'shared/components/Label';
-import LabelText from 'shared/components/LabelText';
-import OptionMenu from 'shared/components/OptionMenu';
 
 import VolunteerRecruitItemButton from '@/pages/volunteers/_components/VolunteerRecruitItemButton';
 

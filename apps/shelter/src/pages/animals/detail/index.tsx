@@ -1,5 +1,5 @@
+import { useDetailHeaderStore } from '@anifriends/store';
 import { useEffect } from 'react';
-import useDetailHeaderStore from 'shared/store/detailHeaderStore';
 
 const handleDeletePost = (postId: number) => {
   // TODO: AnimalPost delete API 호출

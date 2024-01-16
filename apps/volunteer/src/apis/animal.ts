@@ -1,4 +1,4 @@
-import axiosInstance from 'shared/apis/axiosInstance';
+import { axiosInstance } from '@anifriends/apis';
 
 type PageInfo = {
   totalElements: number;

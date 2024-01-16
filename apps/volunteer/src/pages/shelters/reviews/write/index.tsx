@@ -1,3 +1,5 @@
+import { EditPhotoList, ProfileInfo } from '@anifriends/components';
+import { usePhotosUpload } from '@anifriends/hooks';
 import {
   Box,
   Divider,
@@ -12,9 +14,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import EditPhotoList from 'shared/components/EditPhotoList';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import { usePhotosUpload } from 'shared/hooks/usePhotosUpload';
 
 import { createVolunteerReview } from '@/apis/review';
 import { getSimpleShelterProfile } from '@/apis/shelter';
