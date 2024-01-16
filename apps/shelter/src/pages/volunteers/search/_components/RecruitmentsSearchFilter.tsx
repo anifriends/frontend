@@ -1,8 +1,6 @@
+import { SearchFilters, SearchFilterSelectData } from '@anifriends/components';
+import { PERIOD } from '@anifriends/constants';
 import { ChangeEvent } from 'react';
-import SearchFilters, {
-  SearchFilterSelectData,
-} from 'shared/components/SearchFilters';
-import { PERIOD } from 'shared/constants/period';
 
 import {
   RECRUITMENT_STATUS,

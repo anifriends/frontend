@@ -1,8 +1,8 @@
+import { AlertModal } from '@anifriends/components';
+import { useIntersect } from '@anifriends/hooks';
+import { getDatesFromPeriod } from '@anifriends/utils';
 import { Box } from '@chakra-ui/react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import AlertModal from 'shared/components/AlertModal';
-import useIntersect from 'shared/hooks/useIntersection';
-import { getDatesFromPeriod } from 'shared/utils/period';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import { useVolunteerRecruitItem } from '@/pages/volunteers/_hooks/useVolunteerRecruitItem';

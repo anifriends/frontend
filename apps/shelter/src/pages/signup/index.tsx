@@ -1,3 +1,20 @@
+import AnimalfriendsLogo from '@anifriends/assets/image-anifriends-logo.png';
+import { useToggle } from '@anifriends/hooks';
+import { IoEyeOff, IoEyeSharp } from '@anifriends/icons';
+import { CheckDuplicatedEmailRequestData } from '@anifriends/types';
+import {
+  address,
+  addressDetail,
+  email,
+  isEmailDuplicated,
+  isOpenedAddress,
+  name,
+  password,
+  passwordConfirm,
+  phoneNumber,
+  sparePhoneNumber,
+  updateToast,
+} from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -22,24 +39,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
-import IoEyeOff from 'shared/assets/IoEyeOff';
-import IoEyeSharp from 'shared/assets/IoEyeSharp';
-import useToggle from 'shared/hooks/useToggle';
-import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
-import { updateToast } from 'shared/utils/toast';
-import {
-  address,
-  addressDetail,
-  email,
-  isEmailDuplicated,
-  isOpenedAddress,
-  name,
-  password,
-  passwordConfirm,
-  phoneNumber,
-  sparePhoneNumber,
-} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { checkDuplicatedShelterEmail, signupShelter } from '@/apis/auth';

@@ -1,3 +1,23 @@
+import AnimalfriendsLogo from '@anifriends/assets/image-anifriends-logo.png';
+import { RadioGroup } from '@anifriends/components';
+import { useToggle } from '@anifriends/hooks';
+import { IoEyeOff, IoEyeSharp } from '@anifriends/icons';
+import {
+  CheckDuplicatedEmailRequestData,
+  PersonGenderEng,
+  PersonGenderKor,
+} from '@anifriends/types';
+import {
+  birthDate,
+  email,
+  gender,
+  isEmailDuplicated,
+  name,
+  password,
+  passwordConfirm,
+  phoneNumber,
+  updateToast,
+} from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -20,24 +40,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import AnimalfriendsLogo from 'shared/assets/image-anifriends-logo.png';
-import IoEyeOff from 'shared/assets/IoEyeOff';
-import IoEyeSharp from 'shared/assets/IoEyeSharp';
-import RadioGroup from 'shared/components/RadioGroup';
-import useToggle from 'shared/hooks/useToggle';
-import { CheckDuplicatedEmailRequestData } from 'shared/types/apis/auth';
-import { PersonGenderEng, PersonGenderKor } from 'shared/types/gender';
-import { updateToast } from 'shared/utils/toast';
-import {
-  birthDate,
-  email,
-  gender,
-  isEmailDuplicated,
-  name,
-  password,
-  passwordConfirm,
-  phoneNumber,
-} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { checkDuplicatedVolunteerEmail, signupVolunteer } from '@/apis/auth';

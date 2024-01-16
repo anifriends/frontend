@@ -1,9 +1,9 @@
+import { SettingGroup } from '@anifriends/components';
+import { APP_TYPE } from '@anifriends/constants';
+import { useAuthStore } from '@anifriends/store';
+import { removeItemFromStorage } from '@anifriends/utils';
 import { Box, useToast, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import SettingGroup from 'shared/components/SettingGroup';
-import APP_TYPE from 'shared/constants/appType';
-import useAuthStore from 'shared/store/authStore';
-import { removeItemFromStorage } from 'shared/utils/localStorage';
 
 export default function SettingsPage() {
   const navigate = useNavigate();

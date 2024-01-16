@@ -1,8 +1,8 @@
+import { useIntersect } from '@anifriends/hooks';
 import { Box } from '@chakra-ui/react';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { MouseEvent, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useIntersect from 'shared/hooks/useIntersection';
 
 import VolunteerRecruitItem from '@/pages/volunteers/_components/VolunteerRecruitItem';
 import recruitmentQueryOptions from '@/pages/volunteers/_queryOptions/recruitments';

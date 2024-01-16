@@ -1,10 +1,8 @@
+import { Label, ProfileInfo, Tabs } from '@anifriends/components';
 import { Box, useToken } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
-import Label from 'shared/components/Label';
-import ProfileInfo from 'shared/components/ProfileInfo';
-import Tabs from 'shared/components/Tabs';
 
 import { getVolunteerProfile } from '@/apis/volunteers';
 

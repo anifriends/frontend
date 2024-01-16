@@ -1,11 +1,11 @@
-import axiosInstance from 'shared/apis/axiosInstance';
+import { axiosInstance } from '@anifriends/apis';
 import type {
   ChangePasswordRequestData,
   CheckDuplicatedEmailRequestData,
   CheckDuplicatedEmailResponseData,
   SigninRequestData,
   SigninResponseData,
-} from 'shared/types/apis/auth';
+} from '@anifriends/types';
 
 import { SignupRequestData } from '@/types/apis/auth';
 

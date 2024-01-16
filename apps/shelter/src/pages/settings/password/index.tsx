@@ -1,3 +1,12 @@
+import { LogoImageBox } from '@anifriends/components';
+import { useToggle } from '@anifriends/hooks';
+import { IoEyeOff, IoEyeSharp } from '@anifriends/icons';
+import { ChangePasswordRequestData } from '@anifriends/types';
+import {
+  newPassword,
+  newPasswordConfirm,
+  oldPassword,
+} from '@anifriends/utils';
 import {
   Box,
   Button,
@@ -14,16 +23,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import IoEyeOff from 'shared/assets/IoEyeOff';
-import IoEyeSharp from 'shared/assets/IoEyeSharp';
-import LogoImageBox from 'shared/components/LogoImageBox';
-import useToggle from 'shared/hooks/useToggle';
-import { ChangePasswordRequestData } from 'shared/types/apis/auth';
-import {
-  newPassword,
-  newPasswordConfirm,
-  oldPassword,
-} from 'shared/utils/validations';
 import * as z from 'zod';
 
 import { changeShelterPassword } from '@/apis/auth';

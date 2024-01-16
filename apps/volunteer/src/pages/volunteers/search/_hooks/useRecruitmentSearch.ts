@@ -1,6 +1,5 @@
+import { useSearchFilter, useSearchKeyword } from '@anifriends/hooks';
 import { ChangeEvent } from 'react';
-import { useSearchFilter } from 'shared/hooks/useSearchFilter';
-import { useSearchKeyword } from 'shared/hooks/useSearchKeyword';
 
 import { SearchFilter } from '@/pages/volunteers/search/_types/filter';
 
