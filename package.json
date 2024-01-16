@@ -12,7 +12,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "lint:pack": "packlint sort -R",
-    "prepare": "husky install && packlint sort -R"
+    "prepare": "husky install && packlint sort -R",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch"
   },
   "config": {
     "commitizen": {

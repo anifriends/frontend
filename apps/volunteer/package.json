@@ -7,7 +7,11 @@
     "build": "tsc && vite build",
     "dev": "vite",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@anifriends/apis": "workspace:*",
@@ -40,15 +44,22 @@
   "devDependencies": {
     "@anifriends/tsconfig": "workspace:*",
     "@anifriends/types": "workspace:*",
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.4.0",
+    "@vitest/ui": "^1.2.0",
     "eslint": "^8.45.0",
     "eslint-config-anifriends": "workspace:*",
+    "eslint-plugin-vitest": "^0.3.20",
+    "jsdom": "^23.2.0",
     "msw": "^2.0.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vitest": "^1.2.0"
   },
   "msw": {
     "workerDirectory": "public"
