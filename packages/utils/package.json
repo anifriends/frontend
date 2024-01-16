@@ -1,0 +1,21 @@
+{
+  "name": "@anifriends/utils",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@anifriends/constants": "workspace:*",
+    "@anifriends/types": "workspace:*",
+    "@chakra-ui/react": "^2.8.1",
+    "react-image-file-resizer": "^0.4.8",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

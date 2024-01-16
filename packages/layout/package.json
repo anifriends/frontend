@@ -1,0 +1,32 @@
+{
+  "name": "@anifriends/layout",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@anifriends/assets": "workspace:*",
+    "@anifriends/components": "workspace:*",
+    "@anifriends/constants": "workspace:*",
+    "@anifriends/hooks": "workspace:*",
+    "@anifriends/store": "workspace:*",
+    "@anifriends/utils": "workspace:*",
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.17.0"
+  },
+  "devDependencies": {
+    "@anifriends/tsconfig": "workspace:*",
+    "@anifriends/types": "workspace:*",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
