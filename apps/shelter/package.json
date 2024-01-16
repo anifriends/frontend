@@ -9,9 +9,9 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@anifriends/apis": "workspace:*",
@@ -54,7 +54,6 @@
     "@vitest/ui": "^1.2.0",
     "eslint": "^8.45.0",
     "eslint-config-anifriends": "workspace:*",
-    "eslint-config-custom": "workspace:*",
     "eslint-plugin-vitest": "^0.3.20",
     "jsdom": "^23.2.0",
     "msw": "^2.0.1",
